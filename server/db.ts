@@ -21,10 +21,11 @@ export const initDb = async () => {
         `CREATE TABLE IF NOT EXISTS instructors(
             instructor_id SERIAL PRIMARY KEY,
             name TEXT NOT NULL,
-            experience TEXT NOT NULL,
+            username TEXT NOT NULL,
             email TEXT NOT NULL,
-            address TEXT NOT NULL,
-            phone_number TEXT NOT NULL
+            password TEXT NOT NULL,
+            phone_number TEXT NOT NULL,
+            address TEXT NOT NULL
         );`
     );
 
