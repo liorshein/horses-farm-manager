@@ -29,33 +29,27 @@ export const initDb = async () => {
         );`
     );
 
-    // await client.query(
-    //     `CREATE TABLE IF NOT EXISTS horses(
-    //         horse_id SERIAL PRIMARY KEY,
-    //         name TEXT NOT NULL,
-    //         age INTEGER NOT NULL,
-    //         breed TEXT NOT NULL,
-    //         assignable BOOLEAN NOT NULL
-    //     );`
-    // );
+    await client.query(
+        `CREATE TABLE IF NOT EXISTS horses(
+            horse_id SERIAL PRIMARY KEY,
+            name TEXT NOT NULL,
+            age INTEGER NOT NULL,
+            breed TEXT NOT NULL,
+            assignable BOOLEAN NOT NULL
+        );`
+    );
 
-    // await client.query(
-    //     `CREATE TABLE IF NOT EXISTS socks(
-    //         sock_id SERIAL PRIMARY KEY,
-    //         model TEXT NOT NULL,
-    //         quantity INTEGER NOT NULL,
-    //         size INTEGER NOT NULL,
-    //         manufacturing_year INTEGER NOT NULL,
-    //         location_id INTEGER,
-    //         CONSTRAINT fk_location FOREIGN KEY(location_id)
-    //         REFERENCES locations(location_id)
-    //         ON DELETE SET NULL,
-    //         officer_id INTEGER,
-    //         CONSTRAINT fk_officer FOREIGN KEY(officer_id)
-    //         REFERENCES officers(officer_id)
-    //         ON DELETE SET NULL
-    //     );`
-    // );
+    await client.query(
+        `CREATE TABLE IF NOT EXISTS students(
+            student_id SERIAL PRIMARY KEY,
+            name TEXT NOT NULL,
+            age INTEGER NOT NULL,
+            instructor_id INTEGER,
+            CONSTRAINT fk_instructor FOREIGN KEY(instructor_id)
+            REFERENCES instructors(instructor_id)
+            ON DELETE SET NULL
+        );`
+    );
 
 
     // await client.query(
