@@ -14,7 +14,7 @@ const Navigation = (props: Props) => {
     <nav>
       <NavLink to="/home">Home</NavLink>
       <NavLink to="/dashboard">Dashboard</NavLink>
-      <NavLink to="/admin">Admin</NavLink>
+      <NavLink to="/students">Students</NavLink>
 
       {token && (
         <button type="button" onClick={onLogout}>

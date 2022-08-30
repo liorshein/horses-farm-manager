@@ -6,7 +6,7 @@ type Props = {}
 const Dashboard = (props: Props) => {
   const appContext = useAuth();
   if (!appContext) return null
-  const {token} = appContext
+  const {token} = appContext  
 
   return (
     <>

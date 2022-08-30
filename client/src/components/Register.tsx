@@ -131,7 +131,7 @@ const Register = (props: Props) => {
           >
             Reset
           </button>
-          <button onClick={() => props.switchPage("Login")}>Already a member? Log In!</button>
+          <button type="button" onClick={() => props.switchPage("Login")}>Already a member? Log In!</button>
         </div>
       </form>
     </div >

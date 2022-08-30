@@ -1,13 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import AuthService from '../services/auth.service';
+import Cookies from 'universal-cookie';
 
 type Props = {
     children: any
 }
 
 interface ContextInterface {
-    token: string | null;
+    token: string | undefined;
     onLogin: (e: any) => void;
     onLogout: () => void;
     loginValues: {
@@ -35,7 +36,8 @@ export const useAuth = () => {
 const AutoProvider = (props: Props) => {
     const navigate = useNavigate()
     const location = useLocation().state as stateType;
-    const [token, setToken] = useState<string | null>(null);
+    const cookies = new Cookies()
+    const [token, setToken] = useState<string | undefined>(cookies.get('token'));
     const [loginInputs, setLoginInputs] = useState({
         username: "",
         password: "",
@@ -48,10 +50,12 @@ const AutoProvider = (props: Props) => {
     const handleLogin = async (e: any) => {
         e.preventDefault()
         const response = await AuthService.login(loginInputs.username, loginInputs.password)
-        const token = response.token
+        const newToken = response.token
+
+        cookies.set('token', newToken, {path: '/'})
         
-        if (token) {
-            setToken(token)
+        if (newToken) {
+            setToken(newToken)
             const origin = location?.from?.pathname || '/dashboard';
             navigate(origin);
         } else {
@@ -60,7 +64,8 @@ const AutoProvider = (props: Props) => {
     };
 
     const handleLogout = () => {
-        setToken(null);
+        setToken(undefined);
+        cookies.remove('token')
     };
 
     const value = {

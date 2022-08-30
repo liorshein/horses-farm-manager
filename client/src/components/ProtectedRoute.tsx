@@ -11,9 +11,8 @@ const ProtectedRoute = (props: Props) => {
     const location = useLocation()
     
     if (!appContext) return null
-    const { token } = appContext
+    const { token } = appContext    
     
-
     if (!token) {
         return <Navigate to="/home" replace state={{ from: location }} />;
     }
