@@ -22,21 +22,9 @@ const login = async (username: string, password: string) => {
     return response.data
 };
 
-const logout = async () => {
-    localStorage.removeItem("user");
-    const response = await axios.post(API_URL + "signout");
-    return response.data;
-};
-
-const getCurrentUser = () => {
-    return JSON.parse(localStorage.getItem("user")!);
-};
-
 const AuthService = {
     register,
     login,
-    logout,
-    getCurrentUser,
 }
 
 export default AuthService;

@@ -52,9 +52,8 @@ const AutoProvider = (props: Props) => {
         const response = await AuthService.login(loginInputs.username, loginInputs.password)
         const newToken = response.token
 
-        cookies.set('token', newToken, {path: '/'})
-        
         if (newToken) {
+            cookies.set('token', newToken, {path: '/'})
             setToken(newToken)
             const origin = location?.from?.pathname || '/dashboard';
             navigate(origin);
