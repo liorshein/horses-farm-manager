@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useAuth } from '../components/AuthProvider';
+import { useAuth } from './AuthProvider';
 
 type Props = {
   switchPage: (a: string) => void
@@ -24,7 +24,7 @@ const Login = (props: Props) => {
           <input type="password" name="password" id="password" value={loginValues.password} onChange={onChange}/>
         </div>
         <button onClick={onLogin}>Sign In</button>
-        <button onClick={() => props.switchPage("Register")}>Register</button>
+        <button type="button" onClick={() => props.switchPage("Register")}>Register</button>
       </form>
     </>
   )

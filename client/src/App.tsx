@@ -7,7 +7,7 @@ import NoMatch from './pages/NoMatch'
 import AuthProvider from './components/AuthProvider'
 import AuthService from './services/auth.service'
 import ProtectedRoute from './components/ProtectedRoute'
-import Admin from './components/Admin'
+import Students from './pages/Students'
 
 type Props = {}
 
@@ -25,10 +25,10 @@ const App = (props: Props) => {
                         </ProtectedRoute>
                     } />
                     <Route
-                        path="admin"
+                        path="students"
                         element={
                             <ProtectedRoute>
-                                <Admin />
+                                <Students />
                             </ProtectedRoute>
                         }
                     />
