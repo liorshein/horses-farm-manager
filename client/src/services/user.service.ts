@@ -1,13 +1,24 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api/test/";
+axios.defaults.withCredentials = true
+
+const API_URL = "http://localhost:5000/";
 
 const getPublicContent = () => {
     return axios.get(API_URL + "all");
 };
 
-const getUserBoard = () => {
-    return axios.get(API_URL + "user");
+const getUserBoard = async () => {
+    const personalInfo = (await axios.get(API_URL + "user")).data.result;
+    const studentsInfo = (await axios.get(API_URL + "user-students")).data.result
+    return { personalInfo, studentsInfo }
+};
+
+const addStudent = (name: string, age: string) => {
+    axios.post(API_URL + "add-student", {
+        name: name,
+        age: age,
+    });
 };
 
 const getModeratorBoard = () => {
@@ -23,6 +34,7 @@ const UserService = {
     getUserBoard,
     getModeratorBoard,
     getAdminBoard,
+    addStudent,
 }
 
 export default UserService;
