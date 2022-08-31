@@ -5,7 +5,7 @@ import Dashboard from './pages/Dashboard'
 import Home from './pages/Home'
 import NoMatch from './pages/NoMatch'
 import AuthProvider from './components/AuthProvider'
-import AuthService from './services/auth.service'
+import AuthService from './services/authService'
 import ProtectedRoute from './components/ProtectedRoute'
 import Students from './pages/Students'
 
