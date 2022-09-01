@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useAuth } from '../../components/AuthProvider'
 import Login from '../../components/LoginComp';
 import Register from '../../components/Register';
-import "./login.scss"
+import styles from "./login.module.scss"
 
 type Props = {
 }
@@ -13,9 +13,9 @@ const Home = (_props: Props) => {
   if (!appContext) return null
 
   return (
-    <div className="container">
-      <div className="banner"></div>
-      <div className="form">
+    <div className={styles.container}>
+      <div className={styles.banner}></div>
+      <div className={styles.form}>
         {switchPage === "Login" ? <Login switchPage={setSwitchPage} /> : <Register switchPage={setSwitchPage} />}
       </div>
     </div>

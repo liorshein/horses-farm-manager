@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import AuthService from '../services/authService';
+import styles from "../pages/Login/registerComp.module.scss"
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
@@ -51,89 +52,94 @@ const Register = (props: Props) => {
   };
 
   return (
-    <div className="register-form" >
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="form-group">
+    <>
+      <h1 className={styles.header}>Register!</h1>
+      <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+        <div className={styles.form_group}>
           <label>Full Name</label>
           <input
             type="text"
+            placeholder='Full Name'
             {...register('fullname')}
-            className={`form-control ${errors.fullname ? 'is-invalid' : ''}`}
+            className={errors.fullname ? styles.is_invalid : ''}
           />
-          <div className="invalid-feedback">{errors.fullname?.message}</div>
+          <div className={styles.invalid_feedback}>{errors.fullname?.message}</div>
         </div>
-        <div className="form-group">
+        <div className={styles.form_group}>
           <label>Username</label>
           <input
             type="text"
+            placeholder='Username'
             {...register('username')}
-            className={`form-control ${errors.username ? 'is-invalid' : ''}`}
+            className={errors.fullname ? styles.is_invalid : ''}
           />
-          <div className="invalid-feedback">{errors.username?.message}</div>
+          <div className={styles.invalid_feedback}>{errors.username?.message}</div>
         </div>
-        <div className="form-group">
+        <div className={styles.form_group}>
           <label>Email</label>
           <input
             type="text"
+            placeholder='Email'
             {...register('email')}
-            className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+            className={errors.fullname ? styles.is_invalid : ''}
           />
-          <div className="invalid-feedback">{errors.email?.message}</div>
+          <div className={styles.invalid_feedback}>{errors.email?.message}</div>
         </div>
-        <div className="form-group">
+        <div className={styles.form_group}>
           <label>Password</label>
           <input
             type="password"
+            placeholder='Password'
             {...register('password')}
-            className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+            className={errors.fullname ? styles.is_invalid : ''}
           />
-          <div className="invalid-feedback">{errors.password?.message}</div>
+          <div className={styles.invalid_feedback}>{errors.password?.message}</div>
         </div>
-        <div className="form-group">
+        <div className={styles.form_group}>
           <label>Confirm Password</label>
           <input
             type="password"
+            placeholder='Confirm Password'
             {...register('confirmPassword')}
-            className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''
-              }`}
+            className={errors.fullname ? styles.is_invalid : ''}
           />
-          <div className="invalid-feedback">
+          <div className={styles.invalid_feedback}>
             {errors.confirmPassword?.message}
           </div>
         </div>
-        <div className="form-group">
+        <div className={styles.form_group}>
           <label>Address</label>
           <input
             type="text"
+            placeholder='Address'
             {...register('address')}
-            className={`form-control ${errors.address ? 'is-invalid' : ''}`}
+            className={errors.fullname ? styles.is_invalid : ''}
           />
-          <div className="invalid-feedback">{errors.address?.message}</div>
+          <div className={styles.invalid_feedback}>{errors.address?.message}</div>
         </div>
-        <div className="form-group">
+        <div className={styles.form_group}>
           <label>Phone Number</label>
           <input
             type="tel"
+            placeholder='Phone Number'
             {...register('phone_number')}
-            className={`form-control ${errors.phone_number ? 'is-invalid' : ''}`}
+            className={errors.fullname ? styles.is_invalid : ''}
           />
-          <div className="invalid-feedback">{errors.phone_number?.message}</div>
+          <div className={styles.invalid_feedback}>{errors.phone_number?.message}</div>
         </div>
-        <div className="form-group">
-          <button type="submit" className="btn btn-primary">
-            Register
-          </button>
-          <button
-            type="button"
-            onClick={() => reset()}
-            className="btn btn-warning float-right"
-          >
-            Reset
-          </button>
-          <button type="button" onClick={() => props.switchPage("Login")}>Already a member? Log In!</button>
-        </div>
+        <button className={styles.signin_btn} type="submit">
+          Register
+        </button>
+        <button
+          className={styles.signin_btn}
+          type="button"
+          onClick={() => reset()}
+        >
+          Reset
+        </button>
+        <button className={styles.login_btn} type="button" onClick={() => props.switchPage("Login")}>Already a member? Log In!</button>
       </form>
-    </div >
+    </>
   );
 }
 

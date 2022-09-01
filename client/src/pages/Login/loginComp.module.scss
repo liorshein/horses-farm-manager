@@ -1,0 +1,48 @@
+.header {
+    font-size: 4rem;
+    margin-bottom: 80px;
+}
+
+.form_group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+
+    & > label {
+        font-size: 1.25rem;
+        margin-bottom: 5px;
+    }
+
+    & > input {
+        font-size: 1.75rem;
+        height: 60px;
+        border: 2px solid black;
+        padding-left: 10px;
+    }
+}
+
+.login_btn {
+    margin-top: 30px;
+    padding: 8px 40px;
+    font-size: 1.5rem;
+    border: 2px solid black;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.register_btn {
+    position: absolute;
+    right: 25px;
+    bottom: 20px;
+    background-color: transparent;
+    border: none;
+    font-size: 1.5rem;
+
+    &:hover {
+        cursor: pointer;
+        border-bottom: 2px solid black;
+        bottom: 18px;
+    }
+}

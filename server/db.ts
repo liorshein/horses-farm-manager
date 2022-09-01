@@ -44,6 +44,8 @@ export const initDb = async () => {
             student_id SERIAL PRIMARY KEY,
             name TEXT NOT NULL,
             age INTEGER NOT NULL,
+            weight INTEGER NOT NULL,
+            background_info TEXT NOT NULL,
             instructor_id INTEGER,
             CONSTRAINT fk_instructor FOREIGN KEY(instructor_id)
             REFERENCES instructors(instructor_id)
@@ -51,22 +53,75 @@ export const initDb = async () => {
         );`
     );
 
+    /*  
+    In order to create a table full of dates i used the sql code: 
 
-    // await client.query(
-    //     `CREATE TABLE IF NOT EXISTS locations_history(
-    //         location_history_id SERIAL PRIMARY KEY,
-    //         arrival_date DATE NOT NULL,
-    //         departure_date DATE NOT NULL,
-    //         location_id INTEGER,
-    //         CONSTRAINT fk_location FOREIGN KEY(location_id)
-    //         REFERENCES locations(location_id)
-    //         ON DELETE CASCADE,
-    //         sock_id INTEGER,
-    //         CONSTRAINT fk_sock FOREIGN KEY(sock_id)
-    //         REFERENCES socks(sock_id)
-    //         ON DELETE CASCADE
-    //     );`
-    // );
+    insert into work_days ("day") 
+    select generate_series('2022-09-01'::date,'2030-09-01'::date,'1 day'::interval);
+    */
+
+    await client.query(
+        `CREATE TABLE IF NOT EXISTS work_days(
+            work_days_id SERIAL PRIMARY KEY,
+            day DATE NOT NULL,
+            instructor_id INTEGER,
+            CONSTRAINT fk_instructor FOREIGN KEY(instructor_id)
+            REFERENCES instructors(instructor_id)
+            ON DELETE SET NULL
+        );`
+    );
+
+    /*  
+    In order to create a table full of months i used the sql code: 
+
+    insert into work_months ("month") 
+    select generate_series('2022-09-01'::date,'2030-09-01'::date,'1 month'::interval);
+    */
+
+    await client.query(
+        `CREATE TABLE IF NOT EXISTS work_months(
+            work_months_id SERIAL PRIMARY KEY,
+            month TEXT NOT NULL,
+            salary INTEGER,
+            instructor_id INTEGER,
+            CONSTRAINT fk_instructor FOREIGN KEY(instructor_id)
+            REFERENCES instructors(instructor_id)
+            ON DELETE SET NULL
+        );`
+    );
+
+    await client.query(
+        `CREATE TABLE IF NOT EXISTS work_hours(
+            work_hours_id SERIAL PRIMARY KEY,
+            start_lesson TEXT NOT NULL,
+            end_lesson TEXT NOT NULL,
+            arrived BOOLEAN,
+            instructor_id INTEGER,
+            CONSTRAINT fk_instructor FOREIGN KEY(instructor_id)
+            REFERENCES instructors(instructor_id)
+            ON DELETE SET NULL,
+            student_id INTEGER,
+            CONSTRAINT fk_student FOREIGN KEY(student_id)
+            REFERENCES students(student_id)
+            ON DELETE SET NULL,
+            horse_id INTEGER,
+            CONSTRAINT fk_horse FOREIGN KEY(horse_id)
+            REFERENCES horses(horse_id)
+            ON DELETE SET NULL
+        );`
+    );
+
+    await client.query(
+        `CREATE TABLE IF NOT EXISTS work_topics(
+            work_topics_id SERIAL PRIMARY KEY,
+            details TEXT NOT NULL,
+            achieved BOOLEAN,
+            instructor_id INTEGER,
+            CONSTRAINT fk_instructor FOREIGN KEY(instructor_id)
+            REFERENCES instructors(instructor_id)
+            ON DELETE SET NULL
+        );`
+    );
 
     console.log("create");
 }

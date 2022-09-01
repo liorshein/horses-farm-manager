@@ -1,0 +1,34 @@
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body,
+html {
+    overflow: hidden;
+    background-color: #d4d4d4;
+    height: 100vh;
+    width: 100vw;
+}
+
+.container {
+    display: flex;
+}
+
+.banner {
+    width: 60%;
+    height: 100vh;
+    background-image: url("../../assets/images/kenny-webster-QrJc1RVI7uM-unsplash.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.form {
+    width: 40%;
+    align-self: center;
+    padding: 0rem 120px;
+}
