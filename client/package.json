@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "proxy":"http://localhost/5000",
+  "proxy": "http://localhost/5000",
   "dependencies": {
     "@hookform/resolvers": "^2.9.7",
     "@testing-library/jest-dom": "^5.16.5",
@@ -47,5 +47,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-big-calendar": "^0.38.1",
+    "@types/react-datepicker": "^4.4.2",
+    "@types/react-dates": "^21.8.3",
+    "@types/react-datetime-picker": "^3.4.1"
   }
 }
