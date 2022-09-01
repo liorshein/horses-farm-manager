@@ -1,13 +1,11 @@
-import React, { useState } from 'react'
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
 import Navigation from './components/Navigation'
-import Dashboard from './pages/Dashboard'
-import Home from './pages/Home'
-import NoMatch from './pages/NoMatch'
+import Dashboard from './pages/Dashboard/Dashboard'
+import Login from './pages/Login/Login'
+import NoMatch from './pages/NoMatch/NoMatch'
 import AuthProvider from './components/AuthProvider'
-import AuthService from './services/authService'
 import ProtectedRoute from './components/ProtectedRoute'
-import Students from './pages/Students'
+import Students from './pages/Students/Students'
 
 type Props = {}
 
@@ -15,12 +13,12 @@ const App = (props: Props) => {
     return (
         <BrowserRouter>
             <AuthProvider>
-                <Navigation />
                 <Routes>
-                    <Route index element={<Home />} />
-                    <Route path="home" element={<Home />} />
+                    <Route index element={<Login />} />
+                    <Route path="login" element={<Login />} />
                     <Route path="dashboard" element={
                         <ProtectedRoute>
+                            <Navigation />
                             <Dashboard />
                         </ProtectedRoute>
                     } />
@@ -28,6 +26,7 @@ const App = (props: Props) => {
                         path="students"
                         element={
                             <ProtectedRoute>
+                                <Navigation />
                                 <Students />
                             </ProtectedRoute>
                         }

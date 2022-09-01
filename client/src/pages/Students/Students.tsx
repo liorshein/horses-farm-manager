@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import UserService from '../services/userService'
+import { useState } from 'react'
+import UserService from '../../services/userService'
 
 type Props = {}
 

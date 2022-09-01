@@ -1,0 +1,83 @@
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body,
+html {
+    overflow: hidden;
+    background-color: #d4d4d4;
+    height: 100vh;
+    width: 100vw;
+}
+
+.container {
+    display: flex;
+
+    .banner {
+        width: 60%;
+        height: 100vh;
+        background-image: url("../../assets/images/kenny-webster-QrJc1RVI7uM-unsplash.jpg");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .form {
+        width: 40%;
+        align-self: center;
+        padding: 0rem 120px;
+
+        .header {
+            font-size: 4rem;
+            margin-bottom: 5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 30px;
+
+            & > label {
+                font-size: 1.25rem;
+                margin-bottom: 5px;
+            }
+
+            & > input {
+                font-size: 1.75rem;
+                height: 60px;
+                border: 2px solid black;
+                padding-left: 10px;
+            }
+        }
+
+        .login-btn {
+            margin-top: 30px;
+            padding: 8px 40px;
+            font-size: 1.5rem;
+            border: 2px solid black;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        .register-btn {
+            position: absolute;
+            right: 25px;
+            bottom: 20px;
+            background-color: transparent;
+            border: none;
+            font-size: 1.5rem;
+
+            &:hover {
+                cursor: pointer;
+                border-bottom: 2px solid black;
+                bottom: 18px;
+            }
+        }
+    }
+}

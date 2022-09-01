@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { useAuth } from '../components/AuthProvider';
-import UserService from '../services/userService';
+import { useEffect, useState } from 'react'
+import { useAuth } from '../../components/AuthProvider';
+import UserService from '../../services/userService';
 
 type Props = {}
 
