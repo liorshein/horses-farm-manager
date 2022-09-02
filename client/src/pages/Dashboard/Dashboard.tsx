@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '../../components/AuthProvider';
+import CustomDatePicker from '../../components/CustomDatePicker';
 import UserService from '../../services/userService';
 
 type Props = {}
@@ -20,25 +21,36 @@ const Dashboard = (props: Props) => {
 
   const [studentInfo, setStudentInfo] = useState<Student[]>([]);
 
-  useEffect(() => {
-    const getData = async () => {
-      const userData = await UserService.getUserBoard()
-      setPersonalInfo(userData.personalInfo)
-      setStudentInfo(userData.studentsInfo)
+  const [newLesson, setNewLesson] = useState({
+    day: new Date(),
+    start: '',
+    end: '',
+  })
 
-    }
-    getData()
-  }, [])
+  console.log(newLesson);
+  
+
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     const userData = await UserService.getUserBoard()
+  //     setPersonalInfo(userData.personalInfo)
+  //     setStudentInfo(userData.studentsInfo)
+
+  //   }
+  //   getData()
+  // }, [])
 
   const appContext = useAuth();
   if (!appContext) return null
-  const { token } = appContext
+  const { token } = appContext  
 
   return (
     <>
       <h1>Dashboard (Protected)</h1>
 
       <div>Authenticated as "{token}"</div>
+
+      < CustomDatePicker setNewLesson={setNewLesson}/>
 
       <div className="content">
         <h2>Personal Info</h2>
