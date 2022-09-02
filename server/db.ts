@@ -17,6 +17,12 @@ export const initDb = async () => {
 
     await client.connect();
 
+    /*
+        To prevent duplicate users with the same email & password i used this sql code:
+        CREATE UNIQUE INDEX idx_email_password
+        ON instructors(email, password);
+    */
+
     await client.query(
         `CREATE TABLE IF NOT EXISTS instructors(
             instructor_id SERIAL PRIMARY KEY,
@@ -38,6 +44,12 @@ export const initDb = async () => {
             assignable BOOLEAN NOT NULL
         );`
     );
+
+    /*
+        To prevent duplicate students with the same name & background i used this sql code:
+        CREATE UNIQUE INDEX idx_name_background
+        ON students(name, background_info);
+    */
 
     await client.query(
         `CREATE TABLE IF NOT EXISTS students(
