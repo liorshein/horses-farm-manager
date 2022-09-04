@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react'
+import AddLesson from '../../components/AddLesson';
 import { useAuth } from '../../components/AuthProvider';
-import CustomDatePicker from '../../components/CustomDatePicker';
 import UserService from '../../services/userService';
 
 type Props = {}
 
-type Student = {
-  student_id: number
-  name: string
-  age: number
+export type Lesson = {
+  range: Date[]
 }
 
 const Dashboard = (props: Props) => {
@@ -18,39 +16,30 @@ const Dashboard = (props: Props) => {
     phone_number: '',
     address: '',
   });
+  const [horsesHours, setHorsesHours] = useState<any>()
 
-  const [studentInfo, setStudentInfo] = useState<Student[]>([]);
+  useEffect(() => {
+    const getData = async () => {
+      const userData = await UserService.getUserBoard()
+      const horsesHour = await UserService.getHorseWorkHours()     
+      setPersonalInfo(userData.personalInfo)
+      setHorsesHours(horsesHour.data.result.rows)
+    }
+    getData()
+  }, [])
 
-  const [newLesson, setNewLesson] = useState({
-    day: new Date(),
-    start: '',
-    end: '',
-  })
-
-  console.log(newLesson);
+  console.log("horsesHours", horsesHours);
   
-
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     const userData = await UserService.getUserBoard()
-  //     setPersonalInfo(userData.personalInfo)
-  //     setStudentInfo(userData.studentsInfo)
-
-  //   }
-  //   getData()
-  // }, [])
 
   const appContext = useAuth();
   if (!appContext) return null
-  const { token } = appContext  
+  const { token } = appContext
 
   return (
     <>
       <h1>Dashboard (Protected)</h1>
 
-      <div>Authenticated as "{token}"</div>
-
-      < CustomDatePicker setNewLesson={setNewLesson}/>
+      <div>Authenticated as "{token}"</div>      
 
       <div className="content">
         <h2>Personal Info</h2>
@@ -60,15 +49,8 @@ const Dashboard = (props: Props) => {
         <h3>{personalInfo.address}</h3>
       </div>
 
-      <div className="content">
-        <h2>Students Info</h2>
-        {studentInfo.map((student: Student) =>
-          <div key={student.student_id}>
-            <h3>{student.name}</h3>
-            <h3>{student.age}</h3>
-          </div>
-        )}
-      </div>
+      <AddLesson />
+
     </>
   )
 }
