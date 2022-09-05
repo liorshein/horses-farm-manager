@@ -15,8 +15,10 @@ const addHorse = async (name: string, age: number, breed: string, assignable: bo
     return result
 };
 
-const getLessons = () => {
-    return axios.get(API_URL + "lessons");
+const getLessons = async (horse_id: string, date: string) => {
+    let params = new URLSearchParams({ horse_id: horse_id, date: date })
+    let availableHours = await axios.get(API_URL + `lessons?${params}`);
+    return availableHours
 };
 
 const getUserBoard = async () => {
@@ -35,9 +37,10 @@ const addStudent = (name: string, age: string, weight: string, background_info: 
     });
 };
 
-const getWorkHours = async (day: Date) => {
-    const horseHours = await axios.get(API_URL + "horse-hours");
-    const instructorHours = await axios.get(API_URL + "instructor-hours");
+const getWorkHours = async (day: string, selectedHorseId: string) => {
+    let params = new URLSearchParams({ horse_id: selectedHorseId, date: day })
+    const horseHours = await (await axios.get(API_URL + `horse-hours?${params}`)).data.result.rows;
+    const instructorHours = await (await (axios.get(API_URL + `instructor-hours?${params}`))).data.result.rows[0].work_hours;
     return { horseHours, instructorHours }
 }
 
@@ -49,19 +52,9 @@ const addLesson = (range: string[], student: number, horse: number) => {
     });
 };
 
-const getModeratorBoard = () => {
-    return axios.get(API_URL + "mod");
-};
-
-const getAdminBoard = () => {
-    return axios.get(API_URL + "admin");
-};
-
 const UserService = {
     getWorkHours,
     getUserBoard,
-    getModeratorBoard,
-    getAdminBoard,
     addStudent,
     addLesson,
     getLessons,

@@ -3,37 +3,22 @@ import AddLesson from '../../components/AddLesson';
 import { useAuth } from '../../components/AuthProvider';
 import UserService from '../../services/userService';
 
-type Props = {}
 
-export type Lesson = {
-  range: Date[]
-}
-
-const Dashboard = (props: Props) => {
+const Dashboard = () => {
   const [personalInfo, setPersonalInfo] = useState({
     name: '',
     email: '',
     phone_number: '',
     address: '',
   });
-  const [horsesHours, setHorsesHours] = useState<any>()
-  const [instructorHours, setInstructorHours] = useState<any>()
 
   useEffect(() => {
     const getData = async () => {
       const userData = await UserService.getUserBoard()
-      const horsesHour = await UserService.getWorkHours()
-      const instructorHours = await UserService.getWorkHours()
       setPersonalInfo(userData.personalInfo)
-      setHorsesHours(horsesHour.horseHours.data.result)
-      setInstructorHours(instructorHours.instructorHours.data.result)
     }
     getData()
-  }, [])
-
-  console.log("horsesHours", horsesHours);
-  console.log("instructorHours", instructorHours);
-  
+  }, [])  
 
   const appContext = useAuth();
   if (!appContext) return null

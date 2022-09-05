@@ -14,17 +14,8 @@ export const signUp: RequestHandler = async (req, res) => {
             hash,
             req.body.phone_number,
             req.body.address,
-        ]
-        )
+        ]);
         
-        const instructorId = queryResult.rows[0].instructor_id
-        
-        const result2 = await client.query(
-            `INSERT INTO instructor_lessons(date)
-            SELECT generate_series(now(),now() + '1 years','1 day'::interval)`);
-
-        const result3 = await client.query(`UPDATE instructor_lessons SET instructor_id = $1 WHERE instructor_id is null`, [instructorId]);
-
         res.send({ success: true });
     })
 }

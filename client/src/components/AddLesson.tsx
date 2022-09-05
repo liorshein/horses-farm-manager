@@ -14,6 +14,7 @@ type Student = {
 const AddLesson = (props: Props) => {
     const [studentInfo, setStudentInfo] = useState<Student[]>([]);
     const [selectedStudent, setSelectedStudent] = useState('')
+    const [availableHours, setAvailableHours] = useState<string[]>([])
 
     useEffect(() => {
         const getData = async () => {
@@ -30,13 +31,22 @@ const AddLesson = (props: Props) => {
     return (
         <div>
 
-            <SearchTime />
+            <SearchTime setAvailableHours={setAvailableHours}/>
 
             <span className="content">
                 <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)}>
                     <option>Pick Student</option>
                     {studentInfo.map((student: Student) => {
                         return <option key={student.student_id} value={student.student_id}>{student.name}</option>
+                    }
+                    )}</select>
+            </span>
+
+            <span className="content">
+                <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)}>
+                    <option>Pick Hour</option>
+                    {availableHours.map((hour: string) => {
+                        return <option key={hour} value={hour}>{hour}</option>
                     }
                     )}</select>
             </span>
