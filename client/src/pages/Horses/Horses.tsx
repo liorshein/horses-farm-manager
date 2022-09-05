@@ -23,16 +23,12 @@ const Horses = (props: Props) => {
   }
 
   const handleClick = async (e: { preventDefault: () => void }) => {
-    e.preventDefault()
     if (inputs.assignable === "True") {
       inputs.assignable = true
     } else {
       inputs.assignable = false
     }
     UserService.addHorse(inputs.name, Number(inputs.age), inputs.breed, inputs.assignable)
-    // let horseId = await UserService.addHorse(inputs.name, Number(inputs.age), inputs.breed, inputs.assignable)
-    // let horsesHours = await UserService.getHorseWorkHours(horseId)
-    // console.log(horsesHours);
   }  
 
   return (

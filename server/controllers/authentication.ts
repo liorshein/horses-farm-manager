@@ -7,7 +7,7 @@ export const signUp: RequestHandler = async (req, res) => {
     bcrypt.genSalt().then(async salt => {
         const hash = await bcrypt.hash(req.body.password, salt)
         const queryResult = await client.query(
-            `INSERT INTO instructors(name, username, email, password, phone_number, address) VALUES ($1, $2, $3, $4, $5, $6)`, [
+            `INSERT INTO instructors(name, username, email, password, phone_number, address) VALUES ($1, $2, $3, $4, $5, $6) RETURNING instructor_id`, [
             req.body.name,
             req.body.username,
             req.body.email,
@@ -16,6 +16,14 @@ export const signUp: RequestHandler = async (req, res) => {
             req.body.address,
         ]
         )
+        
+        const instructorId = queryResult.rows[0].instructor_id
+        
+        const result2 = await client.query(
+            `INSERT INTO instructor_lessons(date)
+            SELECT generate_series(now(),now() + '1 years','1 day'::interval)`);
+
+        const result3 = await client.query(`UPDATE instructor_lessons SET instructor_id = $1 WHERE instructor_id is null`, [instructorId]);
 
         res.send({ success: true });
     })
@@ -32,7 +40,7 @@ export const signIn: RequestHandler = async (req, res) => {
     const validPass = await bcrypt.compare(req.body.password, hash)
 
     if (validPass) {
-        const userId = queryResult.rows[0].instructor_id        
+        const userId = queryResult.rows[0].instructor_id
         const token = jwt.sign({ _id: userId }, process.env.JWT_SECRET!, { expiresIn: '1 week' })
         res.json({ token: token })
     } else {

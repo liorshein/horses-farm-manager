@@ -49,16 +49,20 @@ const AutoProvider = (props: Props) => {
 
     const handleLogin = async (e: any) => {
         e.preventDefault()
-        const response = await AuthService.login(loginInputs.username, loginInputs.password)
-        const newToken = response.token
-
-        if (newToken) {
-            cookies.set('token', newToken, {path: '/'})
-            setToken(newToken)
-            const origin = location?.from?.pathname || '/dashboard';
-            navigate(origin);
+        if (loginInputs.username !== '' && loginInputs.password !== '') {
+            const response = await AuthService.login(loginInputs.username, loginInputs.password)
+            const newToken = response.token
+    
+            if (newToken) {
+                cookies.set('token', newToken, {path: '/'})
+                setToken(newToken)
+                const origin = location?.from?.pathname || '/dashboard';
+                navigate(origin);
+            } else {
+                alert("Wrong password / username")
+            }
         } else {
-            alert("Wrong password / username")
+            alert("Enter valid password and username")
         }
     };
 

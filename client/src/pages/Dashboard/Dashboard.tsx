@@ -17,18 +17,22 @@ const Dashboard = (props: Props) => {
     address: '',
   });
   const [horsesHours, setHorsesHours] = useState<any>()
+  const [instructorHours, setInstructorHours] = useState<any>()
 
   useEffect(() => {
     const getData = async () => {
       const userData = await UserService.getUserBoard()
-      const horsesHour = await UserService.getHorseWorkHours()     
+      const horsesHour = await UserService.getWorkHours()
+      const instructorHours = await UserService.getWorkHours()
       setPersonalInfo(userData.personalInfo)
-      setHorsesHours(horsesHour.data.result.rows)
+      setHorsesHours(horsesHour.horseHours.data.result)
+      setInstructorHours(instructorHours.instructorHours.data.result)
     }
     getData()
   }, [])
 
   console.log("horsesHours", horsesHours);
+  console.log("instructorHours", instructorHours);
   
 
   const appContext = useAuth();

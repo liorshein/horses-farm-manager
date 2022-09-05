@@ -2,8 +2,8 @@ import axios from "axios";
 
 const API_URL = "http://localhost:5000/";
 
-const register = (fullname: string, username: string, email: string, password: string, phone_number: string, address: string) => {
-    axios.post(API_URL + "signup", {
+const register = async (fullname: string, username: string, email: string, password: string, phone_number: string, address: string) => {
+    const result = await axios.post(API_URL + "signup", {
         name: fullname,
         username: username,
         email: email,
@@ -11,6 +11,8 @@ const register = (fullname: string, username: string, email: string, password: s
         phone_number: phone_number,
         address: address,
     });
+
+    return result
 };
 
 const login = async (username: string, password: string) => {

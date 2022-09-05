@@ -1,5 +1,9 @@
 import { Router } from 'express';
-import { getUserData, addStudent, getStudentsData, addLesson, getHorsesData, getLessons, authenticateToken, getHorsesHours, addHorse } from '../controllers/users';
+import {
+    getUserData, addStudent, getStudentsData,
+    addLesson, getHorsesData, getLessons, authenticateToken,
+    getHorsesHours, addHorse, getInstructorHours
+} from '../controllers/users';
 
 const usersRouter = Router();
 
@@ -11,5 +15,6 @@ usersRouter.post('/add-student', authenticateToken, addStudent)
 usersRouter.put('/add-lesson', authenticateToken, addLesson)
 usersRouter.get('/horse-hours', authenticateToken, getHorsesHours)
 usersRouter.post('/add-horse', authenticateToken, addHorse)
+usersRouter.get('/instructor-hours', authenticateToken, getInstructorHours)
 
 export default usersRouter;
