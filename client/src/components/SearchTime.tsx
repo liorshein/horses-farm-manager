@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
 import UserService from '../services/userService'
 
-type Props = {}
+type Props = {
+    setAvailableHours: (a: string[]) => void
+}
 
 type Horse = {
     horse_id: number
@@ -16,7 +18,7 @@ type Horse = {
 const SearchTime = (props: Props) => {
     const [day, setDay] = useState(new Date())
     const [horseInfo, setHorseInfo] = useState<Horse[]>([])
-    const [selectedHorse, setSelectedHorse] = useState('')
+    const [selectedHorseId, setSelectedHorseId] = useState('')
 
     useEffect(() => {
         const getData = async () => {
@@ -26,13 +28,15 @@ const SearchTime = (props: Props) => {
         getData()
     }, [])
 
-    useEffect(() => {
-        const getData = async () => {
-            const availableHours = await UserService.getWorkHours(day)
-            
+    const handleClick = async () => {        
+        if (selectedHorseId && day !== undefined && selectedHorseId !== "Pick Horse"){
+            let dateFormat = day.toISOString().split("T")[0] + " 00:00:00+00"            
+            const availableHours = await (await UserService.getLessons(selectedHorseId, dateFormat)).data.filteredResults
+            props.setAvailableHours(availableHours);
+        } else {
+            alert("Please select horse and date!")
         }
-        getData()
-    }, [])
+    }
 
     return (
         <>
@@ -44,13 +48,15 @@ const SearchTime = (props: Props) => {
             />
 
             <div className="content">
-                <select value={selectedHorse} onChange={(e) => setSelectedHorse(e.target.value)}>
+                <select value={selectedHorseId} onChange={(e) => setSelectedHorseId(e.target.value)}>
                     <option>Pick Horse</option>
                     {horseInfo.map((horse: Horse) => {
                         return <option key={horse.horse_id} value={horse.horse_id}>{horse.name}</option>
                     }
                     )}</select>
             </div>
+
+            <button onClick={handleClick}>Check Available Hours</button>
         </>
     )
 }
