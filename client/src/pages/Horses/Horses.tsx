@@ -9,7 +9,7 @@ type Props = {}
 
 type Horse = {
   horse_id: number
-  name: string
+  horse_name: string
   age: string
   breed: string
   assignable: boolean | string
@@ -20,10 +20,10 @@ const Horses = (props: Props) => {
 
   const [inputs, setInputs] = useState<Horse>({
     horse_id: 0,
-    name: '',
+    horse_name: '',
     age: '',
     breed: '',
-    assignable: '',
+    assignable: 'True',
   })
 
   const handleChange = (event: { target: { name: string; value: string } }) => {
@@ -38,17 +38,19 @@ const Horses = (props: Props) => {
     getData()
   }, [])
 
-  const handleClick = async () => {
-    if (inputs.assignable === "True") {
-      inputs.assignable = true
+  const handleClick = async (e: { preventDefault: () => void }) => {
+    if (inputs.age !== '' && inputs.assignable !== '' && inputs.breed !== '' && inputs.horse_name){
+      if (inputs.assignable === "True") {
+        inputs.assignable = true
+      } else {
+        inputs.assignable = false
+      }
+      UserService.addHorse(inputs.horse_name, Number(inputs.age), inputs.breed, inputs.assignable)
     } else {
-      inputs.assignable = false
+      alert("Please enter valid info!")
     }
-    UserService.addHorse(inputs.name, Number(inputs.age), inputs.breed, inputs.assignable)
-  }
-
-  console.log(horsesInfo);
-  
+    
+  }  
 
   return (
     <>
@@ -57,7 +59,7 @@ const Horses = (props: Props) => {
       <form>
         <div className="form-group">
           <label>Name</label>
-          <input type="text" name="name" id="name" value={inputs.name} onChange={handleChange} />
+          <input type="text" name="horse_name" id="name" value={inputs.horse_name} onChange={handleChange} />
         </div>
         <div className="form-group">
           <label>Age</label>
@@ -80,7 +82,7 @@ const Horses = (props: Props) => {
       <div className="content">
         <h1>Horses:</h1>
         {horsesInfo.map((horse: Horse) => {
-          return <div key={horse.horse_id}>name: {horse.name}, age: {horse.age}, breed: {horse.breed}, assignable: {horse.assignable.toString()}</div>
+          return <div key={horse.horse_id}>name: {horse.horse_name}, age: {horse.age}, breed: {horse.breed}, assignable: {horse.assignable.toString()}</div>
         })}
       </div>
     </>

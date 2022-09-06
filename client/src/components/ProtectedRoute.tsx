@@ -1,16 +1,13 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from './AuthProvider'
+import Cookies from 'universal-cookie';
 
 type Props = {
     children: any
 }
 
 const ProtectedRoute = (props: Props) => {
-    const appContext = useAuth();
     const location = useLocation()
-    
-    if (!appContext) return null
-    const { token } = appContext    
+    const token = new Cookies().get('token');
     
     if (!token) {
         return <Navigate to="/login" replace state={{ from: location }} />;

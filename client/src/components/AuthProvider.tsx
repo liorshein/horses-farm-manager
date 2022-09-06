@@ -8,7 +8,6 @@ type Props = {
 }
 
 interface ContextInterface {
-    token: string | undefined;
     onLogin: (e: any) => void;
     onLogout: () => void;
     loginValues: {
@@ -37,7 +36,7 @@ const AutoProvider = (props: Props) => {
     const navigate = useNavigate()
     const location = useLocation().state as stateType;
     const cookies = new Cookies()
-    const [token, setToken] = useState<string | undefined>(cookies.get('token'));
+    // const [token, setToken] = useState<string | undefined>(cookies.get('token'));
     const [loginInputs, setLoginInputs] = useState({
         username: "",
         password: "",
@@ -54,8 +53,9 @@ const AutoProvider = (props: Props) => {
             const newToken = response.token
     
             if (newToken) {
-                cookies.set('token', newToken, {path: '/'})
-                setToken(newToken)
+                let today = new Date()
+                let nextWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate()+7);
+                cookies.set('token', newToken, {path: '/', expires: nextWeek})
                 const origin = location?.from?.pathname || '/dashboard';
                 navigate(origin);
             } else {
@@ -67,12 +67,11 @@ const AutoProvider = (props: Props) => {
     };
 
     const handleLogout = () => {
-        setToken(undefined);
         cookies.remove('token')
+        navigate('/login');
     };
 
     const value = {
-        token,
         onLogin: handleLogin,
         onLogout: handleLogout,
         loginValues: loginInputs,

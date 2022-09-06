@@ -74,17 +74,18 @@ export const initDb = async () => {
             horse_id INTEGER,
             CONSTRAINT fk_horse FOREIGN KEY(horse_id)
             REFERENCES horses(horse_id)
-            ON DELETE SET NULL,
+            ON DELETE CASCADE,
             date TEXT,
             lesson_time TEXT,
             instructor_id INTEGER,
             CONSTRAINT fk_instructor FOREIGN KEY(instructor_id)
             REFERENCES instructors(instructor_id)
-            ON DELETE SET NULL,
+            ON DELETE CASCADE,
             student_id INTEGER,
             CONSTRAINT fk_student FOREIGN KEY(student_id)
             REFERENCES students(student_id)
-            ON DELETE SET NULL
+            ON DELETE CASCADE,
+            UNIQUE (horse_id, date, lesson_time, instructor_id, student_id)
         );`
     );
 

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useAuth } from '../../components/AuthProvider';
 import UserService from '../../services/userService';
 
 
@@ -11,7 +10,7 @@ import UserService from '../../services/userService';
 
 const Dashboard = () => {
   const [personalInfo, setPersonalInfo] = useState({
-    name: '',
+    instructor_name: '',
     email: '',
     phone_number: '',
     address: '',
@@ -25,17 +24,13 @@ const Dashboard = () => {
     getData()
   }, [])
 
-  const appContext = useAuth();
-  if (!appContext) return null
-  const { token } = appContext
-
   return (
     <>
       <h1>Dashboard (Protected)</h1>
 
       <div className="content">
         <h2>Personal Info</h2>
-        <h3>{personalInfo.name}</h3>
+        <h3>{personalInfo.instructor_name}</h3>
         <h3>{personalInfo.email}</h3>
         <h3>{personalInfo.phone_number}</h3>
         <h3>{personalInfo.address}</h3>
