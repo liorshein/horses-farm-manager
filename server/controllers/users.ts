@@ -80,8 +80,6 @@ export const getLessons: RequestHandler = async (req: any, res) => {
         InstructorId,
     ])).rows;
     
-    console.log(result);
-
     res.send({ result });
 }
 

@@ -3,6 +3,10 @@ import AddLesson from '../../components/AddLesson';
 import { useAuth } from '../../components/AuthProvider';
 import UserService from '../../services/userService';
 
+// TODO (1): Decide what to show on lessons page (All lessons per date)
+// TODO (2): Create this features on server and client sides
+// TODO (3): Style page
+
 type Lesson = {
   lesson_id: number
   horse_name: string
@@ -20,10 +24,7 @@ const Lessons = () => {
       setLessons(lessonsData)
     }
     getData()
-  }, [])
-
-  console.log(lessons);
-  
+  }, [])  
 
   const appContext = useAuth();
   if (!appContext) return null

@@ -2,6 +2,13 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '../../components/AuthProvider';
 import UserService from '../../services/userService';
 
+
+// TODO (1): Decide what to show on dashboard page (number of lessons today, number of lessons monthly, salary...)
+// TODO (2): Create this features on server and client sides
+// TODO (3): Style page
+
+
+
 const Dashboard = () => {
   const [personalInfo, setPersonalInfo] = useState({
     name: '',
@@ -25,8 +32,6 @@ const Dashboard = () => {
   return (
     <>
       <h1>Dashboard (Protected)</h1>
-
-      <div>Authenticated as "{token}"</div>
 
       <div className="content">
         <h2>Personal Info</h2>

@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react'
 import UserService from '../../services/userService'
 
+// TODO (1): Decide what to show on horses page (Healthy horses that can work, nonassignable horses...)
+// TODO (2): Create this features on server and client sides
+// TODO (3): Style page
+
 type Props = {}
 
 type Horse = {
