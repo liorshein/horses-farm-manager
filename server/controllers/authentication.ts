@@ -7,7 +7,7 @@ export const signUp: RequestHandler = async (req, res) => {
     bcrypt.genSalt().then(async salt => {
         const hash = await bcrypt.hash(req.body.password, salt)
         const queryResult = await client.query(
-            `INSERT INTO instructors(name, username, email, password, phone_number, address) VALUES ($1, $2, $3, $4, $5, $6) RETURNING instructor_id`, [
+            `INSERT INTO instructors(instructor_name, username, email, password, phone_number, address) VALUES ($1, $2, $3, $4, $5, $6) RETURNING instructor_id`, [
             req.body.name,
             req.body.username,
             req.body.email,

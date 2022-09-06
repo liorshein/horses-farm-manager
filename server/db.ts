@@ -20,7 +20,7 @@ export const initDb = async () => {
     await client.query(
         `CREATE TABLE IF NOT EXISTS instructors(
             instructor_id SERIAL PRIMARY KEY,
-            name TEXT NOT NULL,
+            instructor_name TEXT NOT NULL,
             username TEXT NOT NULL,
             email TEXT NOT NULL,
             password TEXT NOT NULL,
@@ -33,18 +33,18 @@ export const initDb = async () => {
     await client.query(
         `CREATE TABLE IF NOT EXISTS horses(
             horse_id SERIAL PRIMARY KEY,
-            name TEXT NOT NULL,
+            horse_name TEXT NOT NULL,
             age INTEGER NOT NULL,
             breed TEXT NOT NULL,
             assignable BOOLEAN NOT NULL,
-            UNIQUE (name, age)
+            UNIQUE (horse_name, age)
         );`
     );
 
     await client.query(
         `CREATE TABLE IF NOT EXISTS students(
             student_id SERIAL PRIMARY KEY,
-            name TEXT NOT NULL,
+            student_name TEXT NOT NULL,
             age INTEGER NOT NULL,
             weight INTEGER NOT NULL,
             background_info TEXT NOT NULL,
@@ -52,7 +52,7 @@ export const initDb = async () => {
             CONSTRAINT fk_instructor FOREIGN KEY(instructor_id)
             REFERENCES instructors(instructor_id)
             ON DELETE SET NULL,
-            UNIQUE (name, background_info)
+            UNIQUE (student_name, background_info)
         );`
     );
 
@@ -70,6 +70,7 @@ export const initDb = async () => {
 
     await client.query(
         `CREATE TABLE IF NOT EXISTS lessons(
+            lesson_id SERIAL PRIMARY KEY,
             horse_id INTEGER,
             CONSTRAINT fk_horse FOREIGN KEY(horse_id)
             REFERENCES horses(horse_id)

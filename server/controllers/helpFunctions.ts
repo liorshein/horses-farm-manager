@@ -1,4 +1,4 @@
-const work_hours = [
+const workHours = [
     "08:00-08:45",
     "08:45-09:30",
     "09:30-10:15",
@@ -16,5 +16,5 @@ const work_hours = [
 ];
 
 export const filterHours = (result: string[]) => {
-    return work_hours.filter((hour: string) => !result.includes(hour))
+    return workHours.filter((hour: string) => !result.includes(hour))
 }

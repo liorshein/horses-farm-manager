@@ -1,10 +1,21 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import UserService from '../../services/userService'
 
 type Props = {}
 
+type Student = {
+  student_id: number
+  name: string
+  age: string
+  weight: string
+  background_info: string
+}
+
 const Students = (props: Props) => {
-  const [inputs, setInputs] = useState({
+  const [studentsInfo, setStudentsInfo] = useState<Student[]>([]);
+
+  const [inputs, setInputs] = useState<Student>({
+    student_id: 0,
     name: '',
     age: '',
     weight: '',
@@ -14,6 +25,14 @@ const Students = (props: Props) => {
   const handleChange = (event: { target: { name: string; value: string } }) => {
     setInputs({ ...inputs, [event.target.name]: event.target.value })
   }
+
+  useEffect(() => {
+    const getData = async () => {
+      const studentsData = await UserService.getUserStudentsInfo()
+      setStudentsInfo(studentsData)
+    }
+    getData()
+  }, [])
 
   const handleClick = () => {
     UserService.addStudent(inputs.name, inputs.age, inputs.weight, inputs.background_info)
@@ -42,6 +61,13 @@ const Students = (props: Props) => {
         </div>
         <button onClick={handleClick}>Add Student</button>
       </form>
+
+      <div className="content">
+        <h1>Students:</h1>
+        {studentsInfo.map((student: Student) => {
+          return <div key={student.student_id}>name: {student.name}, age: {student.age}, weight: {student.weight}, background: {student.background_info}</div>
+        })}
+      </div>
     </>
   );
 }
