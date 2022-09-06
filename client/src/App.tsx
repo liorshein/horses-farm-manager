@@ -7,6 +7,7 @@ import AuthProvider from './components/AuthProvider'
 import ProtectedRoute from './components/ProtectedRoute'
 import Students from './pages/Students/Students'
 import Horses from './pages/Horses/Horses'
+import Lessons from './pages/Lessons/Lessons'
 
 type Props = {}
 
@@ -36,6 +37,12 @@ const App = (props: Props) => {
                         <ProtectedRoute>
                             <Navigation />
                             <Horses />
+                        </ProtectedRoute>
+                    } />
+                    <Route path="lessons" element={
+                        <ProtectedRoute>
+                            <Navigation />
+                            <Lessons />
                         </ProtectedRoute>
                     } />
                     <Route path="*" element={<NoMatch />} />

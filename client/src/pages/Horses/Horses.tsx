@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import UserService from '../../services/userService'
 
 type Props = {}
 
 type Horse = {
+  horse_id: number
   name: string
   age: string
   breed: string
@@ -11,7 +12,10 @@ type Horse = {
 }
 
 const Horses = (props: Props) => {
+  const [horsesInfo, setHorsesInfo] = useState<Horse[]>([]);
+
   const [inputs, setInputs] = useState<Horse>({
+    horse_id: 0,
     name: '',
     age: '',
     breed: '',
@@ -22,14 +26,25 @@ const Horses = (props: Props) => {
     setInputs({ ...inputs, [event.target.name]: event.target.value })
   }
 
-  const handleClick = async (e: { preventDefault: () => void }) => {
+  useEffect(() => {
+    const getData = async () => {
+      const horsesData = await UserService.getHorsesInfo()
+      setHorsesInfo(horsesData)
+    }
+    getData()
+  }, [])
+
+  const handleClick = async () => {
     if (inputs.assignable === "True") {
       inputs.assignable = true
     } else {
       inputs.assignable = false
     }
     UserService.addHorse(inputs.name, Number(inputs.age), inputs.breed, inputs.assignable)
-  }  
+  }
+
+  console.log(horsesInfo);
+  
 
   return (
     <>
@@ -57,6 +72,13 @@ const Horses = (props: Props) => {
         </div>
         <button onClick={handleClick}>Add Horse</button>
       </form>
+
+      <div className="content">
+        <h1>Horses:</h1>
+        {horsesInfo.map((horse: Horse) => {
+          return <div key={horse.horse_id}>name: {horse.name}, age: {horse.age}, breed: {horse.breed}, assignable: {horse.assignable.toString()}</div>
+        })}
+      </div>
     </>
   );
 }

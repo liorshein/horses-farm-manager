@@ -5,33 +5,36 @@ import UserService from '../services/userService'
 
 type Props = {
     setAvailableHours: (a: string[]) => void
+    setSelectedHorse: (a: string) => void
+    selectedHorse: string
+    day: Date
+    setDay: (a: Date) => void
 }
 
 type Horse = {
     horse_id: number
-    name: string
+    horse_name: string
     age: number
     breed: string
     assignable: boolean
 }
 
 const SearchTime = (props: Props) => {
-    const [day, setDay] = useState(new Date())
     const [horseInfo, setHorseInfo] = useState<Horse[]>([])
-    const [selectedHorseId, setSelectedHorseId] = useState('')
 
     useEffect(() => {
         const getData = async () => {
-            const userData = await UserService.getUserBoard()
-            setHorseInfo(userData.horsesInfo)
+            const horsesData = await UserService.getHorsesInfo()
+            setHorseInfo(horsesData)
         }
         getData()
     }, [])
 
-    const handleClick = async () => {        
-        if (selectedHorseId && day !== undefined && selectedHorseId !== "Pick Horse"){
-            let dateFormat = day.toISOString().split("T")[0] + " 00:00:00+00"            
-            const availableHours = await (await UserService.getLessons(selectedHorseId, dateFormat)).data.filteredResults
+    const handleClick = async (e: { preventDefault: () => void }) => {   
+        e.preventDefault()     
+        if (props.selectedHorse && props.day !== undefined && props.selectedHorse !== "Pick Horse"){
+            let dateFormat = props.day.toISOString().split("T")[0];            
+            const availableHours = await (await UserService.getAvailableHours(props.selectedHorse, dateFormat)).data.filteredResults
             props.setAvailableHours(availableHours);
         } else {
             alert("Please select horse and date!")
@@ -42,16 +45,16 @@ const SearchTime = (props: Props) => {
         <>
             <DatePicker
                 dateFormat="d/M/yyyy"
-                selected={day}
-                onChange={(date: Date) => setDay(date)}
+                selected={props.day}
+                onChange={(date: Date) => props.setDay(date)}
                 filterDate={isSaturday}
             />
 
             <div className="content">
-                <select value={selectedHorseId} onChange={(e) => setSelectedHorseId(e.target.value)}>
+                <select value={props.selectedHorse} onChange={(e) => props.setSelectedHorse(e.target.value)}>
                     <option>Pick Horse</option>
                     {horseInfo.map((horse: Horse) => {
-                        return <option key={horse.horse_id} value={horse.horse_id}>{horse.name}</option>
+                        return <option key={horse.horse_id} value={horse.horse_id}>{horse.horse_name}</option>
                     }
                     )}</select>
             </div>

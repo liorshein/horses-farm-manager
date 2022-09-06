@@ -4,6 +4,8 @@ import Cookies from 'universal-cookie';
 import jwt from 'jsonwebtoken'
 import { filterHours } from './helpFunctions'
 
+//! Validation middleware
+
 export const authenticateToken: RequestHandler = (req: any, res, next) => {
     const token = new Cookies(req.headers.cookie).get('token');
     if (token == null) return res.sendStatus(401)
@@ -15,11 +17,15 @@ export const authenticateToken: RequestHandler = (req: any, res, next) => {
     })
 }
 
+//! User related requests (students, lessons)
+
 export const getUserData: RequestHandler = async (req: any, res) => {
     const InstructorId = (req.user)._id
     const result = (await client.query(`SELECT * FROM instructors WHERE instructor_id = $1`, [InstructorId])).rows[0];
     res.send({ result });
 }
+
+// Students related requests
 
 export const getStudentsData: RequestHandler = async (req: any, res) => {
     const InstructorId = (req.user)._id
@@ -27,61 +33,11 @@ export const getStudentsData: RequestHandler = async (req: any, res) => {
     res.send({ result });
 }
 
-export const getHorsesData: RequestHandler = async (req, res) => {
-    const result = (await client.query('SELECT * FROM horses')).rows
-    res.send({ result });
-}
-
-export const addLesson: RequestHandler = async (req: any, res) => {
-    const InstructorId = (req.user)._id
-
-    const result = await client.query(
-        `INSERT INTO lessons(range, instructor_id, student_id, horse_id) VALUES ($1, $2, $3, $4)`, [
-        req.body.range,
-        InstructorId,
-        req.body.student_id,
-        req.body.horse_id,
-    ]);
-
-    res.send({ result });
-}
-
-export const getLessons: RequestHandler = async (req: any, res) => {
-    const InstructorId = (req.user)._id
-    const horseId = req.query.horse_id
-    const date = req.query.date
-
-    const result = (await client.query(
-        `SELECT * FROM lessons WHERE instructor_id=$1 AND horse_id=$2 AND date=$3`, [
-        InstructorId,
-        horseId,
-        date
-    ])).rows;
-
-    const filteredResults = filterHours(result)
-
-    res.send({ filteredResults });
-}
-
-export const getHorsesHours: RequestHandler = async (req, res) => {
-    const horseId = req.query.horse_id
-    const date = req.query.date
-    const result = (await client.query(`SELECT * FROM horses_lessons WHERE horse_id=$1 AND date=$2`, [horseId, date]))
-    res.send({ result });
-}
-
-export const getInstructorHours: RequestHandler = async (req: any, res) => {
-    const InstructorId = (req.user)._id
-    const date = req.query.date
-    const result = (await client.query(`SELECT * FROM instructor_lessons WHERE instructor_id=$1 AND date=$2`, [InstructorId, date]))
-    res.send({ result });
-}
-
 export const addStudent: RequestHandler = async (req: any, res) => {
     const InstructorId = (req.user)._id
 
     const result = await client.query(
-        `INSERT INTO students(name, age, weight, background_info, instructor_id) VALUES ($1, $2, $3, $4, $5)`, [
+        `INSERT INTO students(student_name, age, weight, background_info, instructor_id) VALUES ($1, $2, $3, $4, $5)`, [
         req.body.name,
         req.body.age,
         req.body.weight,
@@ -92,9 +48,68 @@ export const addStudent: RequestHandler = async (req: any, res) => {
     res.send({ result });
 }
 
+// Lessons related requests
+
+export const getAvailableHours: RequestHandler = async (req: any, res) => {
+    const InstructorId = (req.user)._id
+    const horseId = req.query.horse_id
+    const date = req.query.date
+
+    const result = (await client.query(
+        `SELECT lesson_time FROM lessons WHERE instructor_id=$1 AND horse_id=$2 AND date=$3`, [
+        InstructorId,
+        horseId,
+        date
+    ])).rows;
+
+    const assignedHours = result.map(obj => obj.lesson_time)
+    const filteredResults = filterHours(assignedHours)    
+
+    res.send({ filteredResults });
+}
+
+export const getLessons: RequestHandler = async (req: any, res) => {
+    const InstructorId = (req.user)._id
+
+    const result = (await client.query(
+        `SELECT *
+         FROM lessons
+         JOIN horses ON horses.horse_id = lessons.horse_id
+         JOIN students ON students.student_id = lessons.student_id
+         WHERE lessons.instructor_id=$1`, [
+        InstructorId,
+    ])).rows;
+    
+    console.log(result);
+
+    res.send({ result });
+}
+
+export const addLesson: RequestHandler = async (req: any, res) => {
+    const InstructorId = (req.user)._id
+
+    const result = await client.query(
+        `INSERT INTO lessons(horse_id, date, lesson_time, instructor_id, student_id) VALUES ($1, $2, $3, $4, $5)`, [
+        req.body.horse_id,
+        req.body.date,
+        req.body.lesson_time,
+        InstructorId,
+        req.body.student_id,
+    ]);
+
+    res.send({ result });
+}
+
+//! Horses related requests
+
+export const getHorsesData: RequestHandler = async (req, res) => {
+    const result = (await client.query('SELECT * FROM horses')).rows
+    res.send({ result });
+}
+
 export const addHorse: RequestHandler = async (req: any, res) => {
     const result1 = await client.query(
-        `INSERT INTO horses(name, age, breed, assignable) VALUES ($1, $2, $3, $4) RETURNING horse_id`, [
+        `INSERT INTO horses(horse_name, age, breed, assignable) VALUES ($1, $2, $3, $4)`, [
         req.body.name,
         req.body.age,
         req.body.breed,
