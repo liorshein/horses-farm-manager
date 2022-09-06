@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 import { useAuth } from './AuthProvider';
 
 type Props = {
@@ -7,7 +8,8 @@ type Props = {
 const Navigation = (props: Props) => {
   const appContext = useAuth();
   if (!appContext) return null
-  const { token, onLogout } = appContext
+  const { onLogout } = appContext
+  const token = new Cookies().get('token');
 
   return (
     <nav>

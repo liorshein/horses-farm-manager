@@ -56,8 +56,7 @@ export const getAvailableHours: RequestHandler = async (req: any, res) => {
     const date = req.query.date
 
     const result = (await client.query(
-        `SELECT lesson_time FROM lessons WHERE instructor_id=$1 AND horse_id=$2 AND date=$3`, [
-        InstructorId,
+        `SELECT lesson_time FROM lessons WHERE horse_id=$1 AND date=$2`, [
         horseId,
         date
     ])).rows;

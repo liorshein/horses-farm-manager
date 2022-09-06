@@ -1,5 +1,5 @@
 import { getDay } from 'date-fns'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
 import UserService from '../services/userService'
 

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import AddLesson from '../../components/AddLesson';
-import { useAuth } from '../../components/AuthProvider';
 import UserService from '../../services/userService';
 
 // TODO (1): Decide what to show on lessons page (All lessons per date)
@@ -26,15 +25,9 @@ const Lessons = () => {
     getData()
   }, [])  
 
-  const appContext = useAuth();
-  if (!appContext) return null
-  const { token } = appContext
-
   return (
     <>
       <h1>Lessons (Protected)</h1>
-
-      <div>Authenticated as "{token}"</div>
 
       <AddLesson />
 

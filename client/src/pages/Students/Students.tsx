@@ -9,7 +9,7 @@ type Props = {}
 
 type Student = {
   student_id: number
-  name: string
+  student_name: string
   age: string
   weight: string
   background_info: string
@@ -20,13 +20,13 @@ const Students = (props: Props) => {
 
   const [inputs, setInputs] = useState<Student>({
     student_id: 0,
-    name: '',
+    student_name: '',
     age: '',
     weight: '',
     background_info: '',
   })
 
-  const handleChange = (event: { target: { name: string; value: string } }) => {
+  const handleChange = (event: { target: { name: string; value: string } }) => {    
     setInputs({ ...inputs, [event.target.name]: event.target.value })
   }
 
@@ -39,7 +39,7 @@ const Students = (props: Props) => {
   }, [])
 
   const handleClick = () => {
-    UserService.addStudent(inputs.name, inputs.age, inputs.weight, inputs.background_info)
+    UserService.addStudent(inputs.student_name, inputs.age, inputs.weight, inputs.background_info)
   }
 
   return (
@@ -49,7 +49,7 @@ const Students = (props: Props) => {
       <form>
         <div className="form-group">
           <label>Name</label>
-          <input type="text" name="name" id="name" value={inputs.name} onChange={handleChange}/>
+          <input type="text" name="student_name" id="name" value={inputs.student_name} onChange={handleChange}/>
         </div>
         <div className="form-group">
           <label>Age</label>
@@ -69,7 +69,7 @@ const Students = (props: Props) => {
       <div className="content">
         <h1>Students:</h1>
         {studentsInfo.map((student: Student) => {
-          return <div key={student.student_id}>name: {student.name}, age: {student.age}, weight: {student.weight}, background: {student.background_info}</div>
+          return <div key={student.student_id}>name: {student.student_name}, age: {student.age}, weight: {student.weight}, background: {student.background_info}</div>
         })}
       </div>
     </>
