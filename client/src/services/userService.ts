@@ -55,8 +55,9 @@ const getHorsesInfo = async () => {
     return (await axios.get(API_URL + "horses")).data.result
 }
 
-const getUserLessons = async () => {
-    return (await axios.get(API_URL + "lessons")).data.result
+const getUserLessons = async (date: string) => {    
+    let params = new URLSearchParams({ date: date })
+    return (await axios.get(API_URL + `lessons?${params}`)).data.result
 }
 
 const UserService = {

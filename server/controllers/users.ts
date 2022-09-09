@@ -56,29 +56,31 @@ export const getAvailableHours: RequestHandler = async (req: any, res) => {
     const date = req.query.date
 
     const result = (await client.query(
-        `SELECT lesson_time FROM lessons WHERE horse_id=$1 AND date=$2`, [
+        `SELECT lesson_time FROM lessons WHERE horse_id=$1 OR instructor_id=$2 AND date=$3`, [
         horseId,
-        date
+        InstructorId,
+        date,
     ])).rows;
 
     const assignedHours = result.map(obj => obj.lesson_time)
-    const filteredResults = filterHours(assignedHours)    
+    const filteredResults = filterHours(assignedHours)
 
     res.send({ filteredResults });
 }
 
 export const getLessons: RequestHandler = async (req: any, res) => {
     const InstructorId = (req.user)._id
+    const date = req.query.date
 
     const result = (await client.query(
         `SELECT *
          FROM lessons
          JOIN horses ON horses.horse_id = lessons.horse_id
          JOIN students ON students.student_id = lessons.student_id
-         WHERE lessons.instructor_id=$1`, [
-        InstructorId,
-    ])).rows;
-    
+         WHERE lessons.instructor_id=$1 AND lessons.date=$2`, [InstructorId, date])).rows;
+
+    result.sort((a, b) => a.lesson_time.localeCompare(b.lesson_time));
+
     res.send({ result });
 }
 
