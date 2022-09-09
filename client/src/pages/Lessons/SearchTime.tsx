@@ -1,7 +1,8 @@
 import { getDay } from 'date-fns'
 import { useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
-import UserService from '../services/userService'
+import UserService from '../../services/userService'
+import styles from './lessons.module.scss'
 
 type Props = {
     setAvailableHours: (a: string[]) => void
@@ -42,15 +43,14 @@ const SearchTime = (props: Props) => {
     }
 
     return (
-        <>
+        <div className={styles.check_time}>
             <DatePicker
                 dateFormat="d/M/yyyy"
                 selected={props.day}
                 onChange={(date: Date) => props.setDay(date)}
                 filterDate={isSaturday}
             />
-
-            <div className="content">
+            <div>
                 <select value={props.selectedHorse} onChange={(e) => props.setSelectedHorse(e.target.value)}>
                     <option>Pick Horse</option>
                     {horseInfo.map((horse: Horse) => {
@@ -58,9 +58,8 @@ const SearchTime = (props: Props) => {
                     }
                     )}</select>
             </div>
-
             <button onClick={handleClick}>Check Available Hours</button>
-        </>
+        </div>
     )
 }
 

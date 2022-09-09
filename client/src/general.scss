@@ -1,0 +1,18 @@
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body,
+html {
+    background-color: #d4d4d4;
+    height: 100vh;
+    width: 100vw;
+}
+
+.active {
+    font-weight: bold;
+}

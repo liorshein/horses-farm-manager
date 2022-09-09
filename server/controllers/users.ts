@@ -37,15 +37,28 @@ export const addStudent: RequestHandler = async (req: any, res) => {
     const InstructorId = (req.user)._id
 
     const result = await client.query(
-        `INSERT INTO students(student_name, age, weight, background_info, instructor_id) VALUES ($1, $2, $3, $4, $5)`, [
+        `INSERT INTO students(student_name, id, date_of_birth, age, weight, height, hmo, address, framework, working_on, instructor_id)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`, [
         req.body.name,
+        req.body.id,
+        req.body.date_of_birth,
         req.body.age,
         req.body.weight,
-        req.body.background_info,
+        req.body.height,
+        req.body.hmo,
+        req.body.address,
+        req.body.framework,
+        req.body.working_on,
         InstructorId,
     ]);
 
     res.send({ result });
+}
+
+export const deleteStudent: RequestHandler = async (req: any, res) => {
+    const studentId = req.query.student_id
+    await client.query(`DELETE FROM students WHERE student_id=$1`, [studentId]);
+    res.send({ success: true });
 }
 
 // Lessons related requests
@@ -99,6 +112,12 @@ export const addLesson: RequestHandler = async (req: any, res) => {
     res.send({ result });
 }
 
+export const deleteLesson: RequestHandler = async (req: any, res) => {
+    const lessonId = req.query.lesson_id
+    await client.query(`DELETE FROM lessons WHERE lesson_id=$1`, [lessonId]);
+    res.send({ success: true });
+}
+
 //! Horses related requests
 
 export const getHorsesData: RequestHandler = async (req, res) => {
@@ -115,5 +134,11 @@ export const addHorse: RequestHandler = async (req: any, res) => {
         req.body.assignable,
     ]);
 
+    res.send({ success: true });
+}
+
+export const deleteHorse: RequestHandler = async (req: any, res) => {
+    const horseId = req.query.horse_id
+    await client.query(`DELETE FROM horses WHERE horse_id=$1`, [horseId]);
     res.send({ success: true });
 }
