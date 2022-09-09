@@ -1,8 +1,26 @@
 import axios from "axios";
+import { Student } from "../pages/Students/Students";
 
 axios.defaults.withCredentials = true
 
 const API_URL = "http://localhost:5000/";
+
+//* Delete functions
+
+const deleteStudent = (student_id: string) => {
+    let params = new URLSearchParams({ student_id: student_id })
+    axios.delete(API_URL + `delete-student?${params}`)
+}
+
+const deleteHorse = (horse_id: string) => {
+    let params = new URLSearchParams({ horse_id: horse_id })
+    axios.delete(API_URL + `delete-horse?${params}`)
+}
+
+const deleteLesson = (lesson_id: string) => {
+    let params = new URLSearchParams({ lesson_id: lesson_id })
+    axios.delete(API_URL + `delete-lesson?${params}`)
+}
 
 //* Post functions
 
@@ -17,12 +35,18 @@ const addHorse = async (name: string, age: number, breed: string, assignable: bo
     return result
 };
 
-const addStudent = (name: string, age: string, weight: string, background_info: string) => {
+const addStudent = (inputs: Student) => {
     axios.post(API_URL + "add-student", {
-        name: name,
-        age: age,
-        weight: weight,
-        background_info: background_info
+        name: inputs.student_name,
+        id: inputs.id,
+        date_of_birth: inputs.date_of_birth,
+        age: inputs.age,
+        weight: inputs.weight,
+        height: inputs.height,
+        hmo: inputs.hmo,
+        address: inputs.address,
+        framework: inputs.framework,
+        working_on: inputs.working_on
     });
 };
 
@@ -55,7 +79,7 @@ const getHorsesInfo = async () => {
     return (await axios.get(API_URL + "horses")).data.result
 }
 
-const getUserLessons = async (date: string) => {    
+const getUserLessons = async (date: string) => {
     let params = new URLSearchParams({ date: date })
     return (await axios.get(API_URL + `lessons?${params}`)).data.result
 }
@@ -69,6 +93,9 @@ const UserService = {
     getUserStudentsInfo,
     getHorsesInfo,
     getUserLessons,
+    deleteStudent,
+    deleteHorse,
+    deleteLesson
 }
 
 export default UserService;

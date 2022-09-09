@@ -36,7 +36,6 @@ const AutoProvider = (props: Props) => {
     const navigate = useNavigate()
     const location = useLocation().state as stateType;
     const cookies = new Cookies()
-    // const [token, setToken] = useState<string | undefined>(cookies.get('token'));
     const [loginInputs, setLoginInputs] = useState({
         username: "",
         password: "",
