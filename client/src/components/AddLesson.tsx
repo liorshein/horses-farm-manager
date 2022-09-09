@@ -3,7 +3,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import UserService from '../services/userService';
 import SearchTime from './SearchTime';
 
-type Props = {}
+type Props = {
+    day: Date
+    setDay: (a: Date) => void
+}
 
 type Student = {
     student_id: number
@@ -17,7 +20,6 @@ const AddLesson = (props: Props) => {
     const [availableHours, setAvailableHours] = useState<string[]>([])
     const [selectedHour, setSelectedHour] = useState('')
     const [selectedHorseId, setSelectedHorseId] = useState('')
-    const [day, setDay] = useState(new Date())
 
     useEffect(() => {
         const getData = async () => {
@@ -28,14 +30,14 @@ const AddLesson = (props: Props) => {
     }, [])
 
     const handleClick = () => {
-        let dateFormat = day.toISOString().split("T")[0];
+        let dateFormat = props.day.toISOString().split("T")[0];
         UserService.addLesson(Number(selectedHorseId), dateFormat, selectedHour, Number(selectedStudent))
     }
 
     return (
         <form>
 
-            <SearchTime setAvailableHours={setAvailableHours} selectedHorse={selectedHorseId} setSelectedHorse={setSelectedHorseId} day={day} setDay={setDay}/>
+            <SearchTime setAvailableHours={setAvailableHours} selectedHorse={selectedHorseId} setSelectedHorse={setSelectedHorseId} day={props.day} setDay={props.setDay}/>
 
             <span className="content">
                 <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)}>
