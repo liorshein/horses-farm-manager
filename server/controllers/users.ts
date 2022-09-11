@@ -68,8 +68,11 @@ export const getAvailableHours: RequestHandler = async (req: any, res) => {
     const horseId = req.query.horse_id
     const date = req.query.date
 
+    console.log("horseId", horseId);
+    console.log("date", date);
+
     const result = (await client.query(
-        `SELECT lesson_time FROM lessons WHERE horse_id=$1 OR instructor_id=$2 AND date=$3`, [
+        `SELECT lesson_time FROM lessons WHERE horse_id=$1 AND date=$3 OR instructor_id=$2 AND date=$3`, [
         horseId,
         InstructorId,
         date,
@@ -120,8 +123,13 @@ export const deleteLesson: RequestHandler = async (req: any, res) => {
 
 //! Horses related requests
 
-export const getHorsesData: RequestHandler = async (req, res) => {
+export const getHorsesData: RequestHandler = async (_req, res) => {
     const result = (await client.query('SELECT * FROM horses')).rows
+    res.send({ result });
+}
+
+export const getAvailableHorses: RequestHandler = async (_req, res) => {
+    const result = (await client.query('SELECT * FROM horses WHERE assignable=true')).rows
     res.send({ result });
 }
 

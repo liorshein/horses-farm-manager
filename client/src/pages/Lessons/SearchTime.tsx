@@ -25,7 +25,7 @@ const SearchTime = (props: Props) => {
 
     useEffect(() => {
         const getData = async () => {
-            const horsesData = await UserService.getHorsesInfo()
+            const horsesData = await UserService.getAvailableHorses()
             setHorseInfo(horsesData)
         }
         getData()
@@ -33,7 +33,7 @@ const SearchTime = (props: Props) => {
 
     const handleClick = async (e: { preventDefault: () => void }) => {   
         e.preventDefault()     
-        if (props.selectedHorse && props.day !== undefined && props.selectedHorse !== "Pick Horse"){
+        if (props.selectedHorse && props.day !== undefined && props.selectedHorse !== "Pick Horse"){            
             let dateFormat = props.day.toISOString().split("T")[0];            
             const availableHours = await (await UserService.getAvailableHours(props.selectedHorse, dateFormat)).data.filteredResults
             props.setAvailableHours(availableHours);
@@ -63,7 +63,7 @@ const SearchTime = (props: Props) => {
     )
 }
 
-const isSaturday = (date: Date) => {
+export const isSaturday = (date: Date) => {
     const day = getDay(date)
     return day !== 6;
 }
