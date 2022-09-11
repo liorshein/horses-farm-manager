@@ -3,7 +3,7 @@ import {
     getUserData, addStudent, getStudentsData,
     addLesson, getHorsesData, getAvailableHours,
     authenticateToken, addHorse, getLessons, deleteStudent,
-    deleteHorse, deleteLesson
+    deleteHorse, deleteLesson, getAvailableHorses
 } from '../controllers/users';
 
 const usersRouter = Router();
@@ -11,6 +11,7 @@ const usersRouter = Router();
 usersRouter.get('/user', authenticateToken, getUserData)
 usersRouter.get('/user-students', authenticateToken, getStudentsData)
 usersRouter.get('/horses', authenticateToken, getHorsesData)
+usersRouter.get('/horses-available', authenticateToken, getAvailableHorses)
 usersRouter.get('/lessons-available', authenticateToken, getAvailableHours)
 usersRouter.get('/lessons', authenticateToken, getLessons)
 usersRouter.post('/add-student', authenticateToken, addStudent)

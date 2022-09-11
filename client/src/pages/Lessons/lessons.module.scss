@@ -35,55 +35,42 @@
     background-color: #efefef;
     border-radius: 60px;
 
-    .addBtn {
-        margin-top: 20px;
+    .date_container {
+        display: flex;
+        justify-content: center;
+        width: 95%;
+
+        .arrowBtn {
+            margin: 0 5px 0 5px;
+        }
+
+        .arrow {
+            height: 15px;
+            width: 15px;
+        }
     }
 
-    .student_container {
-        margin-top: 20px;
+    .addBtn {
+        margin-top: 10px;
+    }
+
+    .lesson_container {
+        margin-top: 13px;
         width: 95%;
-        height: 25%;
+        height: 5%;
         box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.25);
         border-radius: 30px;
-        overflow: hidden;
         display: flex;
-        flex-direction: column;
+        align-content: flex-start;
         align-items: center;
         position: relative;
 
-        .svg {
-            position: absolute;
-            right: 10px;
-            top: 10px;
-        }
-
-        .name {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        .wrapper {
-            display: flex;
-            width: 90%;
-            justify-content: space-around;
-
-            .container {
-                margin-top: 10px;
-                font-size: 1.5rem;
-                display: flex;
-                flex-direction: column;
-                width: 30%;
-            }
+        .content {
+            margin-left: 10px;
         }
 
         .deleteBtn {
             margin-top: 30px;
-        }
-
-        .label {
-            font-weight: bold;
-            margin-right: 5px;
         }
     }
 }
@@ -96,7 +83,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 30px;
     position: absolute;
     background-color: #efefef;
     box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.25);
@@ -105,8 +92,6 @@
     width: 30%;
     height: 20%;
 }
-
-
 
 .check_time {
     display: flex;

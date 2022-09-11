@@ -3,10 +3,14 @@ import "react-datepicker/dist/react-datepicker.css";
 import UserService from '../../services/userService';
 import SearchTime from './SearchTime';
 import styles from './lessons.module.scss'
+import { Lesson } from './Lessons';
 
 type Props = {
+    mainDay: Date
+    setMainDay: (a: Date) => void
     day: Date
     setDay: (a: Date) => void
+    setLessons: (value: React.SetStateAction<Lesson[]>) => void
 }
 
 type Student = {
@@ -22,6 +26,7 @@ const AddLesson = (props: Props) => {
     const [selectedHour, setSelectedHour] = useState('')
     const [selectedHorseId, setSelectedHorseId] = useState('')
     const [hidden, setHidden] = useState(true)
+    const [day, setDay] = useState(new Date())
 
     const shiftStateForm = (e: { preventDefault: () => void }) => {
         e.preventDefault()
@@ -40,16 +45,19 @@ const AddLesson = (props: Props) => {
         getData()
     }, [])
 
-    const handleClick = () => {
-        let dateFormat = props.day.toISOString().split("T")[0];
+    const handleClick = async (e: { preventDefault: () => void; }) => {
+        e.preventDefault()
+        let dateFormat = props.mainDay.toISOString().split("T")[0];
         UserService.addLesson(Number(selectedHorseId), dateFormat, selectedHour, Number(selectedStudent))
+        const lessonsData = await UserService.getUserLessons(dateFormat)
+        props.setLessons(lessonsData)
     }
 
     return (
         <>
-            <button className={styles.addBtn} onClick={shiftStateForm}>Add Student</button>
+            <button className={styles.addBtn} onClick={shiftStateForm}>Add Lesson</button>
             <form className={hidden ? styles.hidden : styles.form}>
-                <SearchTime setAvailableHours={setAvailableHours} selectedHorse={selectedHorseId} setSelectedHorse={setSelectedHorseId} day={props.day} setDay={props.setDay} />
+                <SearchTime setAvailableHours={setAvailableHours} selectedHorse={selectedHorseId} setSelectedHorse={setSelectedHorseId} day={props.day} setDay={props.setDay}/>
                 <span className="content">
                     <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)}>
                         <option>Pick Student</option>
