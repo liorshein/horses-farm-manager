@@ -31,10 +31,10 @@ const SearchTime = (props: Props) => {
         getData()
     }, [])
 
-    const handleClick = async (e: { preventDefault: () => void }) => {   
-        e.preventDefault()     
-        if (props.selectedHorse && props.day !== undefined && props.selectedHorse !== "Pick Horse"){            
-            let dateFormat = props.day.toISOString().split("T")[0];            
+    const handleClick = async (e: { preventDefault: () => void }) => {
+        e.preventDefault()
+        if (props.selectedHorse && props.day !== undefined && props.selectedHorse !== "Pick Horse") {
+            let dateFormat = props.day.toISOString().split("T")[0];
             const availableHours = await (await UserService.getAvailableHours(props.selectedHorse, dateFormat)).data.filteredResults
             props.setAvailableHours(availableHours);
         } else {
@@ -43,13 +43,15 @@ const SearchTime = (props: Props) => {
     }
 
     return (
-        <div className={styles.check_time}>
-            <DatePicker
-                dateFormat="d/M/yyyy"
-                selected={props.day}
-                onChange={(date: Date) => props.setDay(date)}
-                filterDate={isSaturday}
-            />
+        <>
+            <div>
+                <DatePicker
+                    dateFormat="d/M/yyyy"
+                    selected={props.day}
+                    onChange={(date: Date) => props.setDay(date)}
+                    filterDate={isSaturday}
+                />
+            </div>
             <div>
                 <select value={props.selectedHorse} onChange={(e) => props.setSelectedHorse(e.target.value)}>
                     <option>Pick Horse</option>
@@ -59,7 +61,7 @@ const SearchTime = (props: Props) => {
                     )}</select>
             </div>
             <button onClick={handleClick}>Check Available Hours</button>
-        </div>
+        </>
     )
 }
 
