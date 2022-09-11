@@ -1,5 +1,4 @@
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
-import Navigation from './components/Navigation/Navigation'
 import Dashboard from './pages/Dashboard/Dashboard'
 import Login from './pages/Login/Login'
 import NoMatch from './pages/NoMatch/NoMatch'
