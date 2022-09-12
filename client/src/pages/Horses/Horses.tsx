@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import Loader from '../../components/Loader/Loader'
 import Navigation from '../../components/Navigation/Navigation'
 import UserService from '../../services/userService'
 import styles from "./horses.module.scss"
@@ -34,6 +35,15 @@ const Horses = (props: Props) => {
     phone_number: '',
     address: '',
   });
+
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, []);
 
   const handleChange = (event: { target: { name: string; value: string } }) => {
     setInputs({ ...inputs, [event.target.name]: event.target.value })
@@ -80,69 +90,71 @@ const Horses = (props: Props) => {
   }
 
   return (
-    <div className={styles.main_container}>
-      <nav className={styles.navbar}>
-        <div className={styles.logo}>
-          <img src={logo.default} alt="logo" />
-        </div>
-        <div className={styles.personal_info_nav}>
-          <h1 className={styles.name}>{personalInfo.instructor_name.split(' ')[0]} <br /> {personalInfo.instructor_name.split(' ')[1]}</h1>
-          <p className={styles.job}>Instructor</p>
-        </div>
-        <div className={styles.links}>
-          <Navigation />
-        </div>
-      </nav>
-      <div className={styles.form_content}>
-        <form className={hidden ? styles.hidden : styles.form}>
-          <h2>Add Horse</h2>
-          <div className="form-group">
-            <label>Name</label>
-            <input type="text" name="horse_name" id="name" value={inputs.horse_name} onChange={handleChange} />
+    <> {loading ? < Loader /> :
+      <div className={styles.main_container}>
+        <nav className={styles.navbar}>
+          <div className={styles.logo}>
+            <img src={logo.default} alt="logo" />
           </div>
-          <div className="form-group">
-            <label>Age</label>
-            <input type="number" name="age" id="age" value={inputs.age} onChange={handleChange} />
+          <div className={styles.personal_info_nav}>
+            <h1 className={styles.name}>{personalInfo.instructor_name.split(' ')[0]} <br /> {personalInfo.instructor_name.split(' ')[1]}</h1>
+            <p className={styles.job}>Instructor</p>
           </div>
-          <div className="form-group">
-            <label>Breed</label>
-            <input type="text" name="breed" id="breed" value={inputs.breed} onChange={handleChange} />
+          <div className={styles.links}>
+            <Navigation />
           </div>
-          <div className="form-group">
-            <label>Assignable?</label>
-            <select name="assignable" id="assignable" value={inputs.assignable as string} onChange={handleChange}>
-              <option>True</option>
-              <option>False</option>
-            </select>
-          </div>
-          <button onClick={addHorse}>Add Horse</button>
-          <button onClick={shiftStateForm}>Return</button>
-        </form>
-        <button className={styles.addBtn} onClick={shiftStateForm}>Add Horse</button>
-        <div className={styles.flexRow}>
-          {horsesInfo.map((horse: Horse) => {
-            return <div key={horse.horse_id} className={styles.horse_container}>
-              <div className={styles.name}>{horse.horse_name}</div>
-              <div className={styles.container}>
-                <div>
-                  <label className={styles.label}>Age:</label>
-                  <span>{horse.age}</span>
-                </div>
-                <div>
-                  <label className={styles.label}>Breed:</label>
-                  <span>{horse.breed}</span>
-                </div>
-                <div>
-                  <label className={styles.label}>Assignable:</label>
-                  <span>{horse.assignable.toString()}</span>
-                </div>
-              </div>
-              <button className={styles.deleteBtn} onClick={() => deleteHorse(horse.horse_id)}>Delete</button>
+        </nav>
+        <div className={styles.form_content}>
+          <form className={hidden ? styles.hidden : styles.form}>
+            <h2>Add Horse</h2>
+            <div className="form-group">
+              <label>Name</label>
+              <input type="text" name="horse_name" id="name" value={inputs.horse_name} onChange={handleChange} />
             </div>
-          })}
+            <div className="form-group">
+              <label>Age</label>
+              <input type="number" name="age" id="age" value={inputs.age} onChange={handleChange} />
+            </div>
+            <div className="form-group">
+              <label>Breed</label>
+              <input type="text" name="breed" id="breed" value={inputs.breed} onChange={handleChange} />
+            </div>
+            <div className="form-group">
+              <label>Assignable?</label>
+              <select name="assignable" id="assignable" value={inputs.assignable as string} onChange={handleChange}>
+                <option>True</option>
+                <option>False</option>
+              </select>
+            </div>
+            <button onClick={addHorse}>Add Horse</button>
+            <button onClick={shiftStateForm}>Return</button>
+          </form>
+          <button className={styles.addBtn} onClick={shiftStateForm}>Add Horse</button>
+          <div className={styles.flexRow}>
+            {horsesInfo.map((horse: Horse) => {
+              return <div key={horse.horse_id} className={styles.horse_container}>
+                <div className={styles.name}>{horse.horse_name}</div>
+                <div className={styles.container}>
+                  <div>
+                    <label className={styles.label}>Age:</label>
+                    <span>{horse.age}</span>
+                  </div>
+                  <div>
+                    <label className={styles.label}>Breed:</label>
+                    <span>{horse.breed}</span>
+                  </div>
+                  <div>
+                    <label className={styles.label}>Assignable:</label>
+                    <span>{horse.assignable.toString()}</span>
+                  </div>
+                </div>
+                <button className={styles.deleteBtn} onClick={() => deleteHorse(horse.horse_id)}>Delete</button>
+              </div>
+            })}
+          </div>
         </div>
-      </div>
-    </div>
+      </div>}
+    </>
   );
 }
 

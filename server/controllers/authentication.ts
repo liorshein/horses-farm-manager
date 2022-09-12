@@ -24,8 +24,7 @@ export const signIn: RequestHandler = async (req, res) => {
     const queryResult = await client.query(
         `SELECT * FROM instructors WHERE username = $1`, [
         req.body.username
-    ]
-    )
+    ])
 
     const hash = queryResult.rows[0].password
     const validPass = await bcrypt.compare(req.body.password, hash)

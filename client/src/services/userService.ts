@@ -5,6 +5,13 @@ axios.defaults.withCredentials = true
 
 const API_URL = "http://localhost:5000/";
 
+//* Put functions
+
+const updateArrived = (lesson_id: string, boolean: string) => {
+    let params = new URLSearchParams({ lesson_id: lesson_id, arrived: boolean})
+    axios.put(API_URL + `update-arrived?${params}`)
+}
+
 //* Delete functions
 
 const deleteStudent = (student_id: string) => {
@@ -65,6 +72,27 @@ const getPersonalInfo = async () => {
     return (await axios.get(API_URL + "user")).data.result
 }
 
+const getFavoriteHouse = async () => {
+    let result = await axios.get(API_URL + `favorite-horse`);
+    return result
+};
+
+const getSalaryPerMonth = async (date: string) => {
+    let params = new URLSearchParams({ year_month_str: date })    
+    let results = await (await axios.get(API_URL + `salary?${params}`)).data.result.rows[0].count
+    return results
+}
+
+const getLessonsPerMonth = async () => {
+    let results = await (await axios.get(API_URL + `lessons-per-month`)).data.result.rows
+    return results
+}
+
+const getMonthOfLessons = async () => {
+    let results = await (await axios.get(API_URL + `lessons-monthly`)).data.result.rows  
+    return results
+}
+
 const getAvailableHours = async (horse_id: string, date: string) => {
     let params = new URLSearchParams({ horse_id: horse_id, date: date })
     let availableHours = await axios.get(API_URL + `lessons-available?${params}`);
@@ -93,14 +121,19 @@ const UserService = {
     addLesson,
     addHorse,
     getPersonalInfo,
+    getFavoriteHouse,
+    getSalaryPerMonth,
+    getMonthOfLessons,
     getAvailableHours,
     getUserStudentsInfo,
     getHorsesInfo,
     getUserLessons,
-    deleteStudent,
     getAvailableHorses,
+    getLessonsPerMonth,
+    deleteStudent,
     deleteHorse,
-    deleteLesson
+    deleteLesson,
+    updateArrived
 }
 
 export default UserService;
