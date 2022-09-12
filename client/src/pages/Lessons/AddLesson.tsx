@@ -26,7 +26,6 @@ const AddLesson = (props: Props) => {
     const [selectedHour, setSelectedHour] = useState('')
     const [selectedHorseId, setSelectedHorseId] = useState('')
     const [hidden, setHidden] = useState(true)
-    const [day, setDay] = useState(new Date())
 
     const shiftStateForm = (e: { preventDefault: () => void }) => {
         e.preventDefault()
@@ -47,37 +46,47 @@ const AddLesson = (props: Props) => {
 
     const handleClick = async (e: { preventDefault: () => void; }) => {
         e.preventDefault()
-        let dateFormat = props.mainDay.toISOString().split("T")[0];
-        UserService.addLesson(Number(selectedHorseId), dateFormat, selectedHour, Number(selectedStudent))
-        const lessonsData = await UserService.getUserLessons(dateFormat)
-        props.setLessons(lessonsData)
+        if (selectedHorseId !== '' && selectedHour !== '' && selectedStudent !== '') {
+            let dateFormat = props.day.toISOString().split("T")[0];
+            UserService.addLesson(Number(selectedHorseId), dateFormat, selectedHour, Number(selectedStudent))
+            if (dateFormat === props.mainDay.toISOString().split("T")[0]) {
+                const lessonsData = await UserService.getUserLessons(dateFormat)
+                props.setLessons(lessonsData)
+            } else {
+                alert(`Lesson Added on ${dateFormat}`)
+            }
+        } else {
+            alert("Please select valid info!")
+        }
     }
 
     return (
         <>
             <button className={styles.addBtn} onClick={shiftStateForm}>Add Lesson</button>
             <form className={hidden ? styles.hidden : styles.form}>
-                <SearchTime setAvailableHours={setAvailableHours} selectedHorse={selectedHorseId} setSelectedHorse={setSelectedHorseId} day={props.day} setDay={props.setDay}/>
-                <span className="content">
-                    <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)}>
-                        <option>Pick Student</option>
-                        {studentInfo.map((student: Student) => {
-                            return <option key={student.student_id} value={student.student_id}>{student.student_name}</option>
-                        }
-                        )}</select>
-                </span>
-
-                <span className="content">
-                    <select value={selectedHour} onChange={(e) => setSelectedHour(e.target.value)}>
-                        <option>Pick Hour</option>
-                        {availableHours.map((hour: string) => {
-                            return <option key={hour} value={hour}>{hour}</option>
-                        }
-                        )}</select>
-                </span>
-
-                <button onClick={handleClick}>add</button>
-                <button onClick={shiftStateForm}>Return</button>
+                <SearchTime setAvailableHours={setAvailableHours} selectedHorse={selectedHorseId} setSelectedHorse={setSelectedHorseId} day={props.day} setDay={props.setDay} />
+                <div className={styles.select_multi}>
+                    <div className={styles.students}>
+                        <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)}>
+                            <option>Pick Student</option>
+                            {studentInfo.map((student: Student) => {
+                                return <option key={student.student_id} value={student.student_id}>{student.student_name}</option>
+                            }
+                            )}</select>
+                    </div>
+                    <div className={styles.hours}>
+                        <select value={selectedHour} onChange={(e) => setSelectedHour(e.target.value)}>
+                            <option>Pick Hour</option>
+                            {availableHours.map((hour: string) => {
+                                return <option key={hour} value={hour}>{hour}</option>
+                            }
+                            )}</select>
+                    </div>
+                </div>
+                <div className={styles.flex}>
+                    <button className={styles.LessonBtns} onClick={handleClick}>add</button>
+                    <button className={styles.LessonBtns} onClick={shiftStateForm}>Return</button>
+                </div>
             </form>
         </>
     )

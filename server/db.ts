@@ -80,7 +80,7 @@ export const initDb = async () => {
             FOREIGN KEY(student_id)
             REFERENCES students(student_id)
             ON DELETE CASCADE,
-            UNIQUE (horse_id, date, lesson_time, instructor_id, student_id)
+            UNIQUE (horse_id, date, lesson_time)
         );`
     );
 

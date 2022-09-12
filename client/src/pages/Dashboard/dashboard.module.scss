@@ -32,37 +32,65 @@
     width: 80vw;
     height: 95vh;
     margin-top: 20px;
-    background-color: #efefef;
+    background-color: #efbda8;
     border-radius: 60px;
 
-    .div1 {
+    .upper {
         margin-top: 40px;
-        width: 70vw;
-        height: 25%;
-        box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.25);
-        border-radius: 30px;
-    }
-
-    .div2 {
-        margin-top: 40px;
-        width: 70vw;
+        width: 75vw;
         height: 25%;
         display: flex;
         justify-content: space-between;
 
         .div3 {
-            width: 34vw;
+            width: 24vw;
             height: 100%;
             box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.25);
             border-radius: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
+            align-items: center;
+
+            .title {
+                margin-top: 20px;
+                font-size: 2rem;
+            }
+
+            .info {
+                margin-top: 15px;
+                font-size: 1.25rem;
+            }
+
+            .select {
+                text-align: center;
+                margin-top: 10px;
+                border-radius: 10px;
+                background-color: #efbda8;
+                box-shadow: 0 0 5px black;
+
+                &:focus-visible {
+                    outline: none;
+                }
+            }
+
+            .salary {
+                margin-top: 20px;
+                font-size: 3rem;
+            }
+
+            .favorite {
+                margin-top: 30px;
+                font-size: 3rem;
+            }
         }
     }
 
-    .div4 {
+    .chart {
         margin-top: 40px;
         margin-bottom: 40px;
-        width: 70vw;
-        height: 50%;
+        width: 75vw;
+        height: 75%;
         box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.25);
         border-radius: 30px;
     }
