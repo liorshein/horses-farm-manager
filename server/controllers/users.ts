@@ -34,7 +34,7 @@ export const getSalaryPerMonth: RequestHandler = async (req: any, res) => {
 
 export const getLessonsPerMonth: RequestHandler = async (req: any, res) => {
     const InstructorId = (req.user)._id
-    const result = await client.query(`SELECT COUNT (*),SUBSTRING(date, 1, 7) FROM lessons WHERE instructor_id=$1 GROUP BY SUBSTRING(date, 1, 7)`, [InstructorId]);
+    const result = await client.query(`SELECT COUNT (*),SUBSTRING(date, 1, 7) FROM lessons WHERE instructor_id=$1 GROUP BY SUBSTRING(date, 1, 7) ORDER BY SUBSTRING(date, 1, 7)`, [InstructorId]);
     res.send({ result });
 }
 
