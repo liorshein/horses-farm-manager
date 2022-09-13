@@ -22,7 +22,7 @@ const Chart = (props: Props) => {
             const countData = data.map((obj: { count: any }) => obj.count)
             setChartData({
                 labels: labelsData,
-                count: countData
+                count: countData,
             })
 
         }
@@ -41,18 +41,43 @@ const Chart = (props: Props) => {
                         {
                             label: "Lessons",
                             data: chartData.count,
-                            backgroundColor: "#e19f7d"
+                            backgroundColor: "#77635A"
                         }
                     ],
                 }}
                 options={{
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: "black",
+                                font: {
+                                    size: 16,
+                                }
+                            }
+                        },
+                        y: {
+                            suggestedMax: 50,
+                            ticks: {
+                                color: "black",
+                                font: {
+                                    size: 16,
+                                }
+                            }
+                        }
+                    },
+                    layout: {
+                        padding: 10
+                    },
                     maintainAspectRatio: false,
                     plugins: {
+                        legend: {
+                            display: false
+                        },
                         title: {
                             display: true,
                             position: 'top',
                             text: "Lessons Per Month",
-                            font: {size: 24},
+                            font: { size: 24 },
                             color: "black"
                         }
                     },

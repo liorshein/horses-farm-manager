@@ -15,7 +15,23 @@
         }
     }
 
-    .signout {
-        max-width: fit-content;
+    .signout_container {
+        margin-right: 20px;
+        margin-bottom: 30px;
+        display: flex;
+        align-items: center;
+        margin-top: 30px;
+
+        .signout {
+            max-width: fit-content;
+            background-color: transparent;
+            border: none;
+            margin-left: 5px;
+            font-size: 0.75rem;
+        }
+
+        .svg {
+            transform: rotate(180deg);
+        }
     }
 }

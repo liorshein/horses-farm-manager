@@ -102,3 +102,45 @@
     width: 20%;
     height: 20%;
 }
+
+.menu_side {
+    display: none;
+    position: fixed;
+    margin-left: 5px;
+    height: 30px;
+    width: 30px;
+}
+
+.menu {
+    display: none;
+    align-self: flex-end;
+    margin-right: 5px;
+    height: 30px;
+    width: 30px;
+}
+
+.menu_hidden {
+    display: none;
+}
+
+@media only screen and (max-width: 1000px) {
+    .menu, .menu_side {
+        display: block;
+    }
+
+    .navbar {
+        position: fixed;
+        width: 200px;
+        height: 100vh;
+        margin-left: 0;
+        background-color: #e19f7d;
+        z-index: 99;
+    }
+
+    .form_content {
+        width: 100vw;
+        height: 100vh;
+        margin-top: 0;
+        border-radius: 0;
+    }
+}

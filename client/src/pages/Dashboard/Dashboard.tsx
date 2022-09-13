@@ -5,10 +5,7 @@ import UserService from '../../services/userService';
 import Chart from './Chart';
 import styles from "./dashboard.module.scss"
 const logo = require("../../assets/icons/logo.svg")
-
-// TODO (1): Decide what to show on dashboard page (number of lessons today, number of lessons monthly, salary...)
-// TODO (2): Create this features on server and client sides
-// TODO (3): Style page
+const menuIcon = require("../../assets/icons/menu.svg").default
 
 const salaryPerHour: number = 75;
 
@@ -30,6 +27,25 @@ const Dashboard = () => {
   const [salary, setSalary] = useState(0)
   const [favoriteHorse, setFavoriteHorse] = useState<any>()
   const [loading, setLoading] = useState(false);
+  const [width, setWidth] = useState(window.innerWidth)
+  const [navDisplay, setNavDisplay] = useState(true)
+
+  useEffect(() => {
+    function handleResize() {
+      setWidth(window.innerWidth);
+    }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [width]);
+
+  useEffect(() => {
+    if (width <= 1000) {
+      setNavDisplay(false)
+    } else {
+      setNavDisplay(true)
+    }
+  },[width]);
+  
 
   useEffect(() => {
     setLoading(true);
@@ -64,11 +80,25 @@ const Dashboard = () => {
     getData()
   }, [salaryMonth])
 
+  const shiftMenuDisplay = () => {
+    if (navDisplay) {
+      setNavDisplay(false)
+    } else {
+      setNavDisplay(true)
+    }
+  }
+  
   return (
     <> {loading ?
       <Loader /> :
       <div className={styles.main_container}>
-        <nav className={styles.navbar}>
+        <div className={styles.menu_side} onClick={shiftMenuDisplay}>
+          <img src={menuIcon} alt="logo" />
+        </div>
+        <nav className={navDisplay ? styles.navbar : styles.menu_hidden}>
+          <div className={styles.menu} onClick={shiftMenuDisplay}>
+            <img src={menuIcon} alt="logo" />
+          </div>
           <div className={styles.logo}>
             <img src={logo.default} alt="logo" />
           </div>
@@ -83,13 +113,13 @@ const Dashboard = () => {
 
         <section className={styles.main_content}>
           <div className={styles.upper}>
-            <div className={styles.div3}>
+            <div className={styles.content}>
               <h2 className={styles.title}>Personal Info</h2>
               <div className={styles.info}>Email: {personalInfo.email}</div>
               <div className={styles.info}>Address: {personalInfo.address}</div>
               <div className={styles.info}>Phone number: {personalInfo.phone_number}</div>
             </div>
-            <div className={styles.div3}>
+            <div className={styles.content}>
               <h2 className={styles.title}>Salary</h2>
               <select className={styles.select} name="months" id="months" value={salaryMonth} onChange={(e) => setSalaryMonth(e.target.value)}>
                 <option value={undefined}>Select year & month</option>
@@ -99,7 +129,7 @@ const Dashboard = () => {
               </select>
               <div className={styles.salary}>{salary !== 0 ? <>{salary * salaryPerHour}&#8362;</> : <></>}</div>
             </div>
-            <div className={styles.div3}>
+            <div className={styles.content}>
               <h2 className={styles.title}>Favorite Horse</h2>
               <h3 className={styles.favorite}>{favoriteHorse ? favoriteHorse.horse_name : ''}</h3>
             </div>

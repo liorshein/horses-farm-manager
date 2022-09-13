@@ -67,7 +67,7 @@
             display: flex;
             width: 90%;
             justify-content: space-around;
-            
+
             .container {
                 margin-top: 10px;
                 font-size: 1.5rem;
@@ -76,7 +76,6 @@
                 width: 30%;
             }
         }
-
 
         .deleteBtn {
             margin-top: 30px;
@@ -105,4 +104,47 @@
     z-index: 100;
     width: 30%;
     height: 30%;
+}
+
+.menu_side {
+    display: none;
+    position: fixed;
+    margin-left: 5px;
+    height: 30px;
+    width: 30px;
+}
+
+.menu {
+    display: none;
+    align-self: flex-end;
+    margin-right: 5px;
+    height: 30px;
+    width: 30px;
+}
+
+.menu_hidden {
+    display: none;
+}
+
+@media only screen and (max-width: 1000px) {
+    .menu,
+    .menu_side {
+        display: block;
+    }
+
+    .navbar {
+        position: fixed;
+        width: 200px;
+        height: 100vh;
+        margin-left: 0;
+        background-color: #e19f7d;
+        z-index: 99;
+    }
+
+    .main_content {
+        width: 100vw;
+        height: 100vh;
+        margin-top: 0;
+        border-radius: 0;
+    }
 }
