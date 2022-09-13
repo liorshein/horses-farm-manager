@@ -13,6 +13,8 @@ const rightArrow = require("../../assets/icons/rightarrow.svg")
 const clalit = require("../../assets/icons/clalit.svg")
 const meuhedet = require("../../assets/icons/meuhedet.svg")
 const macabi = require("../../assets/icons/macabi.svg")
+const menuIcon = require("../../assets/icons/menu.svg").default
+
 
 // TODO (2): Create this features on server and client sides
 // TODO (3): Style page
@@ -40,6 +42,32 @@ const Lessons = () => {
     address: '',
   });
   const [loading, setLoading] = useState(false);
+  const [width, setWidth] = useState(window.innerWidth)
+  const [navDisplay, setNavDisplay] = useState(true)
+
+  useEffect(() => {
+    function handleResize() {
+      setWidth(window.innerWidth);
+    }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [width]);
+
+  useEffect(() => {
+    if (width <= 1000) {
+      setNavDisplay(false)
+    } else {
+      setNavDisplay(true)
+    }
+  }, [width]);
+
+  const shiftMenuDisplay = () => {
+    if (navDisplay) {
+      setNavDisplay(false)
+    } else {
+      setNavDisplay(true)
+    }
+  }
 
   useEffect(() => {
     setLoading(true);
@@ -87,7 +115,13 @@ const Lessons = () => {
   return (
     <> {loading ? <Loader /> :
       <div className={styles.main_container}>
-        <nav className={styles.navbar}>
+        <div className={styles.menu_side} onClick={shiftMenuDisplay}>
+          <img src={menuIcon} alt="logo" />
+        </div>
+        <nav className={navDisplay ? styles.navbar : styles.menu_hidden}>
+          <div className={styles.menu} onClick={shiftMenuDisplay}>
+            <img src={menuIcon} alt="logo" />
+          </div>
           <div className={styles.logo}>
             <img src={logo.default} alt="logo" />
           </div>

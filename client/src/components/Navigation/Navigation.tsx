@@ -6,6 +6,7 @@ const dashIcon = require("../../assets/icons/dashboard.svg").default
 const scheduleIcon = require("../../assets/icons/schedule.svg").default
 const manIcon = require("../../assets/icons/man.svg").default
 const horseIcon = require("../../assets/icons/horse.svg").default
+const signoutIcon = require("../../assets/icons/signout.svg").default
 
 type Props = {
 }
@@ -37,9 +38,12 @@ const Navigation = (props: Props) => {
 
 
       {token && (
-        <button className={styles.signout} type="button" onClick={onLogout}>
-          Sign Out
-        </button>
+        <div className={styles.signout_container}>
+          <img className={styles.svg} src={signoutIcon} alt="signout icon" />
+          <button className={styles.signout} type="button" onClick={onLogout}>
+            Sign Out
+          </button>
+        </div>
       )}
     </nav>
   );
