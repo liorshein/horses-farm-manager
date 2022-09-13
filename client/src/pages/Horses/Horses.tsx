@@ -138,28 +138,30 @@ const Horses = (props: Props) => {
         </nav>
         <div className={styles.form_content}>
           <form className={hidden ? styles.hidden : styles.form}>
-            <h2>Add Horse</h2>
-            <div className="form-group">
+            <h2 className={styles.title}>Add Horse</h2>
+            <div className={styles.form_group}>
               <label>Name</label>
               <input type="text" name="horse_name" id="name" value={inputs.horse_name} onChange={handleChange} />
             </div>
-            <div className="form-group">
+            <div className={styles.form_group}>
               <label>Age</label>
               <input type="number" name="age" id="age" value={inputs.age} onChange={handleChange} />
             </div>
-            <div className="form-group">
+            <div className={styles.form_group}>
               <label>Breed</label>
               <input type="text" name="breed" id="breed" value={inputs.breed} onChange={handleChange} />
             </div>
-            <div className="form-group">
+            <div className={styles.form_select}>
               <label>Assignable?</label>
               <select name="assignable" id="assignable" value={inputs.assignable as string} onChange={handleChange}>
                 <option>True</option>
                 <option>False</option>
               </select>
             </div>
-            <button onClick={addHorse}>Add Horse</button>
-            <button onClick={shiftStateForm}>Return</button>
+            <div className={styles.flex}>
+              <button className={styles.Btns} onClick={addHorse}>Add Horse</button>
+              <button className={styles.Btns} onClick={shiftStateForm}>Return</button>
+            </div>
           </form>
           <button className={styles.addBtn} onClick={shiftStateForm}>Add Horse</button>
           <div className={styles.flexRow}>
@@ -167,15 +169,15 @@ const Horses = (props: Props) => {
               return <div key={horse.horse_id} className={styles.horse_container}>
                 <div className={styles.name}>{horse.horse_name}</div>
                 <div className={styles.container}>
-                  <div>
+                  <div className={styles.info}>
                     <label className={styles.label}>Age:</label>
                     <span>{horse.age}</span>
                   </div>
-                  <div>
+                  <div className={styles.info}>
                     <label className={styles.label}>Breed:</label>
                     <span>{horse.breed}</span>
                   </div>
-                  <div>
+                  <div className={styles.info}>
                     <label className={styles.label}>Assignable:</label>
                     <span>{horse.assignable.toString()}</span>
                   </div>
