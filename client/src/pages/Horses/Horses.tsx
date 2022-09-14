@@ -165,26 +165,28 @@ const Horses = (props: Props) => {
           </form>
           <button className={styles.addBtn} onClick={shiftStateForm}>Add Horse</button>
           <div className={styles.flexRow}>
-            {horsesInfo.map((horse: Horse) => {
-              return <div key={horse.horse_id} className={styles.horse_container}>
-                <div className={styles.name}>{horse.horse_name}</div>
-                <div className={styles.container}>
-                  <div className={styles.info}>
-                    <label className={styles.label}>Age:</label>
-                    <span>{horse.age}</span>
+            <div className={styles.wrapper}>
+              {horsesInfo.map((horse: Horse) => {
+                return <div key={horse.horse_id} className={styles.horse_container}>
+                  <div className={styles.name}>{horse.horse_name}</div>
+                  <div className={styles.container}>
+                    <div className={styles.info}>
+                      <label className={styles.label}>Age:</label>
+                      <span>{horse.age}</span>
+                    </div>
+                    <div className={styles.info}>
+                      <label className={styles.label}>Breed:</label>
+                      <span>{horse.breed}</span>
+                    </div>
+                    <div className={styles.info}>
+                      <label className={styles.label}>Assignable:</label>
+                      <span>{horse.assignable.toString()}</span>
+                    </div>
                   </div>
-                  <div className={styles.info}>
-                    <label className={styles.label}>Breed:</label>
-                    <span>{horse.breed}</span>
-                  </div>
-                  <div className={styles.info}>
-                    <label className={styles.label}>Assignable:</label>
-                    <span>{horse.assignable.toString()}</span>
-                  </div>
+                  <button className={styles.deleteBtn} onClick={() => deleteHorse(horse.horse_id)}>Delete</button>
                 </div>
-                <button className={styles.deleteBtn} onClick={() => deleteHorse(horse.horse_id)}>Delete</button>
-              </div>
-            })}
+              })}
+            </div>
           </div>
         </div>
       </div>}

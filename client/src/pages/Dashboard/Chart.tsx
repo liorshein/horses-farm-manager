@@ -24,13 +24,9 @@ const Chart = (props: Props) => {
                 labels: labelsData,
                 count: countData,
             })
-
         }
         getData()
     }, [])
-
-    console.log(chartData);
-
 
     return (
         <>
