@@ -48,13 +48,19 @@ const SearchTime = (props: Props) => {
                 <DatePicker
                     dateFormat="d/M/yyyy"
                     selected={props.day}
-                    onChange={(date: Date) => props.setDay(date)}
+                    onChange={(date: Date) => {
+                        props.setDay(date);
+                        props.setAvailableHours([]);
+                    }}
                     filterDate={isSaturday}
                 />
             </div>
             <div className={styles.select}>
                 <div>
-                    <select value={props.selectedHorse} onChange={(e) => props.setSelectedHorse(e.target.value)}>
+                    <select value={props.selectedHorse} onChange={(e) => {
+                        props.setSelectedHorse(e.target.value)
+                        props.setAvailableHours([]);
+                    }}>
                         <option>Pick Horse</option>
                         {horseInfo.map((horse: Horse) => {
                             return <option key={horse.horse_id} value={horse.horse_id}>{horse.horse_name}</option>
@@ -64,7 +70,7 @@ const SearchTime = (props: Props) => {
                 </div>
             </div>
             <div className={styles.check}>
-            <button  onClick={handleClick}>Check Available Hours</button>
+                <button onClick={handleClick}>Check Available Hours</button>
             </div>
         </div>
     )

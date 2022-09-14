@@ -153,44 +153,44 @@ const Students = (props: Props) => {
         </nav>
         <div className={styles.main_content}>
           <form className={hidden ? styles.hidden : styles.form}>
-            <h2>Add Student</h2>
-            <div className="form-group">
+            <h2 className={styles.title}>Add Student</h2>
+            <div className={styles.form_group}>
               <label>Name</label>
               <input type="text" name="student_name" id="name" value={inputs.student_name} onChange={handleChange} />
             </div>
-            <div className="form-group">
+            <div className={styles.form_group}>
               <label>ID</label>
               <input type="number" name="id" id="id" value={inputs.id} onChange={handleChange} />
             </div>
-            <div className="form-group">
+            <div className={styles.form_group}>
               <label>Date of birth</label>
               <input type="text" name="date_of_birth" id="date_of_birth" value={inputs.date_of_birth} onChange={handleChange} />
             </div>
-            <div className="form-group">
+            <div className={styles.form_group}>
               <label>Age</label>
               <input type="number" name="age" id="age" value={inputs.age} onChange={handleChange} />
             </div>
-            <div className="form-group">
+            <div className={styles.form_group}>
               <label>Weight</label>
               <input type="number" name="weight" id="weight" value={inputs.weight} onChange={handleChange} />
             </div>
-            <div className="form-group">
+            <div className={styles.form_group}>
               <label>Height</label>
               <input type="number" name="height" id="height" value={inputs.height} onChange={handleChange} />
             </div>
-            <div className="form-group">
+            <div className={styles.form_group}>
               <label>Address</label>
               <input type="text" name="address" id="address" value={inputs.address} onChange={handleChange} />
             </div>
-            <div className="form-group">
+            <div className={styles.form_group}>
               <label>Educational framework</label>
               <input type="text" name="framework" id="framework" value={inputs.framework} onChange={handleChange} />
             </div>
-            <div className="form-group">
+            <div className={styles.form_group}>
               <label>Working on</label>
               <input type="text" name="working_on" id="working_on" value={inputs.working_on} onChange={handleChange} />
             </div>
-            <div className="form-group">
+            <div className={styles.form_select}>
               <label>HMO</label>
               <select name="hmo" id="hmo" value={inputs.hmo} onChange={handleChange}>
                 <option value="">Choose HMO</option>
@@ -199,57 +199,61 @@ const Students = (props: Props) => {
                 <option value="2">Meuhedet</option>
               </select>
             </div>
-            <button onClick={addStudent}>Add Student</button>
-            <button onClick={shiftStateForm}>Return</button>
+            <div className={styles.flex}>
+              <button className={styles.Btns} onClick={addStudent}>Add Student</button>
+              <button className={styles.Btns} onClick={shiftStateForm}>Return</button>
+            </div>
           </form>
           <button className={styles.addBtn} onClick={shiftStateForm}>Add Student</button>
-          {studentsInfo.map((student: Student) => {
-            return <div key={student.student_id} className={styles.student_container}>
-              <div className={styles.name}>{student.student_name}</div>
-              <div className={styles.wrapper}>
-                <div className={styles.container}>
-                  <div>
-                    <label className={styles.label}>ID:</label>
-                    <span>{student.id}</span>
+          <div className={styles.wrapper_container}>
+            {studentsInfo.map((student: Student) => {
+              return <div key={student.student_id} className={styles.student_container}>
+                <div className={styles.name}>{student.student_name}</div>
+                <div className={styles.wrapper}>
+                  <div className={styles.container}>
+                    <div className={styles.content}>
+                      <label className={styles.label}>ID</label>
+                      <div>{student.id}</div>
+                    </div>
+                    <div className={styles.content}>
+                      <label className={styles.label}>Date of birth</label>
+                      <div>{student.date_of_birth}</div>
+                    </div>
+                    <div className={styles.content}>
+                      <label className={styles.label}>Age</label>
+                      <div>{student.age}</div>
+                    </div>
                   </div>
-                  <div>
-                    <label className={styles.label}>Date of birth:</label>
-                    <span>{student.date_of_birth}</span>
+                  <div className={styles.container}>
+                    <div className={styles.content}>
+                      <label className={styles.label}>Weight</label>
+                      <div>{student.weight}</div>
+                    </div>
+                    <div className={styles.content}>
+                      <label className={styles.label}>Height</label>
+                      <div>{student.height}</div>
+                    </div>
+                    <div className={styles.content}>
+                      <label className={styles.label}>Address</label>
+                      <div>{student.address}</div>
+                    </div>
                   </div>
-                  <div>
-                    <label className={styles.label}>Age:</label>
-                    <span>{student.age}</span>
+                  <div className={styles.container}>
+                    <div className={styles.content}>
+                      <label className={styles.label}>Educational framework</label>
+                      <div>{student.framework}</div>
+                    </div>
+                    <div className={styles.content}>
+                      <label className={styles.label}>Working on</label>
+                      <div>{student.working_on}</div>
+                    </div>
                   </div>
                 </div>
-                <div className={styles.container}>
-                  <div>
-                    <label className={styles.label}>Weight:</label>
-                    <span>{student.weight}</span>
-                  </div>
-                  <div>
-                    <label className={styles.label}>Height:</label>
-                    <span>{student.height}</span>
-                  </div>
-                  <div>
-                    <label className={styles.label}>Address:</label>
-                    <span>{student.address}</span>
-                  </div>
-                </div>
-                <div className={styles.container}>
-                  <div>
-                    <label className={styles.label}>Educational framework:</label>
-                    <span>{student.framework}</span>
-                  </div>
-                  <div>
-                    <label className={styles.label}>Working on:</label>
-                    <span>{student.working_on}</span>
-                  </div>
-                </div>
+                <img className={styles.svg} src={hmoNames[student.hmo as number].default} alt={hmoNames[student.hmo as number].toString()} />
+                <button className={styles.deleteBtn} onClick={() => deleteStudent(student.student_id)}>Delete</button>
               </div>
-              <img className={styles.svg} src={hmoNames[student.hmo as number].default} alt={hmoNames[student.hmo as number].toString()} />
-              <button className={styles.deleteBtn} onClick={() => deleteStudent(student.student_id)}>Delete</button>
-            </div>
-          })}
+            })}
+          </div>
         </div>
       </div>}
     </>
