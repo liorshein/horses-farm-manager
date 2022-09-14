@@ -32,58 +32,85 @@
     width: 80vw;
     height: 95vh;
     margin-top: 20px;
-    background-color: #efbda8;
+    background-color: #fff;
     border-radius: 60px;
+    overflow: hidden;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
 
     .addBtn {
         margin-top: 20px;
+        padding: 5px 15px;
+        border-radius: 15px;
+        background-color: #c8b8ab;
+        border-color: transparent;
+        box-shadow: 0px 0px 10px rgba(119, 99, 90, 0.8);
+        margin-bottom: 20px;
     }
 
-    .student_container {
-        margin-top: 20px;
-        width: 95%;
-        height: 25%;
-        box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.25);
-        border-radius: 30px;
-        overflow: hidden;
+    .wrapper_container {
+        width: 100%;
+        overflow: scroll;
         display: flex;
         flex-direction: column;
         align-items: center;
-        position: relative;
 
-        .svg {
-            position: absolute;
-            right: 10px;
-            top: 10px;
+        &::-webkit-scrollbar {
+            display: none;
         }
 
-        .name {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        .wrapper {
+        .student_container {
+            margin: 1.5% 0;
+            width: 65%;
+            box-shadow: 0px 0px 25px rgba(119, 99, 90, 1);
+            border-radius: 30px;
             display: flex;
-            width: 90%;
-            justify-content: space-around;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
 
-            .container {
-                margin-top: 10px;
-                font-size: 1.5rem;
-                display: flex;
-                flex-direction: column;
-                width: 30%;
+            .svg {
+                position: absolute;
+                right: 10px;
+                top: 10px;
             }
-        }
 
-        .deleteBtn {
-            margin-top: 30px;
-        }
+            .name {
+                font-size: 1.5rem;
+                font-weight: bold;
+                margin-top: 10px;
+            }
 
-        .label {
-            font-weight: bold;
-            margin-right: 5px;
+            .wrapper {
+                display: flex;
+                width: 90%;
+                justify-content: space-between;
+
+                .container {
+                    margin: 0 20px;
+                    margin-top: 10px;
+                    font-size: 1.125rem;
+                    display: flex;
+                    flex-direction: column;
+                    width: 33%;
+                    height: 100%;
+
+                    .content {
+                        margin-bottom: 10px;
+                        .label {
+                            font-weight: bold;
+                        }
+                    }
+                }
+            }
+
+            .deleteBtn {
+                margin-top: 10px;
+                margin-bottom: 10px;
+                padding: 5px 10px;
+                background-color: #c8b8ab;
+                border-radius: 10px;
+                border: none;
+            }
         }
     }
 }
@@ -96,14 +123,51 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 15px;
     position: absolute;
-    background-color: #efefef;
-    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.25);
+    background-color: #c8b8ab;
+    box-shadow: 0px 0px 25px rgba(119, 99, 90, 1);
     border-radius: 30px;
     z-index: 100;
-    width: 30%;
-    height: 30%;
+    padding: 0 20px;
+
+    .title {
+        margin: 10px 0;
+    }
+
+    .form_group {
+        margin-bottom: 10px;
+        display: flex;
+        flex-direction: column;
+
+        & > label {
+            margin-bottom: 5px;
+        }
+    }
+
+    .form_select {
+        align-self: start;
+
+        & > label {
+            margin-right: 10px;
+        }
+    }
+
+    .flex {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 20px;
+
+        .Btns {
+            padding: 3px 10px 3px 10px;
+            border-radius: 5px;
+            margin: 10px 5px 0 5px;
+            background-color: rgba(119, 99, 90, 1);
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
 }
 
 .menu_side {
@@ -137,7 +201,7 @@
         width: 200px;
         height: 100vh;
         margin-left: 0;
-        background-color: #e19f7d;
+        background-color: #c6beb9;
         z-index: 99;
     }
 
@@ -146,5 +210,57 @@
         height: 100vh;
         margin-top: 0;
         border-radius: 0;
+
+        .wrapper_container {
+            .student_container {
+                margin-bottom: 20px;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 700px) {
+    .main_content {
+        .wrapper_container {
+            .student_container {
+                .svg {
+                    width: 20px;
+                }
+
+                .name {
+                    font-size: 1.125rem;
+                }
+
+                .wrapper {
+                    .container {
+                        font-size: 0.8rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .main_content {
+        .wrapper_container {
+            .student_container {
+                .svg {
+                    width: 20px;
+                }
+
+                .name {
+                    font-size: 1rem;
+                }
+
+                .wrapper {
+                    flex-direction: column;
+                    .container {
+                        font-size: 0.8rem;
+                        width: 100%;
+                    }
+                }
+            }
+        }
     }
 }

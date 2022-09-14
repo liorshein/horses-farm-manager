@@ -149,61 +149,63 @@ const Lessons = () => {
             </div>
             <AddLesson mainDay={mainDay} setMainDay={setMainDay} day={day} setDay={setDay} setLessons={setLessons} />
           </div>
-          <div className={styles.lesson_container}>
-            <div className={styles.content}>08:00-08:45</div>
-            < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="08:00-08:45" />
-          </div>
-          <div className={styles.lesson_container}>
-            <div className={styles.content}>08:45-09:30</div>
-            < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="08:45-09:30" />
-          </div>
-          <div className={styles.lesson_container}>
-            <div className={styles.content}>09:30-10:15</div>
-            < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="09:30-10:15" />
-          </div>
-          <div className={styles.lesson_container}>
-            <div className={styles.content}>10:15-11:00</div>
-            < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="10:15-11:00" />
-          </div>
-          <div className={styles.lesson_container}>
-            <div className={styles.content}>11:00-11:45</div>
-            < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="11:00-11:45" />
-          </div>
-          <div className={styles.lesson_container}>
-            <div className={styles.content}>11:45-12:30</div>
-            < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="11:45-12:30" />
-          </div>
-          <div className={styles.lesson_container}>
-            <div className={styles.content}>12:30-13:15</div>
-            < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="12:30-13:15" />
-          </div>
-          <div className={styles.lesson_container}>
-            <div className={styles.content}>13:15-14:00</div>
-            < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="13:15-14:00" />
-          </div>
-          <div className={styles.lesson_container}>
-            <div className={styles.content}>14:00-14:45</div>
-            < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="14:00-14:45" />
-          </div>
-          <div className={styles.lesson_container}>
-            <div className={styles.content}>14:45-15:30</div>
-            < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="14:45-15:30" />
-          </div>
-          <div className={styles.lesson_container}>
-            <div className={styles.content}>15:30-16:15</div>
-            < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="15:30-16:15" />
-          </div>
-          <div className={styles.lesson_container}>
-            <div className={styles.content}>16:15-17:00</div>
-            < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="16:15-17:00" />
-          </div>
-          <div className={styles.lesson_container}>
-            <div className={styles.content}>17:00-17:45</div>
-            < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="17:00-17:45" />
-          </div>
-          <div className={styles.lesson_container}>
-            <div className={styles.content}>17:45-18:30</div>
-            < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="17:45-18:30" />
+          <div className={styles.wrapper_container}>
+            <div className={styles.lesson_container}>
+              <div className={styles.content}>08:00-08:45</div>
+              < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="08:00-08:45" />
+            </div>
+            <div className={styles.lesson_container}>
+              <div className={styles.content}>08:45-09:30</div>
+              < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="08:45-09:30" />
+            </div>
+            <div className={styles.lesson_container}>
+              <div className={styles.content}>09:30-10:15</div>
+              < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="09:30-10:15" />
+            </div>
+            <div className={styles.lesson_container}>
+              <div className={styles.content}>10:15-11:00</div>
+              < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="10:15-11:00" />
+            </div>
+            <div className={styles.lesson_container}>
+              <div className={styles.content}>11:00-11:45</div>
+              < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="11:00-11:45" />
+            </div>
+            <div className={styles.lesson_container}>
+              <div className={styles.content}>11:45-12:30</div>
+              < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="11:45-12:30" />
+            </div>
+            <div className={styles.lesson_container}>
+              <div className={styles.content}>12:30-13:15</div>
+              < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="12:30-13:15" />
+            </div>
+            <div className={styles.lesson_container}>
+              <div className={styles.content}>13:15-14:00</div>
+              < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="13:15-14:00" />
+            </div>
+            <div className={styles.lesson_container}>
+              <div className={styles.content}>14:00-14:45</div>
+              < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="14:00-14:45" />
+            </div>
+            <div className={styles.lesson_container}>
+              <div className={styles.content}>14:45-15:30</div>
+              < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="14:45-15:30" />
+            </div>
+            <div className={styles.lesson_container}>
+              <div className={styles.content}>15:30-16:15</div>
+              < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="15:30-16:15" />
+            </div>
+            <div className={styles.lesson_container}>
+              <div className={styles.content}>16:15-17:00</div>
+              < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="16:15-17:00" />
+            </div>
+            <div className={styles.lesson_container}>
+              <div className={styles.content}>17:00-17:45</div>
+              < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="17:00-17:45" />
+            </div>
+            <div className={styles.lesson_container}>
+              <div className={styles.content}>17:45-18:30</div>
+              < LessonComp lessons={lessons} deleteLesson={deleteLesson} hour="17:45-18:30" />
+            </div>
           </div>
         </div>
       </div>}

@@ -64,6 +64,7 @@ const AddLesson = (props: Props) => {
         <>
             <button className={styles.addBtn} onClick={shiftStateForm}>Add Lesson</button>
             <form className={hidden ? styles.hidden : styles.form}>
+                <h2 className={styles.title}>Add Lesson</h2>
                 <SearchTime setAvailableHours={setAvailableHours} selectedHorse={selectedHorseId} setSelectedHorse={setSelectedHorseId} day={props.day} setDay={props.setDay} />
                 <div className={styles.select_multi}>
                     <div className={styles.students}>
@@ -75,7 +76,7 @@ const AddLesson = (props: Props) => {
                             )}</select>
                     </div>
                     <div className={styles.hours}>
-                        <select value={selectedHour} onChange={(e) => setSelectedHour(e.target.value)}>
+                        <select className={styles.hours} value={selectedHour} onChange={(e) => setSelectedHour(e.target.value)}>
                             <option>Pick Hour</option>
                             {availableHours.map((hour: string) => {
                                 return <option key={hour} value={hour}>{hour}</option>
