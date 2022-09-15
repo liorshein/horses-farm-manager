@@ -9,7 +9,7 @@ import path from 'path';
 const app: Express = express();
 app.use(cors({ credentials: true, origin: process.env.PORT }));
 app.use(json());
-// const root: string = path.join(process.cwd(), 'client');
+const root: string = path.join(process.cwd(), 'client');
 
 // app.use(express.static(root))
 app.use('/', authRouter)
@@ -18,9 +18,9 @@ app.use('/', usersRouter)
 initDb()
 
 if (process.env.NODE_ENV === 'production') {
-    app.use(express.static('client'))
+    app.use(express.static(root))
     app.get('*', (_req: any, res: any) => {
-        res.sendFile(path.resolve(__dirname, 'client', 'index.html'))
+        res.sendFile(path.resolve(root))
     })
 }
 
