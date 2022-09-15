@@ -9,7 +9,7 @@ import path from 'path';
 const app: Express = express();
 app.use(cors({ credentials: true, origin: process.env.PORT }));
 app.use(json());
-const root: string = path.join(process.cwd(), '/');
+const root: string = path.join(process.cwd(), 'client');
 
 app.use(express.static(root), authRouter);
 app.use(express.static(root), usersRouter);
