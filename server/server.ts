@@ -9,22 +9,28 @@ import path from 'path';
 const app: Express = express();
 app.use(cors({ credentials: true, origin: process.env.PORT }));
 app.use(json());
-const root: string = path.join(process.cwd(), 'client');
+// const root: string = path.join(process.cwd(), 'client');
 
-// app.use(express.static(root), authRouter);
-// app.use(express.static(root), usersRouter);
-app.use(express.static(root))
+// app.use(express.static(root))
 app.use('/', authRouter)
 app.use('/', usersRouter)
 
 initDb()
 
-app.get('*', (_req, res) => {
-    res.sendFile(path.join(root, 'index.html'));
-});
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static('client'))
+    app.get('/', (_req: any, res: any) => {
+        res.sendFile(path.resolve(__dirname, 'client', 'index.html'))
+    })
+}
+
+// app.get('/', (_req, res) => {
+//     res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
+// });
 
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
     console.log('Hosted: http://localhost:' + PORT);
 });
+
