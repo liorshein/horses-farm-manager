@@ -20,7 +20,7 @@ initDb()
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(root))
     app.get('*', (_req: any, res: any) => {
-        res.sendFile(path.resolve(root))
+        res.sendFile(path.join(root, 'index.html'));
     })
 }
 
