@@ -16,13 +16,13 @@ const Login = (props: Props) => {
       <h1 className={styles.header}>Welcome!</h1>
       <form autoComplete="off">
         <div className={styles.form_group}>
-          <label>Username</label>
-          <input type="text" name="username" id="username" placeholder='Username'
-            value={loginValues.username} onChange={onChange} />
+          <label>Email</label>
+          <input type="text" name="email" id="email" placeholder='Email' autoComplete='email'
+            value={loginValues.email} onChange={onChange} />
         </div>
         <div className={styles.form_group}>
           <label>Password</label>
-          <input type="password" name="password" id="password" placeholder='Password'
+          <input type="password" name="password" id="password" placeholder='Password' autoComplete='current-password'
             value={loginValues.password} onChange={onChange} />
         </div>
         <button className={styles.login_btn} onClick={onLogin}>Login</button>

@@ -44,7 +44,7 @@ const LessonComp = (props: Props) => {
             }
         }
         getData()
-    })    
+    })
 
     const handleChange = (e: { target: { value: SetStateAction<string | undefined>; setAttribute: (arg0: string, arg1: string) => void } }) => {
         if (e.target.value !== "undefined" && e.target.value !== "Arrived?") {
@@ -54,14 +54,12 @@ const LessonComp = (props: Props) => {
             UserService.updateArrived(currentLesson!.lesson_id.toString(), boolean)
         }
     }
-    
+
     return (currentLesson ?
         <>
-            <div className={styles.content}>{currentLesson.student_name}</div>
-            <div className={styles.content}>{currentLesson.horse_name}</div>
-            <div className={styles.content}>
-                <img className={styles.svg} src={hmoNames[currentLesson.hmo as number].default} alt={hmoNames[currentLesson.hmo as number].toString()} />
-            </div>
+            <span className={styles.content}>{currentLesson.student_name}</span>
+            <span className={styles.content}>{currentLesson.horse_name}</span>
+            <img className={styles.svg} src={hmoNames[currentLesson.hmo as number].default} alt={hmoNames[currentLesson.hmo as number].toString()} />
             <select className={styles.arrivedSelect} value={arrived} onChange={handleChange} disabled={status}>
                 <option value={undefined}>Arrived?</option>
                 <option value="True">True</option>

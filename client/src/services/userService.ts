@@ -3,7 +3,9 @@ import { Student } from "../pages/Students/Students";
 
 axios.defaults.withCredentials = true
 
-const API_URL = "http://localhost:5000/";
+const PORT = process.env.PORT
+
+const API_URL = PORT + "/";
 
 //* Put functions
 
