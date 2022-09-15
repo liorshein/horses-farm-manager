@@ -3,7 +3,7 @@ import axios from "axios";
 const PORT = process.env.PORT
 
 const API_URL = PORT + "/";
-
+console.log(API_URL)
 const register = async (fullname: string, email: string, password: string, phone_number: string, address: string) => {
     const result = await axios.post(API_URL + "signup", {
         name: fullname,
