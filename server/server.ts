@@ -11,8 +11,11 @@ app.use(cors({ credentials: true, origin: process.env.PORT }));
 app.use(json());
 const root: string = path.join(process.cwd(), 'client');
 
-app.use(express.static(root), authRouter);
-app.use(express.static(root), usersRouter);
+// app.use(express.static(root), authRouter);
+// app.use(express.static(root), usersRouter);
+app.use(express.static(root))
+app.use('/', authRouter)
+app.use('/', usersRouter)
 
 initDb()
 
