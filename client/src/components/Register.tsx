@@ -11,23 +11,18 @@ type Props = {
 }
 
 type UserSubmitForm = {
-  fullname: string;
-  username: string;
+  name: string;
   email: string;
   password: string;
   confirmPassword: string;
   address: string;
-  phone_number: string
+  mobile: string
 };
 
 const Register = (props: Props) => {
 
   const validationSchema = Yup.object().shape({
-    fullname: Yup.string().required('Fullname is required'),
-    username: Yup.string()
-      .required('Username is required')
-      .min(6, 'Username must be at least 6 characters')
-      .max(20, 'Username must not exceed 20 characters'),
+    name: Yup.string().required('Fullname is required'),
     email: Yup.string()
       .required('Email is required')
       .email('Email is invalid'),
@@ -47,41 +42,33 @@ const Register = (props: Props) => {
   });
 
   const onSubmit = (data: UserSubmitForm) => {
-    AuthService.register(data.fullname, data.username, data.email, data.password, data.phone_number, data.address)
+    AuthService.register(data.name, data.email, data.password, data.mobile, data.address)
     props.switchPage("Login")
   };
 
   return (
     <>
       <h1 className={styles.header}>Register!</h1>
-      <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.form_group}>
           <label>Full Name</label>
           <input
             type="text"
             placeholder='Full Name'
-            {...register('fullname')}
-            className={errors.fullname ? styles.is_invalid : ''}
+            autoComplete='name'
+            {...register('name')}
+            className={errors.name ? styles.is_invalid : ''}
           />
-          <div className={styles.invalid_feedback}>{errors.fullname?.message}</div>
-        </div>
-        <div className={styles.form_group}>
-          <label>Username</label>
-          <input
-            type="text"
-            placeholder='Username'
-            {...register('username')}
-            className={errors.fullname ? styles.is_invalid : ''}
-          />
-          <div className={styles.invalid_feedback}>{errors.username?.message}</div>
+          <div className={styles.invalid_feedback}>{errors.name?.message}</div>
         </div>
         <div className={styles.form_group}>
           <label>Email</label>
           <input
             type="text"
             placeholder='Email'
+            autoComplete='email'
             {...register('email')}
-            className={errors.fullname ? styles.is_invalid : ''}
+            className={errors.email ? styles.is_invalid : ''}
           />
           <div className={styles.invalid_feedback}>{errors.email?.message}</div>
         </div>
@@ -90,8 +77,9 @@ const Register = (props: Props) => {
           <input
             type="password"
             placeholder='Password'
+            autoComplete='new-password'
             {...register('password')}
-            className={errors.fullname ? styles.is_invalid : ''}
+            className={errors.password ? styles.is_invalid : ''}
           />
           <div className={styles.invalid_feedback}>{errors.password?.message}</div>
         </div>
@@ -101,7 +89,7 @@ const Register = (props: Props) => {
             type="password"
             placeholder='Confirm Password'
             {...register('confirmPassword')}
-            className={errors.fullname ? styles.is_invalid : ''}
+            className={errors.confirmPassword ? styles.is_invalid : ''}
           />
           <div className={styles.invalid_feedback}>
             {errors.confirmPassword?.message}
@@ -112,8 +100,9 @@ const Register = (props: Props) => {
           <input
             type="text"
             placeholder='Address'
+            autoComplete='street-address'
             {...register('address')}
-            className={errors.fullname ? styles.is_invalid : ''}
+            className={errors.address ? styles.is_invalid : ''}
           />
           <div className={styles.invalid_feedback}>{errors.address?.message}</div>
         </div>
@@ -122,10 +111,11 @@ const Register = (props: Props) => {
           <input
             type="tel"
             placeholder='Phone Number'
-            {...register('phone_number')}
-            className={errors.fullname ? styles.is_invalid : ''}
+            autoComplete='tel'
+            {...register('mobile')}
+            className={errors.mobile ? styles.is_invalid : ''}
           />
-          <div className={styles.invalid_feedback}>{errors.phone_number?.message}</div>
+          <div className={styles.invalid_feedback}>{errors.mobile?.message}</div>
         </div>
         <button className={styles.signin_btn} type="submit">
           Register

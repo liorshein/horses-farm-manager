@@ -7,9 +7,8 @@ export const signUp: RequestHandler = async (req, res) => {
     bcrypt.genSalt().then(async salt => {
         const hash = await bcrypt.hash(req.body.password, salt)
         await client.query(
-            `INSERT INTO instructors(instructor_name, username, email, password, phone_number, address) VALUES ($1, $2, $3, $4, $5, $6) RETURNING instructor_id`, [
+            `INSERT INTO instructors(instructor_name, email, password, phone_number, address) VALUES ($1, $2, $3, $4, $5) RETURNING instructor_id`, [
             req.body.name,
-            req.body.username,
             req.body.email,
             hash,
             req.body.phone_number,
@@ -22,9 +21,9 @@ export const signUp: RequestHandler = async (req, res) => {
 
 export const signIn: RequestHandler = async (req, res) => {
     const queryResult = await client.query(
-        `SELECT * FROM instructors WHERE username = $1`, [
-        req.body.username
-    ])
+        `SELECT * FROM instructors WHERE email = $1`, [
+        req.body.email
+    ])    
 
     const hash = queryResult.rows[0].password
     const validPass = await bcrypt.compare(req.body.password, hash)

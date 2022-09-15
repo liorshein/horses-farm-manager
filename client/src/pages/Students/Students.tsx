@@ -57,6 +57,7 @@ const Students = (props: Props) => {
   const [loading, setLoading] = useState(false);
   const [width, setWidth] = useState(window.innerWidth)
   const [navDisplay, setNavDisplay] = useState(true)
+  const [searchTerm, setSearchTerm] = useState('')
 
   useEffect(() => {
     function handleResize() {
@@ -205,8 +206,15 @@ const Students = (props: Props) => {
             </div>
           </form>
           <button className={styles.addBtn} onClick={shiftStateForm}>Add Student</button>
+          <input className={styles.search} type="text" name="search" placeholder='Search student...' onChange={(e) => setSearchTerm(e.target.value)} />
           <div className={styles.wrapper_container}>
-            {studentsInfo.map((student: Student) => {
+            {studentsInfo.filter((student: Student) => {
+                if (searchTerm === "") {
+                  return student
+                } else if (student.student_name.charAt(0).toLowerCase().includes(searchTerm.charAt(0).toLowerCase())) {
+                  return student
+                }
+              }).map((student: Student) => {
               return <div key={student.student_id} className={styles.student_container}>
                 <div className={styles.name}>{student.student_name}</div>
                 <div className={styles.wrapper}>

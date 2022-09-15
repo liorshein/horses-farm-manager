@@ -23,4 +23,8 @@ html {
 .react-datepicker__input-container > input {
     text-align: center;
     background-color: #c8b8ab;
+
+    &:hover {
+        cursor: pointer;
+    }
 }

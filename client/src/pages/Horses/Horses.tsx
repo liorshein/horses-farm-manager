@@ -39,6 +39,7 @@ const Horses = (props: Props) => {
   const [loading, setLoading] = useState(false);
   const [width, setWidth] = useState(window.innerWidth)
   const [navDisplay, setNavDisplay] = useState(true)
+  const [searchTerm, setSearchTerm] = useState('')
 
   useEffect(() => {
     function handleResize() {
@@ -164,9 +165,16 @@ const Horses = (props: Props) => {
             </div>
           </form>
           <button className={styles.addBtn} onClick={shiftStateForm}>Add Horse</button>
+          <input className={styles.search} type="text" name="search" placeholder='Search horse...' onChange={(e) => setSearchTerm(e.target.value)} />
           <div className={styles.flexRow}>
             <div className={styles.wrapper}>
-              {horsesInfo.map((horse: Horse) => {
+              {horsesInfo.filter((horse: Horse) => {
+                if (searchTerm === "") {
+                  return horse
+                } else if (horse.horse_name.charAt(0).toLowerCase().includes(searchTerm.charAt(0).toLowerCase())) {
+                  return horse
+                }
+              }).map((horse: Horse) => {
                 return <div key={horse.horse_id} className={styles.horse_container}>
                   <div className={styles.name}>{horse.horse_name}</div>
                   <div className={styles.container}>

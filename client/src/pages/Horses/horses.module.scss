@@ -43,7 +43,27 @@
         background-color: #c8b8ab;
         border-color: transparent;
         box-shadow: 0px 0px 10px rgba(119, 99, 90, 0.8);
-        margin-bottom: 20px;
+        margin-bottom: 10px;
+
+        &:hover {
+            cursor: pointer;
+            box-shadow: 0 0 10px rgb(93, 67, 55);
+        }
+    }
+
+    .search {
+        padding: 5px 10px;
+        border-color: #c8b8ab;
+        margin-bottom: 10px;
+
+        &::placeholder {
+            color: black;
+        }
+
+        &:focus {
+            outline: none;
+            border-color: #c8b8ab;
+        }
     }
 }
 
@@ -96,11 +116,16 @@
             }
 
             .deleteBtn {
-                padding: 0 5px;
+                padding: 5px 10px;
                 background-color: #c8b8ab;
                 border-radius: 10px;
                 border: none;
                 margin-bottom: 10px;
+
+                &:hover {
+                    cursor: pointer;
+                    box-shadow: 0 0 10px rgb(79, 63, 56);
+                }
             }
 
             .label {
@@ -207,6 +232,7 @@
         margin-top: 0;
         border-radius: 0;
         overflow: scroll;
+        background-color: #c8b8ab;
     }
 
     .flexRow {
@@ -215,6 +241,7 @@
         .wrapper {
             column-gap: 5%;
             .horse_container {
+                background-color: #fff;
                 width: 47%;
             }
         }

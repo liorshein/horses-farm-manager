@@ -11,7 +11,7 @@ interface ContextInterface {
     onLogin: (e: any) => void;
     onLogout: () => void;
     loginValues: {
-        username: string
+        email: string
         password: string
     }
     onChange: (event: {
@@ -37,7 +37,7 @@ const AutoProvider = (props: Props) => {
     const location = useLocation().state as stateType;
     const cookies = new Cookies()
     const [loginInputs, setLoginInputs] = useState({
-        username: "",
+        email: "",
         password: "",
     })
 
@@ -47,8 +47,9 @@ const AutoProvider = (props: Props) => {
 
     const handleLogin = async (e: any) => {
         e.preventDefault()
-        if (loginInputs.username !== '' && loginInputs.password !== '') {
-            const response = await AuthService.login(loginInputs.username, loginInputs.password)
+        console.log(loginInputs)
+        if (loginInputs.email !== '' && loginInputs.password !== '') {
+            const response = await AuthService.login(loginInputs.email, loginInputs.password)
             const newToken = response.token
     
             if (newToken) {
@@ -58,10 +59,10 @@ const AutoProvider = (props: Props) => {
                 const origin = location?.from?.pathname || '/dashboard';
                 navigate(origin);
             } else {
-                alert("Wrong password / username")
+                alert("Wrong password / email")
             }
         } else {
-            alert("Enter valid password and username")
+            alert("Enter valid password and email")
         }
     };
 

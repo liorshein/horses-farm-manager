@@ -21,7 +21,6 @@ export const initDb = async () => {
         `CREATE TABLE IF NOT EXISTS instructors(
             instructor_id SERIAL PRIMARY KEY,
             instructor_name TEXT NOT NULL,
-            username TEXT NOT NULL,
             email TEXT NOT NULL,
             password TEXT NOT NULL,
             phone_number TEXT NOT NULL,

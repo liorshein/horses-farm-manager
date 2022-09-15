@@ -75,6 +75,10 @@
                 &:focus-visible {
                     outline: none;
                 }
+
+                &:hover {
+                    cursor: pointer;
+                }
             }
 
             .salary {
