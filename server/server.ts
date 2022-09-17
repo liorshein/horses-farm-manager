@@ -12,8 +12,8 @@ app.use(json());
 const root: string = path.join(process.cwd(), 'client');
 
 // app.use(express.static(root))
-app.use('/', authRouter)
-app.use('/', usersRouter)
+app.use('/api', authRouter)
+app.use('/api', usersRouter)
 
 initDb()
 

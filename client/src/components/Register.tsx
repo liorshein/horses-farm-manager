@@ -34,7 +34,7 @@ const Register = (props: Props) => {
       .required('Confirm Password is required')
       .oneOf([Yup.ref('password'), null], 'Confirm Password does not match'),
     address: Yup.string().required("Address is required"),
-    phone_number: Yup.string().required("Phone number is required").matches(phoneRegExp, 'Phone number is not valid'),
+    mobile: Yup.string().required("Phone number is required").matches(phoneRegExp, 'Phone number is not valid'),
   });
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<UserSubmitForm>({
