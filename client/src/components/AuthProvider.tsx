@@ -47,9 +47,8 @@ const AutoProvider = (props: Props) => {
 
     const handleLogin = async (e: any) => {
         e.preventDefault()
-        console.log(loginInputs)
         if (loginInputs.email !== '' && loginInputs.password !== '') {
-            const response = await AuthService.login(loginInputs.email, loginInputs.password)
+            const response = await AuthService.login(loginInputs.email, loginInputs.password)            
             const newToken = response.token
     
             if (newToken) {
