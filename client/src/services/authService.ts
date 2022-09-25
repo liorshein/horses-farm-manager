@@ -1,7 +1,9 @@
 import axios from "axios";
 
+const API = "http://localhost:5000" // Remove the API from all requests for heroku
+
 const register = async (fullname: string, email: string, password: string, phone_number: string, address: string) => {
-    const result = await axios.post("/api/signup", {
+    const result = await axios.post(API + "/api/signup", {
         name: fullname,
         email: email,
         password: password,
@@ -13,7 +15,7 @@ const register = async (fullname: string, email: string, password: string, phone
 };
 
 const login = async (email: string, password: string) => {    
-    const response = await axios.post("/api/signin", {
+    const response = await axios.post(API + "/api/signin", {
         email: email,
         password: password
     });

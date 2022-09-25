@@ -7,11 +7,10 @@ import { initDb } from './db';
 import path from 'path';
 
 const app: Express = express();
-app.use(cors({ credentials: true, origin: process.env.PORT }));
+app.use(cors({ credentials: true, origin: 'http://localhost:3000' })); // Change to process.env.PORT for heroku
 app.use(json());
 const root: string = path.join(process.cwd(), 'client');
 
-// app.use(express.static(root))
 app.use('/api', authRouter)
 app.use('/api', usersRouter)
 
@@ -23,10 +22,6 @@ if (process.env.NODE_ENV === 'production') {
         res.sendFile(path.join(root, 'index.html'));
     })
 }
-
-// app.get('/', (_req, res) => {
-//     res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
-// });
 
 const PORT = process.env.PORT || 5000;
 

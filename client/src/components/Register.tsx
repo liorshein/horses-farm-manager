@@ -41,9 +41,13 @@ const Register = (props: Props) => {
     resolver: yupResolver(validationSchema)
   });
 
-  const onSubmit = (data: UserSubmitForm) => {
-    AuthService.register(data.name, data.email, data.password, data.mobile, data.address)
-    props.switchPage("Login")
+  const onSubmit = async (data: UserSubmitForm) => {
+    const results = await AuthService.register(data.name, data.email, data.password, data.mobile, data.address)
+    if (results.data.success) {
+      props.switchPage("Login")
+    } else {
+      alert("Cannot register, please try again!")
+    }
   };
 
   return (
