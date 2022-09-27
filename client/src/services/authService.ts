@@ -18,7 +18,7 @@ const login = async (email: string, password: string) => {
     const response = await axios.post(API + "/api/signin", {
         email: email,
         password: password
-    });
+    });    
 
     return response.data
 };
