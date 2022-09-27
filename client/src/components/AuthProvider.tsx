@@ -20,6 +20,7 @@ interface ContextInterface {
             value: string;
         };
     }) => void
+    token: string;
 }
 
 interface stateType {
@@ -40,6 +41,7 @@ const AutoProvider = (props: Props) => {
         email: "",
         password: "",
     })
+    const [token, setToken] = useState('');
 
     const handleChange = (event: { target: { name: string; value: string } }) => {
         setLoginInputs({ ...loginInputs, [event.target.name]: event.target.value })
@@ -49,12 +51,8 @@ const AutoProvider = (props: Props) => {
         e.preventDefault()
         if (loginInputs.email !== '' && loginInputs.password !== '') {
             const response = await AuthService.login(loginInputs.email, loginInputs.password)            
-            const newToken = response.token
-    
-            if (newToken) {
-                let today = new Date()
-                let nextWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate()+7);
-                cookies.set('token', newToken, {path: '/', expires: nextWeek})
+            if (response) {
+                setToken(response)              
                 const origin = location?.from?.pathname || '/dashboard';
                 navigate(origin);
             } else {
@@ -75,6 +73,7 @@ const AutoProvider = (props: Props) => {
         onLogout: handleLogout,
         loginValues: loginInputs,
         onChange: handleChange,
+        token: token,
     };
 
     return (

@@ -14,8 +14,7 @@ type Props = {
 const Navigation = (props: Props) => {
   const appContext = useAuth();
   if (!appContext) return null
-  const { onLogout } = appContext
-  const token = new Cookies().get('token');
+  const { onLogout, token } = appContext
 
   return (
     <nav className={styles.navbar}>

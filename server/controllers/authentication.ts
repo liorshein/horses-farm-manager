@@ -28,16 +28,19 @@ export const signIn: RequestHandler = async (req, res) => {
         `SELECT * FROM instructors WHERE email = $1`, [
         req.body.email
     ])
-     if (queryResult.rowCount !== 0) {
-         const hash = queryResult.rows[0].password
-         const validPass = await bcrypt.compare(req.body.password, hash)
-     
-         if (validPass) {
-             const userId = queryResult.rows[0].instructor_id
-             const token = jwt.sign({ _id: userId }, process.env.JWT_SECRET!, { expiresIn: '1 week' })
-             res.json({ token: token })
-         }
-     } else {
+    if (queryResult.rowCount !== 0) {
+        const hash = queryResult.rows[0].password
+        const validPass = await bcrypt.compare(req.body.password, hash)
+
+        if (validPass) {
+            const userId = queryResult.rows[0].instructor_id
+            const tokenJWT = jwt.sign({ _id: userId }, process.env.JWT_SECRET!, { expiresIn: '1 week' })
+            let today = new Date()
+            let nextWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 7);
+            res.cookie("token", tokenJWT, { httpOnly: true, expires: nextWeek, sameSite: "strict", secure: true })
+            res.json(tokenJWT)
+        }
+    } else {
         res.send(null)
     }
 }
