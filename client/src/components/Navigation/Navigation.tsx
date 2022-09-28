@@ -1,6 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import Cookies from 'universal-cookie';
-import { useAuth } from '../AuthProvider';
+import useAuth from '../../hooks/useAuth';
 import styles from './navigation.module.scss'
 const dashIcon = require("../../assets/icons/dashboard.svg").default
 const scheduleIcon = require("../../assets/icons/schedule.svg").default
@@ -13,8 +12,7 @@ type Props = {
 
 const Navigation = (props: Props) => {
   const appContext = useAuth();
-  if (!appContext) return null
-  const { onLogout, token } = appContext
+  const { onLogout, token } = appContext!
 
   return (
     <nav className={styles.navbar}>

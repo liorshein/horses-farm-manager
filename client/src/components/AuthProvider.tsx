@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import AuthService from '../services/authService';
-import Cookies from 'universal-cookie';
 
 type Props = {
     children: any
@@ -20,7 +19,9 @@ interface ContextInterface {
             value: string;
         };
     }) => void
-    token: string;
+    token: string | undefined;
+    roles: string[];
+    setToken: React.Dispatch<React.SetStateAction<undefined>>;
 }
 
 interface stateType {
@@ -29,19 +30,15 @@ interface stateType {
 
 export const AuthContext = React.createContext<ContextInterface | null>(null)
 
-export const useAuth = () => {
-    return React.useContext(AuthContext);
-};
-
 const AutoProvider = (props: Props) => {
     const navigate = useNavigate()
     const location = useLocation().state as stateType;
-    const cookies = new Cookies()
     const [loginInputs, setLoginInputs] = useState({
         email: "",
         password: "",
     })
-    const [token, setToken] = useState('');
+    const [roles, setRoles] = useState([])
+    const [token, setToken] = useState(); 
 
     const handleChange = (event: { target: { name: string; value: string } }) => {
         setLoginInputs({ ...loginInputs, [event.target.name]: event.target.value })
@@ -51,8 +48,10 @@ const AutoProvider = (props: Props) => {
         e.preventDefault()
         if (loginInputs.email !== '' && loginInputs.password !== '') {
             const response = await AuthService.login(loginInputs.email, loginInputs.password)            
+            
             if (response) {
-                setToken(response)              
+                setToken(response.accessToken)
+                setRoles(response.roles)
                 const origin = location?.from?.pathname || '/dashboard';
                 navigate(origin);
             } else {
@@ -63,8 +62,9 @@ const AutoProvider = (props: Props) => {
         }
     };
 
-    const handleLogout = () => {
-        cookies.remove('token')
+    const handleLogout = async () => {
+        await AuthService.logout()
+        setToken(undefined)
         navigate('/login');
     };
 
@@ -73,6 +73,8 @@ const AutoProvider = (props: Props) => {
         onLogout: handleLogout,
         loginValues: loginInputs,
         onChange: handleChange,
+        setToken: setToken,
+        roles: roles,
         token: token,
     };
 

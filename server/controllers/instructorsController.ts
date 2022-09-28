@@ -1,45 +1,31 @@
 import { RequestHandler } from "express";
 import { client } from "../db"
-import Cookies from 'universal-cookie';
-import jwt from 'jsonwebtoken'
 import { filterHours } from './helpFunctions'
-
-//! Validation middleware
-
-export const authenticateToken: RequestHandler = (req: any, res, next) => {
-    const token = new Cookies(req.headers.cookie).get('token');
-    if (token == null) return res.sendStatus(401)
-
-    jwt.verify(token, process.env.JWT_SECRET!, (err: any, user: any) => {
-        if (err) return res.sendStatus(403)
-        req.user = user
-        next()
-    })
-}
 
 //! User related requests (students, lessons)
 
 export const getUserData: RequestHandler = async (req: any, res) => {
-    const InstructorId = (req.user)._id
+    const InstructorId = req.user
+    
     const result = (await client.query(`SELECT * FROM instructors WHERE instructor_id = $1`, [InstructorId])).rows[0];
     res.send({ result });
 }
 
 export const getSalaryPerMonth: RequestHandler = async (req: any, res) => {
-    const InstructorId = (req.user)._id
+    const InstructorId = req.user
     const yearMonthStr = req.query.year_month_str
     const result = await client.query(`SELECT COUNT (*) FROM lessons WHERE instructor_id=$1 AND POSITION($2 IN date)>0`, [InstructorId, yearMonthStr]);
     res.send({ result });
 }
 
 export const getLessonsPerMonth: RequestHandler = async (req: any, res) => {
-    const InstructorId = (req.user)._id
+    const InstructorId = req.user
     const result = await client.query(`SELECT COUNT (*),SUBSTRING(date, 1, 7) FROM lessons WHERE instructor_id=$1 GROUP BY SUBSTRING(date, 1, 7) ORDER BY SUBSTRING(date, 1, 7)`, [InstructorId]);
     res.send({ result });
 }
 
 export const getFavoriteHorse: RequestHandler = async (req: any, res) => {
-    const InstructorId = (req.user)._id
+    const InstructorId = req.user
     const result = (await client.query(
         `SELECT COUNT(lessons.horse_id), horses.horse_name
         FROM lessons 
@@ -52,7 +38,7 @@ export const getFavoriteHorse: RequestHandler = async (req: any, res) => {
 }
 
 export const getMonthOfLessons: RequestHandler = async (req: any, res) => {
-    const InstructorId = (req.user)._id
+    const InstructorId = req.user
     const result = await client.query(`SELECT DISTINCT ON (1) SUBSTRING(date, 1, 7) FROM lessons WHERE instructor_id=$1`, [InstructorId]);
     res.send({ result });
 }
@@ -60,13 +46,13 @@ export const getMonthOfLessons: RequestHandler = async (req: any, res) => {
 // Students related requests
 
 export const getStudentsData: RequestHandler = async (req: any, res) => {
-    const InstructorId = (req.user)._id
+    const InstructorId = req.user
     const result = (await client.query('SELECT * FROM students WHERE instructor_id = $1', [InstructorId])).rows
     res.send({ result });
 }
 
 export const addStudent: RequestHandler = async (req: any, res) => {
-    const InstructorId = (req.user)._id
+    const InstructorId = req.user
 
     const result = await client.query(
         `INSERT INTO students(student_name, id, date_of_birth, age, weight, height, hmo, address, framework, working_on, instructor_id)
@@ -110,12 +96,9 @@ export const updateArrived: RequestHandler = async (req, _res) => {
 // Lessons related requests
 
 export const getAvailableHours: RequestHandler = async (req: any, res) => {
-    const InstructorId = (req.user)._id
+    const InstructorId = req.user
     const horseId = req.query.horse_id
     const date = req.query.date
-
-    console.log("horseId", horseId);
-    console.log("date", date);
 
     const result = (await client.query(
         `SELECT lesson_time FROM lessons WHERE horse_id=$1 AND date=$3 OR instructor_id=$2 AND date=$3`, [
@@ -131,7 +114,7 @@ export const getAvailableHours: RequestHandler = async (req: any, res) => {
 }
 
 export const getLessons: RequestHandler = async (req: any, res) => {
-    const InstructorId = (req.user)._id
+    const InstructorId = req.user
     const date = req.query.date
 
     const result = (await client.query(
@@ -147,7 +130,7 @@ export const getLessons: RequestHandler = async (req: any, res) => {
 }
 
 export const addLesson: RequestHandler = async (req: any, res) => {
-    const InstructorId = (req.user)._id
+    const InstructorId = req.user
 
     const result = await client.query(
         `INSERT INTO lessons(horse_id, date, lesson_time, instructor_id, student_id) VALUES ($1, $2, $3, $4, $5)`, [

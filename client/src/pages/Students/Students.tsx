@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Loader from '../../components/Loader/Loader'
 import Navigation from '../../components/Navigation/Navigation'
-import UserService from '../../services/userService'
+import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 import styles from "./students.module.scss"
 const logo = require("../../assets/icons/logo.svg")
 const clalit = require("../../assets/icons/clalit.svg")
@@ -59,6 +59,8 @@ const Students = (props: Props) => {
   const [navDisplay, setNavDisplay] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
 
+  const axiosPrivate = useAxiosPrivate()
+
   useEffect(() => {
     function handleResize() {
       setWidth(window.innerWidth);
@@ -97,9 +99,9 @@ const Students = (props: Props) => {
 
   useEffect(() => {
     const getData = async () => {
-      const personalData = await UserService.getPersonalInfo()
+      const personalData = await (await axiosPrivate.get("/instructors/user")).data.result
       setPersonalInfo(personalData)
-      const studentsData = await UserService.getUserStudentsInfo()
+      const studentsData = await (await axiosPrivate.get("/instructors/user-students")).data.result
       setStudentsInfo(studentsData)
     }
     getData()
@@ -118,14 +120,27 @@ const Students = (props: Props) => {
     if (inputs.address !== '' && inputs.age !== '' && inputs.date_of_birth !== '' && inputs.framework !== '' &&
       inputs.height !== '' && inputs.hmo !== '' && inputs.id !== '' && inputs.student_name !== '' &&
       inputs.weight !== '' && inputs.working_on) {
-      UserService.addStudent(inputs)
+
+      axiosPrivate.post("/instructors/add-student", {
+        name: inputs.student_name,
+        id: inputs.id,
+        date_of_birth: inputs.date_of_birth,
+        age: inputs.age,
+        weight: inputs.weight,
+        height: inputs.height,
+        hmo: inputs.hmo,
+        address: inputs.address,
+        framework: inputs.framework,
+        working_on: inputs.working_on
+      });
     } else {
       alert("Please enter valid info!")
     }
   }
 
   const deleteStudent = (id: number) => {
-    UserService.deleteStudent(id.toString())
+    let params = new URLSearchParams({ student_id: id.toString() })
+    axiosPrivate.delete(`/instructors/delete-student?${params}`)
     setStudentsInfo(() => {
       return studentsInfo.filter(student => student.student_id !== id)
     })
@@ -209,12 +224,12 @@ const Students = (props: Props) => {
           <input className={styles.search} type="text" name="search" placeholder='Search student...' onChange={(e) => setSearchTerm(e.target.value)} />
           <div className={styles.wrapper_container}>
             {studentsInfo.filter((student: Student) => {
-                if (searchTerm === "") {
-                  return student
-                } else if (student.student_name.charAt(0).toLowerCase().includes(searchTerm.charAt(0).toLowerCase())) {
-                  return student
-                }
-              }).map((student: Student) => {
+              if (searchTerm === "") {
+                return student
+              } else if (student.student_name.charAt(0).toLowerCase().includes(searchTerm.charAt(0).toLowerCase())) {
+                return student
+              }
+            }).map((student: Student) => {
               return <div key={student.student_id} className={styles.student_container}>
                 <div className={styles.name}>{student.student_name}</div>
                 <div className={styles.wrapper}>

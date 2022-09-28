@@ -1,7 +1,7 @@
 import { getDay } from 'date-fns'
 import { useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
-import UserService from '../../services/userService'
+import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 import styles from './lessons.module.scss'
 
 type Props = {
@@ -23,9 +23,11 @@ type Horse = {
 const SearchTime = (props: Props) => {
     const [horseInfo, setHorseInfo] = useState<Horse[]>([])
 
+    const axiosPrivate = useAxiosPrivate()
+
     useEffect(() => {
         const getData = async () => {
-            const horsesData = await UserService.getAvailableHorses()
+            const horsesData = await (await axiosPrivate.get("/instructors/horses-available")).data.result
             setHorseInfo(horsesData)
         }
         getData()
@@ -35,7 +37,8 @@ const SearchTime = (props: Props) => {
         e.preventDefault()
         if (props.selectedHorse && props.day !== undefined && props.selectedHorse !== "Pick Horse") {
             let dateFormat = props.day.toISOString().split("T")[0];
-            const availableHours = await (await UserService.getAvailableHours(props.selectedHorse, dateFormat)).data.filteredResults
+            let params = new URLSearchParams({ horse_id: props.selectedHorse, date: dateFormat })
+            const availableHours = await (await axiosPrivate.get(`/instructors/lessons-available?${params}`)).data.filteredResults
             props.setAvailableHours(availableHours);
         } else {
             alert("Please select horse and date!")

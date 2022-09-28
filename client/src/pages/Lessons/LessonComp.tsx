@@ -1,5 +1,5 @@
 import { SetStateAction, useEffect, useRef, useState } from "react"
-import UserService from "../../services/userService"
+import useAxiosPrivate from "../../hooks/useAxiosPrivate"
 import styles from "./lessons.module.scss"
 const clalit = require("../../assets/icons/clalit.svg")
 const meuhedet = require("../../assets/icons/meuhedet.svg")
@@ -28,6 +28,8 @@ const LessonComp = (props: Props) => {
     const [arrived, setArrived] = useState<string | undefined>(undefined)
     const [status, setStatus] = useState(false)
 
+    const axiosPrivate = useAxiosPrivate()
+
     useEffect(() => {
         const getData = () => {
             let filteredLesson = props.lessons.filter((lesson: Lesson) => { return lesson.lesson_time === props.hour })
@@ -51,7 +53,8 @@ const LessonComp = (props: Props) => {
             setArrived(e.target.value)
             e.target.setAttribute("disabled", "disabled")
             let boolean: string = e.target.value as string
-            UserService.updateArrived(currentLesson!.lesson_id.toString(), boolean)
+            let params = new URLSearchParams({ lesson_id: currentLesson!.lesson_id.toString(), arrived: boolean })
+            axiosPrivate.put(`/instructors/update-arrived?${params}`)
         }
     }
 

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import "react-datepicker/dist/react-datepicker.css";
-import UserService from '../../services/userService';
 import SearchTime from './SearchTime';
 import styles from './lessons.module.scss'
 import { Lesson } from './Lessons';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 type Props = {
     mainDay: Date
@@ -27,6 +27,8 @@ const AddLesson = (props: Props) => {
     const [selectedHorseId, setSelectedHorseId] = useState('')
     const [hidden, setHidden] = useState(true)
 
+    const axiosPrivate = useAxiosPrivate()
+
     const shiftStateForm = (e: { preventDefault: () => void }) => {
         e.preventDefault()
         if (hidden === true) {
@@ -38,7 +40,7 @@ const AddLesson = (props: Props) => {
 
     useEffect(() => {
         const getData = async () => {
-            const studentsData = await UserService.getUserStudentsInfo()
+            const studentsData = await (await axiosPrivate.get("/instructors/user-students")).data.result
             setStudentInfo(studentsData)
         }
         getData()
@@ -48,9 +50,15 @@ const AddLesson = (props: Props) => {
         e.preventDefault()
         if (selectedHorseId !== '' && selectedHour !== '' && selectedStudent !== '') {
             let dateFormat = props.day.toISOString().split("T")[0];
-            UserService.addLesson(Number(selectedHorseId), dateFormat, selectedHour, Number(selectedStudent))
+            axiosPrivate.post("/instructors/add-lesson", {
+                horse_id: Number(selectedHorseId),
+                date: dateFormat,
+                lesson_time: selectedHour,
+                student_id: Number(selectedStudent),
+            });
             if (dateFormat === props.mainDay.toISOString().split("T")[0]) {
-                const lessonsData = await UserService.getUserLessons(dateFormat)
+                let params = new URLSearchParams({ date: dateFormat })
+                const lessonsData = await (await axiosPrivate.get(`/instructors/lessons?${params}`)).data.result
                 props.setLessons(lessonsData)
             } else {
                 alert(`Lesson Added on ${dateFormat}`)
