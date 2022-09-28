@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import AddLesson from './AddLesson';
 import Navigation from '../../components/Navigation/Navigation';
-import UserService from '../../services/userService';
 import styles from "./lessons.module.scss"
 import LessonComp from './LessonComp';
 import DatePicker from 'react-datepicker'
 import { isSaturday } from './SearchTime';
 import Loader from '../../components/Loader/Loader';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 const logo = require("../../assets/icons/logo.svg")
 const leftArrow = require("../../assets/icons/leftarrow.svg")
 const rightArrow = require("../../assets/icons/rightarrow.svg")
@@ -45,6 +45,8 @@ const Lessons = () => {
   const [width, setWidth] = useState(window.innerWidth)
   const [navDisplay, setNavDisplay] = useState(true)
 
+  const axiosPrivate = useAxiosPrivate()
+
   useEffect(() => {
     function handleResize() {
       setWidth(window.innerWidth);
@@ -78,7 +80,7 @@ const Lessons = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const personalData = await UserService.getPersonalInfo()
+      const personalData = await (await axiosPrivate.get("/instructors/user")).data.result
       setPersonalInfo(personalData)
     }
     getData()
@@ -87,14 +89,16 @@ const Lessons = () => {
   useEffect(() => {
     const getData = async () => {
       let dateFormatted = mainDay.toISOString().split("T")[0];
-      const lessonsData = await UserService.getUserLessons(dateFormatted)
+      let params = new URLSearchParams({ date: dateFormatted })
+      const lessonsData = await (await axiosPrivate.get(`/instructors/lessons?${params}`)).data.result
       setLessons(lessonsData)
     }
     getData()
   }, [mainDay])
 
   const deleteLesson = (id: number) => {
-    UserService.deleteLesson(id.toString())
+    let params = new URLSearchParams({ lesson_id: id.toString() })
+    axiosPrivate.delete(`/instructors/delete-lesson?${params}`)
     setLessons(() => {
       return lessons.filter(lesson => lesson.lesson_id !== id)
     })

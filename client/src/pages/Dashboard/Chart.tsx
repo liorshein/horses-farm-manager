@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, registerables } from 'chart.js';
-import UserService from '../../services/userService'
+import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 
 ChartJS.register(...registerables);
 
@@ -15,9 +15,11 @@ const Chart = (props: Props) => {
         count: []
     })
 
+    const axiosPrivate = useAxiosPrivate()
+
     useEffect(() => {
         const getData = async () => {
-            const data = await UserService.getLessonsPerMonth()
+            const data = await (await axiosPrivate.get(`/instructors/lessons-per-month`)).data.result.rows
             const labelsData = data.map((obj: string) => obj.substring)
             const countData = data.map((obj: { count: any }) => obj.count)
             setChartData({

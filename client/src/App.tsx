@@ -14,28 +14,28 @@ const App = () => {
         <BrowserRouter>
             <AuthProvider>
                 <Routes>
-                    <Route index element={<Navigate to="dashboard"/>} />
+                    <Route index element={<Navigate to="dashboard" />} />
                     <Route path="login" element={<Login />} />
                     <Route path="dashboard" element={
-                        <ProtectedRoute>
+                        <ProtectedRoute allowedRoles={["User"]}>
                             <Dashboard />
                         </ProtectedRoute>
                     } />
                     <Route
                         path="students"
                         element={
-                            <ProtectedRoute>
+                            <ProtectedRoute allowedRoles={["User"]}>
                                 <Students />
                             </ProtectedRoute>
                         }
                     />
                     <Route path="horses" element={
-                        <ProtectedRoute>
+                        <ProtectedRoute allowedRoles={["User"]}>
                             <Horses />
                         </ProtectedRoute>
                     } />
                     <Route path="lessons" element={
-                        <ProtectedRoute>
+                        <ProtectedRoute allowedRoles={["User"]}>
                             <Lessons />
                         </ProtectedRoute>
                     } />

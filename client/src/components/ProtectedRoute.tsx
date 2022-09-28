@@ -1,18 +1,18 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import Cookies from 'universal-cookie';
-import { useAuth } from './AuthProvider';
+import useAuth from '../hooks/useAuth'
 
 type Props = {
     children: any
+    allowedRoles: string[]
 }
 
 const ProtectedRoute = (props: Props) => {
     const location = useLocation()
     const appContext = useAuth();
-    if (!appContext) return null
-    const { token } = appContext
+    const { roles } = appContext!
+    
 
-    if (!token) {
+    if (!roles.find((role: string) => props.allowedRoles?.includes(role))) {
         return <Navigate to="/login" replace state={{ from: location }} />;
     }
 

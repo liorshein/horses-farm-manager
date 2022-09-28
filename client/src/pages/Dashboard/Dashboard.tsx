@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import Loader from '../../components/Loader/Loader';
 import Navigation from '../../components/Navigation/Navigation';
-import UserService from '../../services/userService';
 import Chart from './Chart';
 import styles from "./dashboard.module.scss"
 const logo = require("../../assets/icons/logo.svg")
@@ -29,6 +29,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const [width, setWidth] = useState(window.innerWidth)
   const [navDisplay, setNavDisplay] = useState(true)
+  const axiosPrivate = useAxiosPrivate()
 
   useEffect(() => {
     function handleResize() {
@@ -56,13 +57,13 @@ const Dashboard = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const personalData = await UserService.getPersonalInfo()
+      const personalData = await (await axiosPrivate.get("/instructors/user")).data.result
       setPersonalInfo(personalData)
-      const lessons = await (await UserService.getMonthOfLessons())
+      const lessons = await (await axiosPrivate.get(`/instructors/lessons-monthly`)).data.result.rows
       setMonths(lessons)
-      const horsesArr = await (await UserService.getFavoriteHouse()).data.result.rows
-      let max = Math.max(...horsesArr.map((horse: { count: number; }) => horse.count))
-      let favoriteHorse = horsesArr.find((horse: { count: number; }) => horse.count == max)
+      const horsesArr = await (await axiosPrivate.get(`/instructors/favorite-horse`)).data.result.rows
+      let max = Math.max(...horsesArr.map((horse: { count: number }) => horse.count))
+      let favoriteHorse = horsesArr.find((horse: { count: string }) => horse.count === max.toString())
       setFavoriteHorse(favoriteHorse)
     }
     getData()
@@ -71,7 +72,7 @@ const Dashboard = () => {
   useEffect(() => {
     const getData = async () => {
       if (salaryMonth !== '' && salaryMonth !== "Select year & month") {
-        let salary = (await UserService.getSalaryPerMonth(salaryMonth))
+        let salary = await (await axiosPrivate.get(`/instructors/lessons-per-month`)).data.result.rows[0].count
         setSalary(salary)
       } else {
         setSalary(0)

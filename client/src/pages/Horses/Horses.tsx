@@ -1,14 +1,10 @@
 import { useEffect, useState } from 'react'
+import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 import Loader from '../../components/Loader/Loader'
 import Navigation from '../../components/Navigation/Navigation'
-import UserService from '../../services/userService'
 import styles from "./horses.module.scss"
 const logo = require("../../assets/icons/logo.svg")
 const menuIcon = require("../../assets/icons/menu.svg").default
-
-// TODO (1): Decide what to show on horses page (Healthy horses that can work, nonassignable horses...)
-// TODO (2): Create this features on server and client sides
-// TODO (3): Style page
 
 type Props = {}
 
@@ -40,6 +36,8 @@ const Horses = (props: Props) => {
   const [width, setWidth] = useState(window.innerWidth)
   const [navDisplay, setNavDisplay] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
+
+  const axiosPrivate = useAxiosPrivate()
 
   useEffect(() => {
     function handleResize() {
@@ -78,9 +76,9 @@ const Horses = (props: Props) => {
 
   useEffect(() => {
     const getData = async () => {
-      const personalData = await UserService.getPersonalInfo()
+      const personalData = await (await axiosPrivate.get("/instructors/user")).data.result
       setPersonalInfo(personalData)
-      const horsesData = await UserService.getHorsesInfo()
+      const horsesData = await (await axiosPrivate.get("/instructors/horses")).data.result
       setHorsesInfo(horsesData)
     }
     getData()
@@ -102,7 +100,13 @@ const Horses = (props: Props) => {
       } else {
         inputs.assignable = false
       }
-      UserService.addHorse(inputs.horse_name, Number(inputs.age), inputs.breed, inputs.assignable)
+      axiosPrivate.post("/instructors/add-horse", {
+        name: inputs.horse_name,
+        age: Number(inputs.age),
+        breed: inputs.breed,
+        assignable: inputs.assignable
+      })
+
     } else {
       alert("Please enter valid info!")
     }
@@ -110,11 +114,12 @@ const Horses = (props: Props) => {
   }
 
   const deleteHorse = (id: number) => {
-    UserService.deleteHorse(id.toString())
+    let params = new URLSearchParams({ horse_id: id.toString() })
+    axiosPrivate.delete(`/instructors/delete-horse?${params}`)
     setHorsesInfo(() => {
       return horsesInfo.filter(horse => horse.horse_id !== id)
     })
-  }
+  }  
 
   return (
     <> {loading ? < Loader /> :

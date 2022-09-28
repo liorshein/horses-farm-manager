@@ -1,4 +1,4 @@
-import { useAuth } from './AuthProvider';
+import useAuth from "../hooks/useAuth"
 import styles from "../pages/Login/loginComp.module.scss"
 
 type Props = {
@@ -8,8 +8,7 @@ type Props = {
 const Login = (props: Props) => {
 
   const appContext = useAuth();
-  if (!appContext) return null
-  const { onLogin, loginValues, onChange } = appContext
+  const { onLogin, loginValues, onChange } = appContext!
 
   return (
     <>
