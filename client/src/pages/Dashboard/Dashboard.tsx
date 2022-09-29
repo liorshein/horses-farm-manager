@@ -26,7 +26,7 @@ const Dashboard = () => {
   const [salaryMonth, setSalaryMonth] = useState(today)
   const [salary, setSalary] = useState(0)
   const [favoriteHorse, setFavoriteHorse] = useState<any>()
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [width, setWidth] = useState(window.innerWidth)
   const [navDisplay, setNavDisplay] = useState(true)
   const axiosPrivate = useAxiosPrivate()
@@ -49,7 +49,6 @@ const Dashboard = () => {
   
 
   useEffect(() => {
-    setLoading(true);
     setTimeout(() => {
       setLoading(false);
     }, 1000);

@@ -32,7 +32,7 @@ const Horses = (props: Props) => {
     phone_number: '',
     address: '',
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [width, setWidth] = useState(window.innerWidth)
   const [navDisplay, setNavDisplay] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
@@ -64,7 +64,6 @@ const Horses = (props: Props) => {
   }
 
   useEffect(() => {
-    setLoading(true);
     setTimeout(() => {
       setLoading(false);
     }, 1000);

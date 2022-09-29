@@ -9,11 +9,6 @@ const meuhedet = require("../../assets/icons/meuhedet.svg")
 const macabi = require("../../assets/icons/macabi.svg")
 const menuIcon = require("../../assets/icons/menu.svg").default
 
-
-// TODO (1): Decide what to show on students page (All students of the user, what data to show...)
-// TODO (2): Create this features on server and client sides
-// TODO (3): Style page
-
 type Props = {}
 
 export type Student = {
@@ -54,7 +49,7 @@ const Students = (props: Props) => {
     phone_number: '',
     address: '',
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [width, setWidth] = useState(window.innerWidth)
   const [navDisplay, setNavDisplay] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
@@ -86,7 +81,6 @@ const Students = (props: Props) => {
   }
 
   useEffect(() => {
-    setLoading(true);
     setTimeout(() => {
       setLoading(false);
     }, 1000);

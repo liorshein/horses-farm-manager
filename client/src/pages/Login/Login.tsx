@@ -3,8 +3,6 @@ import Login from '../../components/LoginComp';
 import Register from '../../components/Register';
 import styles from "./login.module.scss"
 
-// TODO (1): Style page better
-
 type Props = {
 }
 

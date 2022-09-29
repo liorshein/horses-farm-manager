@@ -15,10 +15,6 @@ const meuhedet = require("../../assets/icons/meuhedet.svg")
 const macabi = require("../../assets/icons/macabi.svg")
 const menuIcon = require("../../assets/icons/menu.svg").default
 
-
-// TODO (2): Create this features on server and client sides
-// TODO (3): Style page
-
 const hmoNames = [clalit, macabi, meuhedet]
 
 export type Lesson = {
@@ -41,7 +37,7 @@ const Lessons = () => {
     phone_number: '',
     address: '',
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [width, setWidth] = useState(window.innerWidth)
   const [navDisplay, setNavDisplay] = useState(true)
 
@@ -72,7 +68,6 @@ const Lessons = () => {
   }
 
   useEffect(() => {
-    setLoading(true);
     setTimeout(() => {
       setLoading(false);
     }, 1000);
