@@ -4,12 +4,11 @@ import axios from '../api/axios';
 const useRefreshToken = () => {
     const appContext = useAuth();
     if (!appContext) return null
-    const { setToken } = appContext
+    const { setToken, setRoles } = appContext
 
     const refresh = async () => {
         const response = await await (await axios.get("/refresh", { withCredentials: true })).data
-        console.log(response.accessToken);
-        
+        setRoles(response.roles)
         setToken(response.accessToken)
         return response.accessToken;
     }

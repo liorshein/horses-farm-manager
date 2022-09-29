@@ -22,6 +22,7 @@ interface ContextInterface {
     token: string | undefined;
     roles: string[];
     setToken: React.Dispatch<React.SetStateAction<undefined>>;
+    setRoles: React.Dispatch<React.SetStateAction<never[]>>
 }
 
 interface stateType {
@@ -84,8 +85,9 @@ const AutoProvider = (props: Props) => {
         loginValues: loginInputs,
         onChange: handleChange,
         setToken: setToken,
-        roles: roles,
         token: token,
+        setRoles: setRoles,
+        roles: roles,
     };
 
     return (

@@ -7,6 +7,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import Students from './pages/Students/Students'
 import Horses from './pages/Horses/Horses'
 import Lessons from './pages/Lessons/Lessons'
+import PersistLogin from './components/PersistLogin'
 import "./general.scss"
 
 const App = () => {
@@ -16,29 +17,32 @@ const App = () => {
                 <Routes>
                     <Route index element={<Navigate to="dashboard" />} />
                     <Route path="login" element={<Login />} />
-                    <Route path="dashboard" element={
-                        <ProtectedRoute allowedRoles={["User"]}>
-                            <Dashboard />
-                        </ProtectedRoute>
-                    } />
-                    <Route
-                        path="students"
-                        element={
+
+                    <Route element={<PersistLogin />}>
+                        <Route path="dashboard" element={
                             <ProtectedRoute allowedRoles={["User"]}>
-                                <Students />
+                                <Dashboard />
                             </ProtectedRoute>
-                        }
-                    />
-                    <Route path="horses" element={
-                        <ProtectedRoute allowedRoles={["User"]}>
-                            <Horses />
-                        </ProtectedRoute>
-                    } />
-                    <Route path="lessons" element={
-                        <ProtectedRoute allowedRoles={["User"]}>
-                            <Lessons />
-                        </ProtectedRoute>
-                    } />
+                        } />
+                        <Route
+                            path="students"
+                            element={
+                                <ProtectedRoute allowedRoles={["User"]}>
+                                    <Students />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route path="horses" element={
+                            <ProtectedRoute allowedRoles={["User"]}>
+                                <Horses />
+                            </ProtectedRoute>
+                        } />
+                        <Route path="lessons" element={
+                            <ProtectedRoute allowedRoles={["User"]}>
+                                <Lessons />
+                            </ProtectedRoute>
+                        } />
+                    </Route>
                     <Route path="*" element={<NoMatch />} />
                 </Routes>
             </AuthProvider>
