@@ -31,7 +31,7 @@ export const signIn: RequestHandler = async (req, res) => {
                 }
             },
             process.env.ACCESS_TOKEN_SECRET!,
-            { expiresIn: '15m' }
+            { expiresIn: '30s' }
         );
 
         // Create refreshToken

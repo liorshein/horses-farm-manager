@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import AuthService from '../services/authService';
 import styles from "../pages/Login/registerComp.module.scss"
+import axios from '../api/axios';
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
@@ -42,8 +42,15 @@ const Register = (props: Props) => {
   });
 
   const onSubmit = async (data: UserSubmitForm) => {
-    const results = await AuthService.register(data.name, data.email, data.password, data.mobile, data.address)
-    if (results.data.success) {
+    const results = await axios.post("/register", {
+      name: data.name,
+      email: data.email,
+      password: data.password,
+      phone_number: data.mobile,
+      address: data.address,
+  });
+  
+    if (results.status === 201) {
       props.switchPage("Login")
     } else {
       alert("Cannot register, please try again!")
