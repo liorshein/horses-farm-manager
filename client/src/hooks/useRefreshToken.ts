@@ -1,5 +1,5 @@
 import useAuth from './useAuth';
-import AuthService from '../services/authService';
+import axios from '../api/axios';
 
 const useRefreshToken = () => {
     const appContext = useAuth();
@@ -7,7 +7,9 @@ const useRefreshToken = () => {
     const { setToken } = appContext
 
     const refresh = async () => {
-        const response = await AuthService.refresh()
+        const response = await await (await axios.get("/refresh", { withCredentials: true })).data
+        console.log(response.accessToken);
+        
         setToken(response.accessToken)
         return response.accessToken;
     }

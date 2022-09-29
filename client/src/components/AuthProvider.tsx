@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
-import AuthService from '../services/authService';
+import axios from '../api/axios'
 
 type Props = {
     children: any
@@ -38,7 +38,7 @@ const AutoProvider = (props: Props) => {
         password: "",
     })
     const [roles, setRoles] = useState([])
-    const [token, setToken] = useState(); 
+    const [token, setToken] = useState();
 
     const handleChange = (event: { target: { name: string; value: string } }) => {
         setLoginInputs({ ...loginInputs, [event.target.name]: event.target.value })
@@ -47,8 +47,18 @@ const AutoProvider = (props: Props) => {
     const handleLogin = async (e: any) => {
         e.preventDefault()
         if (loginInputs.email !== '' && loginInputs.password !== '') {
-            const response = await AuthService.login(loginInputs.email, loginInputs.password)            
-            
+            const response = (await axios.post("/auth", {
+                email: loginInputs.email,
+                password: loginInputs.password
+            },
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                })).data
+
+                console.log(response);
+                
+
             if (response) {
                 setToken(response.accessToken)
                 setRoles(response.roles)
@@ -63,7 +73,7 @@ const AutoProvider = (props: Props) => {
     };
 
     const handleLogout = async () => {
-        await AuthService.logout()
+        await axios.get("/logout", { withCredentials: true })
         setToken(undefined)
         navigate('/login');
     };
