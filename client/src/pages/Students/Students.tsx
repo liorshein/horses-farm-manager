@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import Loader from '../../components/Loader/Loader'
 import Navigation from '../../components/Navigation/Navigation'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate'
@@ -53,6 +54,8 @@ const Students = (props: Props) => {
   const [width, setWidth] = useState(window.innerWidth)
   const [navDisplay, setNavDisplay] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
+  const navigate = useNavigate()
+  const location = useLocation()
 
   const axiosPrivate = useAxiosPrivate()
 
@@ -93,10 +96,14 @@ const Students = (props: Props) => {
 
   useEffect(() => {
     const getData = async () => {
-      const personalData = await (await axiosPrivate.get("/instructors/user")).data.result
-      setPersonalInfo(personalData)
-      const studentsData = await (await axiosPrivate.get("/instructors/user-students")).data.result
-      setStudentsInfo(studentsData)
+      try {
+        const personalData = await (await axiosPrivate.get("/instructors/user")).data.result
+        setPersonalInfo(personalData)
+        const studentsData = await (await axiosPrivate.get("/instructors/user-students")).data.result
+        setStudentsInfo(studentsData)
+      } catch (error) {
+        navigate('/login', { state: { from: location }, replace: true })
+      }
     }
     getData()
   }, [])

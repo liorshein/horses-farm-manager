@@ -7,6 +7,7 @@ import DatePicker from 'react-datepicker'
 import { isSaturday } from './SearchTime';
 import Loader from '../../components/Loader/Loader';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import { useNavigate, useLocation } from 'react-router-dom';
 const logo = require("../../assets/icons/logo.svg")
 const leftArrow = require("../../assets/icons/leftarrow.svg")
 const rightArrow = require("../../assets/icons/rightarrow.svg")
@@ -40,6 +41,8 @@ const Lessons = () => {
   const [loading, setLoading] = useState(true);
   const [width, setWidth] = useState(window.innerWidth)
   const [navDisplay, setNavDisplay] = useState(true)
+  const navigate = useNavigate()
+  const location = useLocation()
 
   const axiosPrivate = useAxiosPrivate()
 
@@ -75,8 +78,12 @@ const Lessons = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const personalData = await (await axiosPrivate.get("/instructors/user")).data.result
-      setPersonalInfo(personalData)
+      try {
+        const personalData = await (await axiosPrivate.get("/instructors/user")).data.result
+        setPersonalInfo(personalData)
+      } catch (error) {
+        navigate('/login', { state: { from: location }, replace: true })
+      }
     }
     getData()
   }, [])

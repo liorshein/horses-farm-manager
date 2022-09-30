@@ -31,7 +31,7 @@ export const signIn: RequestHandler = async (req, res) => {
                 }
             },
             process.env.ACCESS_TOKEN_SECRET!,
-            { expiresIn: '30s' }
+            { expiresIn: '5m' }
         );
 
         // Create refreshToken
@@ -45,7 +45,7 @@ export const signIn: RequestHandler = async (req, res) => {
         client.query(`UPDATE instructors SET refresh_token = $1 WHERE instructor_id = $2`, [refreshToken, userId])
 
         // Creates Secure Cookie with refresh token
-        res.cookie("token", refreshToken, { httpOnly: true, sameSite: "none", secure: true, maxAge: 24 * 60 * 60 * 1000 })
+        res.cookie("token", refreshToken, { httpOnly: true, secure: true, maxAge: 24 * 60 * 60 * 1000 })
 
         // Send authorization roles and access token to user
         res.json({ accessToken, roles })
