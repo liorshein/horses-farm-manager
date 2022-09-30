@@ -13,7 +13,7 @@ export const logOut: RequestHandler = async (req, res) => {
     const results = await client.query('SELECT * FROM instructors WHERE refresh_token = $1', [refreshToken])    
     
     if (results.rowCount === 0) {
-        res.clearCookie('token', {httpOnly: true, sameSite: "none", secure: true})
+        res.clearCookie('token', {httpOnly: true, secure: true})
         return res.sendStatus(204);
     }
 

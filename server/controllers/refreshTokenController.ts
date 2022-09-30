@@ -7,7 +7,7 @@ dotenv.config()
 
 export const refreshToken: RequestHandler = async (req, res) => {
     const cookies = req.cookies;
-    
+
     if (!cookies?.token) return res.sendStatus(401);
     const refreshToken = cookies.token
 
@@ -26,14 +26,14 @@ export const refreshToken: RequestHandler = async (req, res) => {
             const accessToken = jwt.sign(
                 {
                     "UserInfo": {
-                        "id":  decoded.id,
+                        "id": decoded.id,
                         "roles": roles
                     }
                 },
                 process.env.ACCESS_TOKEN_SECRET!,
-                { expiresIn: '5m'}
+                { expiresIn: '5m' }
             )
-            res.json({accessToken, roles})
+            res.json({ accessToken })
         }
     )
 }

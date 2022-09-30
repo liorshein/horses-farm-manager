@@ -20,9 +20,7 @@ interface ContextInterface {
         };
     }) => void
     token: string | undefined;
-    roles: string[];
     setToken: React.Dispatch<React.SetStateAction<undefined>>;
-    setRoles: React.Dispatch<React.SetStateAction<never[]>>
 }
 
 interface stateType {
@@ -38,7 +36,6 @@ const AutoProvider = (props: Props) => {
         email: "",
         password: "",
     })
-    const [roles, setRoles] = useState([])
     const [token, setToken] = useState();
 
     const handleChange = (event: { target: { name: string; value: string } }) => {
@@ -56,13 +53,9 @@ const AutoProvider = (props: Props) => {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
                 })).data
-
-                console.log(response);
                 
-
             if (response) {
                 setToken(response.accessToken)
-                setRoles(response.roles)
                 const origin = location?.from?.pathname || '/dashboard';
                 navigate(origin);
             } else {
@@ -86,8 +79,6 @@ const AutoProvider = (props: Props) => {
         onChange: handleChange,
         setToken: setToken,
         token: token,
-        setRoles: setRoles,
-        roles: roles,
     };
 
     return (

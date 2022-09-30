@@ -48,7 +48,7 @@ export const signIn: RequestHandler = async (req, res) => {
         res.cookie("token", refreshToken, { httpOnly: true, secure: true, maxAge: 24 * 60 * 60 * 1000 })
 
         // Send authorization roles and access token to user
-        res.json({ accessToken, roles })
+        res.json({ accessToken })
     } else {
         res.sendStatus(401)
     }
