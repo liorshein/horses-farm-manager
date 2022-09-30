@@ -3,6 +3,7 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 import Loader from '../../components/Loader/Loader'
 import Navigation from '../../components/Navigation/Navigation'
 import styles from "./horses.module.scss"
+import { useNavigate, useLocation } from 'react-router-dom'
 const logo = require("../../assets/icons/logo.svg")
 const menuIcon = require("../../assets/icons/menu.svg").default
 
@@ -36,6 +37,8 @@ const Horses = (props: Props) => {
   const [width, setWidth] = useState(window.innerWidth)
   const [navDisplay, setNavDisplay] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
+  const navigate = useNavigate()
+  const location = useLocation()
 
   const axiosPrivate = useAxiosPrivate()
 
@@ -75,10 +78,14 @@ const Horses = (props: Props) => {
 
   useEffect(() => {
     const getData = async () => {
-      const personalData = await (await axiosPrivate.get("/instructors/user")).data.result
-      setPersonalInfo(personalData)
-      const horsesData = await (await axiosPrivate.get("/instructors/horses")).data.result
-      setHorsesInfo(horsesData)
+      try {
+        const personalData = await (await axiosPrivate.get("/instructors/user")).data.result
+        setPersonalInfo(personalData)
+        const horsesData = await (await axiosPrivate.get("/instructors/horses")).data.result
+        setHorsesInfo(horsesData)
+      } catch (error) {
+        navigate('/login', { state: { from: location }, replace: true })
+      }
     }
     getData()
   }, [])
@@ -118,7 +125,7 @@ const Horses = (props: Props) => {
     setHorsesInfo(() => {
       return horsesInfo.filter(horse => horse.horse_id !== id)
     })
-  }  
+  }
 
   return (
     <> {loading ? < Loader /> :

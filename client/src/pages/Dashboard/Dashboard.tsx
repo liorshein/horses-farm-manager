@@ -4,6 +4,7 @@ import Loader from '../../components/Loader/Loader';
 import Navigation from '../../components/Navigation/Navigation';
 import Chart from './Chart';
 import styles from "./dashboard.module.scss"
+import { useLocation, useNavigate } from 'react-router-dom';
 const logo = require("../../assets/icons/logo.svg")
 const menuIcon = require("../../assets/icons/menu.svg").default
 
@@ -30,6 +31,8 @@ const Dashboard = () => {
   const [width, setWidth] = useState(window.innerWidth)
   const [navDisplay, setNavDisplay] = useState(true)
   const axiosPrivate = useAxiosPrivate()
+  const navigate = useNavigate()
+  const location = useLocation()
 
   useEffect(() => {
     function handleResize() {
@@ -45,8 +48,8 @@ const Dashboard = () => {
     } else {
       setNavDisplay(true)
     }
-  },[width]);
-  
+  }, [width]);
+
 
   useEffect(() => {
     setTimeout(() => {
@@ -56,14 +59,18 @@ const Dashboard = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const personalData = await (await axiosPrivate.get("/instructors/user")).data.result
-      setPersonalInfo(personalData)
-      const lessons = await (await axiosPrivate.get(`/instructors/lessons-monthly`)).data.result.rows
-      setMonths(lessons)
-      const horsesArr = await (await axiosPrivate.get(`/instructors/favorite-horse`)).data.result.rows
-      let max = Math.max(...horsesArr.map((horse: { count: number }) => horse.count))
-      let favoriteHorse = horsesArr.find((horse: { count: string }) => horse.count === max.toString())
-      setFavoriteHorse(favoriteHorse)
+      try {
+        const personalData = await (await axiosPrivate.get("/instructors/user")).data.result
+        setPersonalInfo(personalData)
+        const lessons = await (await axiosPrivate.get(`/instructors/lessons-monthly`)).data.result.rows
+        setMonths(lessons)
+        const horsesArr = await (await axiosPrivate.get(`/instructors/favorite-horse`)).data.result.rows
+        let max = Math.max(...horsesArr.map((horse: { count: number }) => horse.count))
+        let favoriteHorse = horsesArr.find((horse: { count: string }) => horse.count === max.toString())
+        setFavoriteHorse(favoriteHorse)
+      } catch (err) {
+        navigate('/login', { state: { from: location }, replace: true })
+      }
     }
     getData()
   }, [])
@@ -87,7 +94,7 @@ const Dashboard = () => {
       setNavDisplay(true)
     }
   }
-  
+
   return (
     <> {loading ?
       <Loader /> :
