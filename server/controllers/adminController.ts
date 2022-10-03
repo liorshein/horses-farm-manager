@@ -10,7 +10,7 @@ export const getStudentsData: RequestHandler = async (req: any, res) => {
 
 export const getInstructorLessons: RequestHandler = async (req: any, res) => {
     const InstructorId = req.query.instructor_id
-    const date = req.query.date    
+    const date = req.query.date
 
     const result = (await client.query(
         `SELECT *
@@ -24,7 +24,12 @@ export const getInstructorLessons: RequestHandler = async (req: any, res) => {
     res.send({ result });
 }
 
-export const getAllInstructorsData: RequestHandler = async (_req , res) => {    
+export const getMonthOfLessons: RequestHandler = async (_req, res) => {
+    const result = await client.query(`SELECT DISTINCT ON (1) SUBSTRING(date, 1, 7) FROM lessons`);
+    res.send({ result });
+}
+
+export const getAllInstructorsData: RequestHandler = async (_req, res) => {
     const result = (await client.query(`SELECT * FROM instructors WHERE instructor_id>1`)).rows;
     res.send({ result });
 }
@@ -37,8 +42,14 @@ export const getAllStudentsData: RequestHandler = async (_req, res) => {
     res.send({ result });
 }
 
-export const getLessonsPerMonth: RequestHandler = async (_req, res) => {
-    const result = await client.query(`SELECT COUNT (*),SUBSTRING(date, 1, 7) FROM lessons GROUP BY SUBSTRING(date, 1, 7) ORDER BY SUBSTRING(date, 1, 7)`);
+export const getLessonsPerMonth: RequestHandler = async (req, res) => {
+    const date = req.query.date
+    const result = await client.query(
+        `SELECT COUNT (lessons.*),SUBSTRING(date, 1, 7), instructors.instructor_name
+        FROM lessons
+        JOIN instructors ON lessons.instructor_id = instructors.instructor_id
+        WHERE SUBSTRING(date, 1, 7)=$1
+        GROUP BY SUBSTRING(date, 1, 7), instructors.instructor_name`, [date]);
     res.send({ result });
 }
 

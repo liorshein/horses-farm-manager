@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import Loader from '../../components/Loader/Loader';
-import Chart from './Chart';
+import UserChart from './UserChart';
 import styles from "./dashboard.module.scss"
 import { useLocation, useNavigate } from 'react-router-dom';
 import { axiosPrivate } from '../../api/axios';
@@ -35,38 +35,59 @@ const UserDashboard = () => {
   }, []);
 
   useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
+
     const getData = async () => {
       try {
         const personalData = await (await axiosPrivate.get("/instructors/user")).data.result
-        setPersonalInfo(personalData)
+        isMounted && setPersonalInfo(personalData)
         const lessons = await (await axiosPrivate.get(`/instructors/lessons-monthly`)).data.result.rows
-        setMonths(lessons)
+        isMounted && setMonths(lessons)
         const horsesArr = await (await axiosPrivate.get(`/instructors/favorite-horse`)).data.result.rows
         if (horsesArr.length > 0) {
           let max = Math.max(...horsesArr.map((horse: { count: number }) => horse.count))
           let favoriteHorse = horsesArr.find((horse: { count: string }) => horse.count === max.toString())
-          setFavoriteHorse(favoriteHorse)
+          isMounted && setFavoriteHorse(favoriteHorse)
         }
       } catch (err) {
         navigate('/login', { state: { from: location }, replace: true })
       }
     }
     getData()
+
+    return () => {
+      isMounted = false;
+      controller.abort()
+    }
+
   }, [])
 
   useEffect(() => {
-    const getData = async () => {      
-      if (salaryMonth !== '' && salaryMonth !== "Select year & month") {
-        let salary = await (await axiosPrivate.get(`/instructors/lessons-per-month`)).data.result.rows[0]
-        if (salary !== undefined) {
-          setSalary(salary.count)
+    let isMounted = true;
+    const controller = new AbortController();
+
+    const getData = async () => {
+      try {
+        if (salaryMonth !== '' && salaryMonth !== "Select year & month") {
+          let salary = await (await axiosPrivate.get(`/instructors/lessons-per-month`)).data.result.rows[0]
+          if (salary !== undefined) {
+            isMounted && setSalary(salary.count)
+          }
+        } else {
+          isMounted && setSalary(0)
         }
-      } else {
-        setSalary(0)
+      } catch (error) {
+        console.error(error);
       }
     }
     getData()
-  }, [salaryMonth])  
+
+    return () => {
+      isMounted = false;
+      controller.abort()
+    }
+  }, [salaryMonth])
 
   return (
     <> {loading ?
@@ -96,7 +117,7 @@ const UserDashboard = () => {
           </div>
         </div>
         <div className={styles.chart}>
-          <Chart />
+          <UserChart />
         </div>
       </section>
     }

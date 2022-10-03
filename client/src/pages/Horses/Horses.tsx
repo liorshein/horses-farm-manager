@@ -43,15 +43,23 @@ const Horses = () => {
   }
 
   useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
+
     const getData = async () => {
       try {
         const horsesData = await (await axiosPrivate.get("/instructors/horses")).data.result
-        setHorsesInfo(horsesData)
+        isMounted && setHorsesInfo(horsesData)
       } catch (error) {
         navigate('/login', { state: { from: location }, replace: true })
       }
     }
     getData()
+
+    return () => {
+      isMounted = false;
+      controller.abort()
+    }
   }, [])
 
   const shiftStateForm = (e: { preventDefault: () => void }) => {
@@ -63,19 +71,24 @@ const Horses = () => {
     }
   }
 
-  const addHorse = async () => {
+  const addHorse = async (e: any) => {
+    e.preventDefault()
     if (inputs.age !== '' && inputs.assignable !== '' && inputs.breed !== '' && inputs.horse_name) {
       if (inputs.assignable === "True") {
         inputs.assignable = true
       } else {
         inputs.assignable = false
       }
+
       axiosPrivate.post("/admin/add-horse", {
         name: inputs.horse_name,
         age: Number(inputs.age),
         breed: inputs.breed,
         assignable: inputs.assignable
       })
+
+      const horsesData = await (await axiosPrivate.get("/instructors/horses")).data.result
+      setHorsesInfo(horsesData)
 
     } else {
       alert("Please enter valid info!")

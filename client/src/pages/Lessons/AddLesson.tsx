@@ -38,14 +38,26 @@ const AddLesson = (props: Props) => {
     }
 
     useEffect(() => {
-        const getData = async () => {            
-            if (props.selectedInstructor !== "") {
-                let params = new URLSearchParams({ instructor_id: props.selectedInstructor })
-                const studentsData = await (await axiosPrivate.get(`/admin/instructor-students?${params}`)).data.result            
-                setStudentInfo(studentsData)
+        let isMounted = true;
+        const controller = new AbortController();
+
+        const getData = async () => {
+            try {
+                if (props.selectedInstructor !== "") {
+                    let params = new URLSearchParams({ instructor_id: props.selectedInstructor })
+                    const studentsData = await (await axiosPrivate.get(`/admin/instructor-students?${params}`)).data.result
+                    isMounted && setStudentInfo(studentsData)
+                }
+            } catch (error) {
+                console.error(error);
             }
         }
         getData()
+
+        return () => {
+            isMounted = false;
+            controller.abort()
+        }
     }, [props.selectedInstructor])
 
     const handleClick = async (e: { preventDefault: () => void; }) => {

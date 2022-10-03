@@ -8,13 +8,9 @@ import Loader from '../../components/Loader/Loader';
 import { axiosPrivate } from '../../api/axios';
 import useAuth from '../../hooks/useAuth';
 import { Instructor } from '../Students/Students';
+import { useNavigate, useLocation } from 'react-router-dom';
 const leftArrow = require("../../assets/icons/leftarrow.svg")
 const rightArrow = require("../../assets/icons/rightarrow.svg")
-const clalit = require("../../assets/icons/clalit.svg")
-const meuhedet = require("../../assets/icons/meuhedet.svg")
-const macabi = require("../../assets/icons/macabi.svg")
-
-const hmoNames = [clalit, macabi, meuhedet]
 
 export type Lesson = {
   lesson_id: number
@@ -35,6 +31,9 @@ const Lessons = () => {
   const [instructorsInfo, setInstructorsInfo] = useState([])
   const [selectedInstructor, setSelectedInstructor] = useState('')
 
+  const navigate = useNavigate()
+  const location = useLocation()
+
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
@@ -42,34 +41,55 @@ const Lessons = () => {
   }, []);
 
   useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
+
     const getData = async () => {
-      if (!roles.includes("User")) {
-        const allInstructors = await (await axiosPrivate.get("/admin/instructors")).data.result
-        setInstructorsInfo(allInstructors)
+      try {
+        if (!roles.includes("User")) {
+          const allInstructors = await (await axiosPrivate.get("/admin/instructors")).data.result
+          isMounted && setInstructorsInfo(allInstructors)
+        }
+      } catch (error) {
+        navigate('/login', { state: { from: location }, replace: true })
       }
     }
     getData()
+
+    return () => {
+      isMounted = false;
+      controller.abort()
+    }
   }, [])
 
   useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
+
     const getData = async () => {
       if (roles.includes("User")) {
         let dateFormatted = mainDay.toISOString().split("T")[0];
         let params = new URLSearchParams({ date: dateFormatted })
         const lessonsData = await (await axiosPrivate.get(`/instructors/lessons?${params}`)).data.result
-        setLessons(lessonsData)
+        isMounted && setLessons(lessonsData)
       } else {
         if (selectedInstructor !== "") {
           let dateFormatted = mainDay.toISOString().split("T")[0];
           let params = new URLSearchParams({ date: dateFormatted, instructor_id: selectedInstructor })
           const lessonsData = await (await axiosPrivate.get(`/admin/instructor-lessons?${params}`)).data.result
-          setLessons(lessonsData)
+          isMounted && setLessons(lessonsData)
         } else {
-          setLessons([])
+          isMounted && setLessons([])
         }
       }
     }
     getData()
+
+    return () => {
+      isMounted = false;
+      controller.abort()
+    }
+
   }, [mainDay, selectedInstructor])
 
   const deleteLesson = (id: number) => {
@@ -118,7 +138,7 @@ const Lessons = () => {
                   }
                   )}
                 </select>
-                <AddLesson selectedInstructor={selectedInstructor} mainDay={mainDay} setMainDay={setMainDay} day={day} setDay={setDay} setLessons={setLessons} />
+                {selectedInstructor !== "" ? <AddLesson selectedInstructor={selectedInstructor} mainDay={mainDay} setMainDay={setMainDay} day={day} setDay={setDay} setLessons={setLessons} /> : <div className={styles.emptyDiv}></div>}
               </>}
           </div>
           <div className={styles.wrapper_container}>

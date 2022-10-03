@@ -5,23 +5,35 @@ import { axiosPrivate } from '../../api/axios';
 
 ChartJS.register(...registerables);
 
-const Chart = () => {
+const UserChart = () => {
     const [chartData, setChartData] = useState({
         labels: [],
         count: []
     })
 
     useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+
         const getData = async () => {
-            const data = await (await axiosPrivate.get(`/instructors/lessons-per-month`)).data.result.rows
-            const labelsData = data.map((obj: string) => obj.substring)
-            const countData = data.map((obj: { count: any }) => obj.count)
-            setChartData({
-                labels: labelsData,
-                count: countData,
-            })
+            try {
+                const data = await (await axiosPrivate.get(`/instructors/lessons-per-month`)).data.result.rows
+                const labelsData = data.map((obj: string) => obj.substring)
+                const countData = data.map((obj: { count: any }) => obj.count)
+                isMounted && setChartData({
+                    labels: labelsData,
+                    count: countData,
+                })
+            } catch (error) {
+                console.error(error);
+            }
         }
         getData()
+
+        return () => {
+            isMounted = false;
+            controller.abort()
+        }
     }, [])
 
     return (
@@ -79,4 +91,4 @@ const Chart = () => {
     )
 }
 
-export default Chart
+export default UserChart

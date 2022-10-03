@@ -24,11 +24,23 @@ const SearchTime = (props: Props) => {
     const [horseInfo, setHorseInfo] = useState<Horse[]>([])
 
     useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+
         const getData = async () => {
-            const horsesData = await (await axiosPrivate.get("/admin/horses-available")).data.result
-            setHorseInfo(horsesData)
+            try {
+                const horsesData = await (await axiosPrivate.get("/admin/horses-available")).data.result
+                isMounted && setHorseInfo(horsesData)
+            } catch (error) {
+                console.error(error);
+            }
         }
         getData()
+
+        return () => {
+            isMounted = false;
+            controller.abort()
+        }
     }, [])
 
     const handleClick = async (e: { preventDefault: () => void }) => {

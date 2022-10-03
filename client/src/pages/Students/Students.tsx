@@ -69,22 +69,30 @@ const Students = () => {
   }
 
   useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
+
     const getData = async () => {
       try {
         if (roles.includes("User")) {
           const studentsData = await (await axiosPrivate.get("/instructors/user-students")).data.result
-          setStudentsInfo(studentsData)
+          isMounted && setStudentsInfo(studentsData)
         } else {
           const studentsAllData = await (await axiosPrivate.get("/admin/students")).data.result
-          setStudentsInfo(studentsAllData)
           const allInstructors = await (await axiosPrivate.get("/admin/instructors")).data.result
-          setInstructorsInfo(allInstructors)
+          isMounted && setStudentsInfo(studentsAllData)
+          isMounted && setInstructorsInfo(allInstructors)
         }
       } catch (error) {
         navigate('/login', { state: { from: location }, replace: true })
       }
     }
     getData()
+
+    return () => {
+      isMounted = false;
+      controller.abort()
+    }
   }, [])
 
   const shiftStateForm = (e: { preventDefault: () => void }) => {
@@ -96,7 +104,8 @@ const Students = () => {
     }
   }
 
-  const addStudent = () => {
+  const addStudent = async (e: any) => {
+    e.preventDefault()
     if (inputs.address !== '' && inputs.age !== '' && inputs.date_of_birth !== '' && inputs.framework !== '' &&
       inputs.height !== '' && inputs.hmo !== '' && inputs.id !== '' && inputs.student_name !== '' &&
       inputs.weight !== '' && inputs.working_on) {
@@ -114,6 +123,15 @@ const Students = () => {
         working_on: inputs.working_on,
         instructor_id: inputs.instructor_id
       });
+
+      if (roles.includes("User")) {
+        const studentsData = await (await axiosPrivate.get("/instructors/user-students")).data.result
+        setStudentsInfo(studentsData)
+      } else {
+        const studentsAllData = await (await axiosPrivate.get("/admin/students")).data.result
+        setStudentsInfo(studentsAllData)
+      }
+
     } else {
       alert("Please enter valid info!")
     }
@@ -121,7 +139,7 @@ const Students = () => {
 
   const deleteStudent = (id: number) => {
     let params = new URLSearchParams({ student_id: id.toString() })
-    axiosPrivate.delete(`/instructors/delete-student?${params}`)
+    axiosPrivate.delete(`/admin/delete-student?${params}`)
     setStudentsInfo(() => {
       return studentsInfo.filter(student => student.student_id !== id)
     })

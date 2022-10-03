@@ -3,16 +3,17 @@ import {
     addStudent, addLesson, addHorse, 
     deleteStudent, deleteHorse, deleteLesson,
     getAvailableHorses, getAvailableHours, getInstructorLessons, 
-    getLessonsPerMonth, getAllStudentsData, getAllInstructorsData, getStudentsData} from '../../controllers/adminController';
+    getLessonsPerMonth, getAllStudentsData, getAllInstructorsData, getStudentsData, getMonthOfLessons} from '../../controllers/adminController';
 import { verifyRoles } from '../../middleware/verifyRoles';
 const ROLES_LIST = require('../../config/rolesList')
 
 const adminRouter = Router();
 
+adminRouter.get('/lessons-monthly', verifyRoles(ROLES_LIST.Admin), getMonthOfLessons)
+adminRouter.get('/instructors-lessons-per-month', verifyRoles(ROLES_LIST.Admin), getLessonsPerMonth)
 adminRouter.get('/instructor-lessons', verifyRoles(ROLES_LIST.Admin), getInstructorLessons)
 adminRouter.get('/instructor-students', verifyRoles(ROLES_LIST.Admin), getStudentsData)
 adminRouter.get('/instructors', verifyRoles(ROLES_LIST.Admin), getAllInstructorsData)
-adminRouter.get('/lessons-per-month', verifyRoles(ROLES_LIST.Admin), getLessonsPerMonth)
 adminRouter.get('/horses-available', verifyRoles(ROLES_LIST.Admin), getAvailableHorses)
 adminRouter.get('/students', verifyRoles(ROLES_LIST.Admin), getAllStudentsData)
 adminRouter.get('/lessons-available', verifyRoles(ROLES_LIST.Admin), getAvailableHours)

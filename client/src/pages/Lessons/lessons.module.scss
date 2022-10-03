@@ -3,7 +3,7 @@
 }
 
 .instructor_select {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .main_content {
@@ -51,7 +51,7 @@
             background-color: #c8b8ab;
             border-color: transparent;
             box-shadow: 0px 0px 10px rgba(119, 99, 90, 0.8);
-            margin-bottom: 10px;
+            margin-bottom: 5px;
 
             &:hover {
                 cursor: pointer;
@@ -132,6 +132,11 @@
 
 .hidden {
     display: none;
+}
+
+.emptyDiv {
+    padding: 5px 15px;
+    margin-bottom: 24px;
 }
 
 .form {
