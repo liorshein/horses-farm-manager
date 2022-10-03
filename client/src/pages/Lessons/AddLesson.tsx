@@ -3,7 +3,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import SearchTime from './SearchTime';
 import styles from './lessons.module.scss'
 import { Lesson } from './Lessons';
-import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import { axiosPrivate } from '../../api/axios';
 
 type Props = {
     mainDay: Date
@@ -11,6 +11,7 @@ type Props = {
     day: Date
     setDay: (a: Date) => void
     setLessons: (value: React.SetStateAction<Lesson[]>) => void
+    selectedInstructor: string
 }
 
 type Student = {
@@ -27,8 +28,6 @@ const AddLesson = (props: Props) => {
     const [selectedHorseId, setSelectedHorseId] = useState('')
     const [hidden, setHidden] = useState(true)
 
-    const axiosPrivate = useAxiosPrivate()
-
     const shiftStateForm = (e: { preventDefault: () => void }) => {
         e.preventDefault()
         if (hidden === true) {
@@ -39,26 +38,30 @@ const AddLesson = (props: Props) => {
     }
 
     useEffect(() => {
-        const getData = async () => {
-            const studentsData = await (await axiosPrivate.get("/instructors/user-students")).data.result
-            setStudentInfo(studentsData)
+        const getData = async () => {            
+            if (props.selectedInstructor !== "") {
+                let params = new URLSearchParams({ instructor_id: props.selectedInstructor })
+                const studentsData = await (await axiosPrivate.get(`/admin/instructor-students?${params}`)).data.result            
+                setStudentInfo(studentsData)
+            }
         }
         getData()
-    }, [])
+    }, [props.selectedInstructor])
 
     const handleClick = async (e: { preventDefault: () => void; }) => {
         e.preventDefault()
-        if (selectedHorseId !== '' && selectedHour !== '' && selectedStudent !== '') {
+        if (selectedHorseId !== '' && selectedHour !== '' && selectedStudent !== '' && props.selectedInstructor !== "") {
             let dateFormat = props.day.toISOString().split("T")[0];
-            axiosPrivate.post("/instructors/add-lesson", {
+            axiosPrivate.post("/admin/add-lesson", {
                 horse_id: Number(selectedHorseId),
                 date: dateFormat,
                 lesson_time: selectedHour,
                 student_id: Number(selectedStudent),
+                instructor_id: Number(props.selectedInstructor)
             });
             if (dateFormat === props.mainDay.toISOString().split("T")[0]) {
-                let params = new URLSearchParams({ date: dateFormat })
-                const lessonsData = await (await axiosPrivate.get(`/instructors/lessons?${params}`)).data.result
+                let params = new URLSearchParams({ date: dateFormat, instructor_id: props.selectedInstructor })
+                const lessonsData = await (await axiosPrivate.get(`/admin/instructor-lessons?${params}`)).data.result
                 props.setLessons(lessonsData)
             } else {
                 alert(`Lesson Added on ${dateFormat}`)

@@ -21,35 +21,33 @@ export const signIn: RequestHandler = async (req, res) => {
     if (validPass) {
         const userId = foundUser.rows[0].instructor_id
         const roles = foundUser.rows[0].roles
-
-        // Create accessToken
-        const accessToken = jwt.sign(
-            {
-                "UserInfo": {
-                    "id": userId,
-                    "roles": roles
-                }
-            },
-            process.env.ACCESS_TOKEN_SECRET!,
-            { expiresIn: '5m' }
-        );
+        const userName = foundUser.rows[0].instructor_name
 
         // Create refreshToken
-        const refreshToken = jwt.sign(
-            { "id": userId },
-            process.env.REFRESH_TOKEN_SECRET!,
+        const cookieJWT = jwt.sign({
+            "UserInfo": {
+                "id": userId,
+                "roles": roles
+            }
+        },
+            process.env.TOKEN_SECRET!,
             { expiresIn: '1d' }
         );
 
-        // Saving refreshToken with current user
-        client.query(`UPDATE instructors SET refresh_token = $1 WHERE instructor_id = $2`, [refreshToken, userId])
-
-        // Creates Secure Cookie with refresh token
-        res.cookie("token", refreshToken, { httpOnly: true, secure: true, maxAge: 24 * 60 * 60 * 1000 })
-
-        // Send authorization roles and access token to user
-        res.json({ accessToken })
+        // Creates httpOnly Cookie with jwt token
+        res.cookie("token", cookieJWT, { httpOnly: true, secure: true, maxAge: 24 * 60 * 60 * 1000 })
+        res.json({ roles, userName })
     } else {
         res.sendStatus(401)
+    }
+}
+
+export const checkCookies: RequestHandler = (req, res) => {
+    const jwtCookie = req.cookies.token;
+    try {
+        jwt.verify(jwtCookie, process.env.TOKEN_SECRET!);
+        res.json("validate")
+    } catch (error) {
+        res.sendStatus(403)
     }
 }

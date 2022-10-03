@@ -1,20 +1,18 @@
 import { useEffect, useState } from 'react'
 import AddLesson from './AddLesson';
-import Navigation from '../../components/Navigation/Navigation';
 import styles from "./lessons.module.scss"
 import LessonComp from './LessonComp';
 import DatePicker from 'react-datepicker'
 import { isSaturday } from './SearchTime';
 import Loader from '../../components/Loader/Loader';
-import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-import { useNavigate, useLocation } from 'react-router-dom';
-const logo = require("../../assets/icons/logo.svg")
+import { axiosPrivate } from '../../api/axios';
+import useAuth from '../../hooks/useAuth';
+import { Instructor } from '../Students/Students';
 const leftArrow = require("../../assets/icons/leftarrow.svg")
 const rightArrow = require("../../assets/icons/rightarrow.svg")
 const clalit = require("../../assets/icons/clalit.svg")
 const meuhedet = require("../../assets/icons/meuhedet.svg")
 const macabi = require("../../assets/icons/macabi.svg")
-const menuIcon = require("../../assets/icons/menu.svg").default
 
 const hmoNames = [clalit, macabi, meuhedet]
 
@@ -29,46 +27,13 @@ export type Lesson = {
 }
 
 const Lessons = () => {
+  const { roles } = useAuth()!
   const [lessons, setLessons] = useState<Lesson[]>([])
   const [mainDay, setMainDay] = useState(new Date())
   const [day, setDay] = useState(new Date())
-  const [personalInfo, setPersonalInfo] = useState({
-    instructor_name: '',
-    email: '',
-    phone_number: '',
-    address: '',
-  });
   const [loading, setLoading] = useState(true);
-  const [width, setWidth] = useState(window.innerWidth)
-  const [navDisplay, setNavDisplay] = useState(true)
-  const navigate = useNavigate()
-  const location = useLocation()
-
-  const axiosPrivate = useAxiosPrivate()
-
-  useEffect(() => {
-    function handleResize() {
-      setWidth(window.innerWidth);
-    }
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [width]);
-
-  useEffect(() => {
-    if (width <= 1000) {
-      setNavDisplay(false)
-    } else {
-      setNavDisplay(true)
-    }
-  }, [width]);
-
-  const shiftMenuDisplay = () => {
-    if (navDisplay) {
-      setNavDisplay(false)
-    } else {
-      setNavDisplay(true)
-    }
-  }
+  const [instructorsInfo, setInstructorsInfo] = useState([])
+  const [selectedInstructor, setSelectedInstructor] = useState('')
 
   useEffect(() => {
     setTimeout(() => {
@@ -78,11 +43,9 @@ const Lessons = () => {
 
   useEffect(() => {
     const getData = async () => {
-      try {
-        const personalData = await (await axiosPrivate.get("/instructors/user")).data.result
-        setPersonalInfo(personalData)
-      } catch (error) {
-        navigate('/login', { state: { from: location }, replace: true })
+      if (!roles.includes("User")) {
+        const allInstructors = await (await axiosPrivate.get("/admin/instructors")).data.result
+        setInstructorsInfo(allInstructors)
       }
     }
     getData()
@@ -90,13 +53,24 @@ const Lessons = () => {
 
   useEffect(() => {
     const getData = async () => {
-      let dateFormatted = mainDay.toISOString().split("T")[0];
-      let params = new URLSearchParams({ date: dateFormatted })
-      const lessonsData = await (await axiosPrivate.get(`/instructors/lessons?${params}`)).data.result
-      setLessons(lessonsData)
+      if (roles.includes("User")) {
+        let dateFormatted = mainDay.toISOString().split("T")[0];
+        let params = new URLSearchParams({ date: dateFormatted })
+        const lessonsData = await (await axiosPrivate.get(`/instructors/lessons?${params}`)).data.result
+        setLessons(lessonsData)
+      } else {
+        if (selectedInstructor !== "") {
+          let dateFormatted = mainDay.toISOString().split("T")[0];
+          let params = new URLSearchParams({ date: dateFormatted, instructor_id: selectedInstructor })
+          const lessonsData = await (await axiosPrivate.get(`/admin/instructor-lessons?${params}`)).data.result
+          setLessons(lessonsData)
+        } else {
+          setLessons([])
+        }
+      }
     }
     getData()
-  }, [mainDay])
+  }, [mainDay, selectedInstructor])
 
   const deleteLesson = (id: number) => {
     let params = new URLSearchParams({ lesson_id: id.toString() })
@@ -121,24 +95,6 @@ const Lessons = () => {
   return (
     <> {loading ? <Loader /> :
       <div className={styles.main_container}>
-        <div className={styles.menu_side} onClick={shiftMenuDisplay}>
-          <img src={menuIcon} alt="logo" />
-        </div>
-        <nav className={navDisplay ? styles.navbar : styles.menu_hidden}>
-          <div className={styles.menu} onClick={shiftMenuDisplay}>
-            <img src={menuIcon} alt="logo" />
-          </div>
-          <div className={styles.logo}>
-            <img src={logo.default} alt="logo" />
-          </div>
-          <div className={styles.personal_info_nav}>
-            <h1 className={styles.name}>{personalInfo.instructor_name.split(' ')[0]} <br /> {personalInfo.instructor_name.split(' ')[1]}</h1>
-            <p className={styles.job}>Instructor</p>
-          </div>
-          <div className={styles.links}>
-            <Navigation />
-          </div>
-        </nav>
         <div className={styles.main_content}>
           <div className={styles.upper_part}>
             <div className={styles.date_container}>
@@ -153,7 +109,17 @@ const Lessons = () => {
               </div>
               <button onClick={dateRight} className={styles.arrowBtn}><img className={styles.arrow} src={rightArrow.default} alt="logo" /></button>
             </div>
-            <AddLesson mainDay={mainDay} setMainDay={setMainDay} day={day} setDay={setDay} setLessons={setLessons} />
+            {roles.includes("User") ? <></> :
+              <>
+                <select className={styles.instructor_select} name="instructor_id" id="instructor_id" value={selectedInstructor} onChange={(e) => { setSelectedInstructor(e.target.value) }}>
+                  <option value=''>Choose Instructor</option>
+                  {instructorsInfo.map((instructor: Instructor) => {
+                    return <option key={instructor.instructor_id} value={instructor.instructor_id}>{instructor.instructor_name}</option>
+                  }
+                  )}
+                </select>
+                <AddLesson selectedInstructor={selectedInstructor} mainDay={mainDay} setMainDay={setMainDay} day={day} setDay={setDay} setLessons={setLessons} />
+              </>}
           </div>
           <div className={styles.wrapper_container}>
             <div className={styles.lesson_container}>

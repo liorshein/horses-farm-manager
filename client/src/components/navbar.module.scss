@@ -1,6 +1,35 @@
-.navbar {
+.flex_col {
     display: flex;
     flex-direction: column;
+}
+
+.navbar {
+    width: 17vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .logo {
+        margin: 20px 0px 20px 0px;
+    }
+
+    .personal_info_nav {
+        .name {
+            text-align: center;
+        }
+
+        .job {
+            text-align: center;
+            opacity: 0.6;
+            margin-top: 7px;
+            margin-bottom: 60px;
+        }
+    }
+}
+
+.navbar_links {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
 
     .link_container {
         margin-right: 20px;

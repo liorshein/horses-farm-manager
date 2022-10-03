@@ -2,27 +2,8 @@
     display: flex;
 }
 
-.navbar {
-    width: 17vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    .logo {
-        margin: 20px 0px 20px 0px;
-    }
-
-    .personal_info_nav {
-        .name {
-            text-align: center;
-        }
-
-        .job {
-            text-align: center;
-            opacity: 0.6;
-            margin-top: 7px;
-            margin-bottom: 60px;
-        }
-    }
+.instructor_select {
+    margin-bottom: 10px;
 }
 
 .main_content {
@@ -214,26 +195,6 @@
         width: 30%;
         margin-bottom: 20px;
     }
-}
-
-.menu_side {
-    display: none;
-    position: fixed;
-    margin-left: 5px;
-    height: 30px;
-    width: 30px;
-}
-
-.menu {
-    display: none;
-    align-self: flex-end;
-    margin-right: 5px;
-    height: 30px;
-    width: 30px;
-}
-
-.menu_hidden {
-    display: none;
 }
 
 @media only screen and (max-width: 1600px) {

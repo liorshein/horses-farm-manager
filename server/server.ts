@@ -7,12 +7,12 @@ import path from 'path';
 import registerRouter from './routes/register';
 import authRouter from './routes/auth';
 import { logOut } from './controllers/logoutController';
-import refreshTokenRouter from './routes/refresh';
 import { verifyJWT } from './middleware/verifyJWT'
 import instructorRouter from './routes/api/instructors';
 import {credentials} from './middleware/credentials'
 import { corsOptions } from './config/corsOptions';
 import rootRouter from './routes/root';
+import adminRouter from './routes/api/admin';
 
 const app: Express = express();
 
@@ -39,11 +39,11 @@ app.use(express.static(path.join(__dirname, "..", 'client/build')))
 app.use('/', rootRouter);
 app.use('/register', registerRouter)
 app.use('/auth', authRouter)
-app.use('/refresh', refreshTokenRouter)
 app.use('/logout', logOut)
 
 app.use(verifyJWT);
 app.use('/instructors', instructorRouter)
+app.use('/admin', adminRouter)
 
 app.get('*', (_req: any, res: any) => {
     res.sendFile(path.join(__dirname, "..", 'client/build/index.html'));

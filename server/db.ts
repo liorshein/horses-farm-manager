@@ -26,7 +26,6 @@ export const initDb = async () => {
             phone_number TEXT NOT NULL,
             address TEXT NOT NULL,
             roles TEXT[] NOT NULL,
-            refresh_token TEXT,
             UNIQUE (email, password)
         );`
     );

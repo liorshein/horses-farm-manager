@@ -7,8 +7,7 @@ type Props = {
 
 const Login = (props: Props) => {
 
-  const appContext = useAuth();
-  const { onLogin, loginValues, onChange } = appContext!
+  const { onLogin, loginValues, onChange } = useAuth()!
 
   return (
     <>

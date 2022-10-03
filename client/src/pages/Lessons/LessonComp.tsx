@@ -1,5 +1,5 @@
 import { SetStateAction, useEffect, useRef, useState } from "react"
-import useAxiosPrivate from "../../hooks/useAxiosPrivate"
+import { axiosPrivate } from "../../api/axios"
 import styles from "./lessons.module.scss"
 const clalit = require("../../assets/icons/clalit.svg")
 const meuhedet = require("../../assets/icons/meuhedet.svg")
@@ -27,8 +27,6 @@ const LessonComp = (props: Props) => {
     const [currentLesson, setCurrentLesson] = useState<Lesson>()
     const [arrived, setArrived] = useState<string | undefined>(undefined)
     const [status, setStatus] = useState(false)
-
-    const axiosPrivate = useAxiosPrivate()
 
     useEffect(() => {
         const getData = () => {

@@ -3,15 +3,12 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 export const verifyJWT = (req: any, res: any, next: () => void) => {    
-    const authHeader = req.headers.authorization || req.headers.Authorization;
-    if (!authHeader?.startsWith('Bearer ')) return res.sendStatus(401);
-    const token = authHeader.split(' ')[1];
-    
+    const token = req.cookies.token
     jwt.verify(
         token,
-        process.env.ACCESS_TOKEN_SECRET!,
+        process.env.TOKEN_SECRET!,
         (err: any, decoded: any) => {
-            if (err) return res.sendStatus(403); //invalid token
+            if (err) return res.sendStatus(403); //invalid token            
             req.user = decoded.UserInfo.id;
             req.roles = decoded.UserInfo.roles;
             next();

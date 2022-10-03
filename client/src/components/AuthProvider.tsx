@@ -19,8 +19,8 @@ interface ContextInterface {
             value: string;
         };
     }) => void
-    token: string | undefined;
-    setToken: React.Dispatch<React.SetStateAction<undefined>>;
+    roles: string[]
+    name: string
 }
 
 interface stateType {
@@ -36,7 +36,8 @@ const AutoProvider = (props: Props) => {
         email: "",
         password: "",
     })
-    const [token, setToken] = useState();
+    const [roles, setRoles] = useState([])
+    const [name, setName] = useState('')
 
     const handleChange = (event: { target: { name: string; value: string } }) => {
         setLoginInputs({ ...loginInputs, [event.target.name]: event.target.value })
@@ -52,10 +53,11 @@ const AutoProvider = (props: Props) => {
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
-                })).data
-                
-            if (response) {
-                setToken(response.accessToken)
+                }))
+
+            if (response.status === 200) {                
+                setRoles(response.data.roles)
+                setName(response.data.userName)
                 const origin = location?.from?.pathname || '/dashboard';
                 navigate(origin);
             } else {
@@ -68,7 +70,6 @@ const AutoProvider = (props: Props) => {
 
     const handleLogout = async () => {
         await axios.get("/logout", { withCredentials: true })
-        setToken(undefined)
         navigate('/login');
     };
 
@@ -77,8 +78,8 @@ const AutoProvider = (props: Props) => {
         onLogout: handleLogout,
         loginValues: loginInputs,
         onChange: handleChange,
-        setToken: setToken,
-        token: token,
+        roles: roles,
+        name: name,
     };
 
     return (

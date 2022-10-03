@@ -1,21 +1,15 @@
 import { useEffect, useState } from 'react'
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, registerables } from 'chart.js';
-import useAxiosPrivate from '../../hooks/useAxiosPrivate'
+import { axiosPrivate } from '../../api/axios';
 
 ChartJS.register(...registerables);
 
-type Props = {
-
-}
-
-const Chart = (props: Props) => {
+const Chart = () => {
     const [chartData, setChartData] = useState({
         labels: [],
         count: []
     })
-
-    const axiosPrivate = useAxiosPrivate()
 
     useEffect(() => {
         const getData = async () => {

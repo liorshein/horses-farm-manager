@@ -16,6 +16,10 @@ html {
     overflow: hidden;
 }
 
+.main_container {
+    display: flex;
+}
+
 .active {
     font-weight: bold;
 }

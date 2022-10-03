@@ -1,6 +1,5 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import useAuth from '../hooks/useAuth'
-import jwt_decode from 'jwt-decode'
+import useAuth from '../hooks/useAuth';
 
 type Props = {
     children: any
@@ -9,10 +8,7 @@ type Props = {
 
 const ProtectedRoute = (props: Props) => {
     const location = useLocation()
-    const { token } = useAuth()!
-
-    const decoded: any = token ? jwt_decode(token) : undefined    
-    const roles = decoded?.UserInfo?.roles || []
+    const { roles } = useAuth()!   
 
     if (!roles.find((role: string) => props.allowedRoles?.includes(role))) {
         return <Navigate to="/login" replace state={{ from: location }} />;
