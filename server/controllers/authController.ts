@@ -44,9 +44,11 @@ export const signIn: RequestHandler = async (req, res) => {
 
 export const checkCookies: RequestHandler = (req, res) => {
     const jwtCookie = req.cookies.token;
+    
     try {
-        jwt.verify(jwtCookie, process.env.TOKEN_SECRET!);
-        res.json("validate")
+        jwt.verify(jwtCookie, process.env.TOKEN_SECRET!, (_err: any, decoded: any) => {
+            res.json(decoded.UserInfo.roles);
+        });
     } catch (error) {
         res.sendStatus(403)
     }

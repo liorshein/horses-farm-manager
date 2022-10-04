@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom';
-import axios from '../api/axios'
+import React, { useEffect, useState } from 'react'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import axios, { axiosPrivate } from '../api/axios'
 
 type Props = {
     children: any
@@ -20,6 +20,7 @@ interface ContextInterface {
         };
     }) => void
     roles: string[]
+    setRoles: React.Dispatch<React.SetStateAction<never[]>>
     name: string
 }
 
@@ -55,7 +56,7 @@ const AutoProvider = (props: Props) => {
                     withCredentials: true
                 }))
 
-            if (response.status === 200) {                
+            if (response.status === 200) {
                 setRoles(response.data.roles)
                 setName(response.data.userName)
                 const origin = location?.from?.pathname || '/dashboard';
@@ -80,6 +81,7 @@ const AutoProvider = (props: Props) => {
         onChange: handleChange,
         roles: roles,
         name: name,
+        setRoles: setRoles
     };
 
     return (
