@@ -27,6 +27,7 @@ export const signIn: RequestHandler = async (req, res) => {
         const cookieJWT = jwt.sign({
             "UserInfo": {
                 "id": userId,
+                "name": userName,
                 "roles": roles
             }
         },
@@ -47,7 +48,7 @@ export const checkCookies: RequestHandler = (req, res) => {
     
     try {
         jwt.verify(jwtCookie, process.env.TOKEN_SECRET!, (_err: any, decoded: any) => {
-            res.json(decoded.UserInfo.roles);
+            res.json(decoded.UserInfo);
         });
     } catch (error) {
         res.sendStatus(403)

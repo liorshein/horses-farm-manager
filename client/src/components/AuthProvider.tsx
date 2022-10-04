@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import axios, { axiosPrivate } from '../api/axios'
+import React, { useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from '../api/axios'
 
 type Props = {
     children: any
@@ -22,6 +22,7 @@ interface ContextInterface {
     roles: string[]
     setRoles: React.Dispatch<React.SetStateAction<never[]>>
     name: string
+    setName: React.Dispatch<React.SetStateAction<string>>
 }
 
 interface stateType {
@@ -81,7 +82,8 @@ const AutoProvider = (props: Props) => {
         onChange: handleChange,
         roles: roles,
         name: name,
-        setRoles: setRoles
+        setRoles: setRoles,
+        setName: setName,
     };
 
     return (
