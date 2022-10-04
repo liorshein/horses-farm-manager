@@ -5,7 +5,7 @@ import useAuth from '../hooks/useAuth'
 import Loader from './Loader/Loader'
 
 const PersistLogin = () => {
-    const { setRoles } = useAuth()
+    const { setRoles } = useAuth()!
     const [loggedIn, setLoggedIn] = useState(false)
 
     useEffect(() => {
