@@ -31,7 +31,7 @@ const UserDashboard = () => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 1000);
+    }, 1500);
   }, []);
 
   useEffect(() => {
