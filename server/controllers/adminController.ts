@@ -2,6 +2,45 @@ import { RequestHandler } from "express";
 import { client } from "../db";
 import { filterHours } from './helpFunctions'
 
+export const editStudent: RequestHandler = async (req, res) => {
+    const result = await client.query(
+        `UPDATE students
+        SET student_name=$1, id=$2, date_of_birth=$3, age=$4,
+            weight=$5, height=$6, address=$7, framework=$8, working_on=$9,
+            hmo=$10, instructor_id=$11
+        WHERE student_id=$12`, [
+        req.body.name,
+        req.body.id,
+        req.body.date_of_birth,
+        req.body.age,
+        req.body.weight,
+        req.body.height,
+        req.body.address,
+        req.body.framework,
+        req.body.working_on,
+        req.body.hmo,
+        req.body.instructor_id,
+        req.body.student_id,
+    ])
+
+    res.send(result)
+}
+
+export const editHorse: RequestHandler = async (req, res) => {
+    const result = await client.query(
+        `UPDATE horses
+        SET horse_name=$1, age=$2, breed=$3, assignable=$4
+        WHERE horse_id=$5`, [
+        req.body.name,
+        req.body.age,
+        req.body.breed,
+        req.body.assignable,
+        req.body.horse_id
+    ])
+
+    res.send(result)
+}
+
 export const getStudentsData: RequestHandler = async (req: any, res) => {
     const InstructorId = req.query.instructor_id
     const result = (await client.query('SELECT * FROM students WHERE instructor_id = $1', [Number(InstructorId)])).rows

@@ -26,6 +26,7 @@ const Horses = () => {
   })
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('')
+  const [edit, setEdit] = useState(false)
 
   const { roles } = useAuth()!
 
@@ -49,7 +50,7 @@ const Horses = () => {
     const getData = async () => {
       try {
         const horsesData = await (await axiosPrivate.get("/instructors/horses")).data.result
-        isMounted && setHorsesInfo(horsesData)
+        isMounted && setHorsesInfo(horsesData.sort((a: Horse, b: Horse) => (a.horse_id > b.horse_id ? 1 : -1)))
       } catch (error) {
         navigate('/login', { state: { from: location }, replace: true })
       }
@@ -88,12 +89,50 @@ const Horses = () => {
       })
 
       const horsesData = await (await axiosPrivate.get("/instructors/horses")).data.result
-      setHorsesInfo(horsesData)
+      setHorsesInfo(horsesData.sort((a: Horse, b: Horse) => (a.horse_id > b.horse_id ? 1 : -1)))
 
     } else {
       alert("Please enter valid info!")
     }
 
+  }
+
+  const setForEdit = (horse: Horse) => {
+    setHidden(false)
+
+    if (horse.assignable === true) {
+      horse.assignable = "True"
+    } else {
+      horse.assignable = "False"
+    }
+    console.log(horse);
+    setInputs(horse)
+    setEdit(true)
+  }
+
+  const updateHorse = async (e: any) => {
+    e.preventDefault()
+    if (inputs.age !== '' && inputs.assignable !== '' && inputs.breed !== '' && inputs.horse_name) {
+      if (inputs.assignable === "True") {
+        inputs.assignable = true
+      } else {
+        inputs.assignable = false
+      }
+
+      await axiosPrivate.put("/admin/edit-horse", {
+        name: inputs.horse_name,
+        age: Number(inputs.age),
+        breed: inputs.breed,
+        assignable: inputs.assignable,
+        horse_id: inputs.horse_id
+      })      
+
+      const horsesData = await (await axiosPrivate.get("/instructors/horses")).data.result
+      setHorsesInfo(horsesData.sort((a: Horse, b: Horse) => (a.horse_id > b.horse_id ? 1 : -1)))
+
+    } else {
+      alert("Please enter valid info!")
+    }
   }
 
   const deleteHorse = (id: number) => {
@@ -131,7 +170,8 @@ const Horses = () => {
                 </select>
               </div>
               <div className={styles.flex}>
-                <button className={styles.Btns} onClick={addHorse}>Add Horse</button>
+                {!edit ? <button className={styles.Btns} onClick={addHorse}>Add Horse</button>
+                  : <button className={styles.Btns} onClick={updateHorse}>Update Horse</button>}
                 <button className={styles.Btns} onClick={shiftStateForm}>Return</button>
               </div>
             </form>
@@ -165,7 +205,10 @@ const Horses = () => {
                     </div>
                   </div>
                   {roles.includes("User") ? <></> :
-                    <button className={styles.deleteBtn} onClick={() => deleteHorse(horse.horse_id)}>Delete</button>}
+                    <div className={styles.btn_div}>
+                      <button className={styles.horseBtn} onClick={() => deleteHorse(horse.horse_id)}>Delete</button>
+                      <button className={styles.horseBtn} onClick={() => setForEdit(horse)}>Edit</button>
+                    </div>}
                 </div>
               })}
             </div>

@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import {
-    addStudent, addLesson, addHorse, 
+    addStudent, addLesson, addHorse, editStudent,
     deleteStudent, deleteHorse, deleteLesson,
     getAvailableHorses, getAvailableHours, getInstructorLessons, 
-    getLessonsPerMonth, getAllStudentsData, getAllInstructorsData, getStudentsData, getMonthOfLessons} from '../../controllers/adminController';
+    getLessonsPerMonth, getAllStudentsData, getAllInstructorsData, getStudentsData, getMonthOfLessons, editHorse} from '../../controllers/adminController';
 import { verifyRoles } from '../../middleware/verifyRoles';
 const ROLES_LIST = require('../../config/rolesList')
 
@@ -23,5 +23,7 @@ adminRouter.post('/add-horse', verifyRoles(ROLES_LIST.Admin), addHorse)
 adminRouter.delete('/delete-student', verifyRoles(ROLES_LIST.Admin), deleteStudent)
 adminRouter.delete('/delete-horse', verifyRoles(ROLES_LIST.Admin), deleteHorse)
 adminRouter.delete('/delete-lesson', verifyRoles(ROLES_LIST.Admin), deleteLesson)
+adminRouter.put('/edit-student', verifyRoles(ROLES_LIST.Admin), editStudent)
+adminRouter.put('/edit-horse', verifyRoles(ROLES_LIST.Admin), editHorse)
 
 export default adminRouter;

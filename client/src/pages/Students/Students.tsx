@@ -50,6 +50,7 @@ const Students = () => {
     instructor_id: 0,
     instructor_name: ''
   })
+  const [edit, setEdit] = useState(false)
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('')
   const navigate = useNavigate()
@@ -80,7 +81,7 @@ const Students = () => {
         } else {
           const studentsAllData = await (await axiosPrivate.get("/admin/students")).data.result
           const allInstructors = await (await axiosPrivate.get("/admin/instructors")).data.result
-          isMounted && setStudentsInfo(studentsAllData)
+          isMounted && setStudentsInfo(studentsAllData.sort((a: Student, b: Student) => (a.student_id > b.student_id ? 1 : -1)))
           isMounted && setInstructorsInfo(allInstructors)
         }
       } catch (error) {
@@ -102,6 +103,7 @@ const Students = () => {
     } else {
       setHidden(true)
     }
+    setEdit(false)
   }
 
   const addStudent = async (e: any) => {
@@ -124,13 +126,43 @@ const Students = () => {
         instructor_id: inputs.instructor_id
       });
 
-      if (roles.includes("User")) {
-        const studentsData = await (await axiosPrivate.get("/instructors/user-students")).data.result
-        setStudentsInfo(studentsData)
-      } else {
-        const studentsAllData = await (await axiosPrivate.get("/admin/students")).data.result
-        setStudentsInfo(studentsAllData)
-      }
+      const studentsAllData = await (await axiosPrivate.get("/admin/students")).data.result
+      setStudentsInfo(studentsAllData.sort((a: Student, b: Student) => (a.student_id > b.student_id ? 1 : -1)))
+
+    } else {
+      alert("Please enter valid info!")
+    }
+  }
+
+  const setForEdit = (student: Student) => {
+    setHidden(false)
+    setInputs(student)
+    setEdit(true)
+  }
+
+  const updateStudent = async (e: any) => {
+    e.preventDefault()
+    if (inputs.address !== '' && inputs.age !== '' && inputs.date_of_birth !== '' && inputs.framework !== '' &&
+      inputs.height !== '' && inputs.hmo !== '' && inputs.id !== '' && inputs.student_name !== '' &&
+      inputs.weight !== '' && inputs.working_on) {
+
+      await axiosPrivate.put("/admin/edit-student", {
+        name: inputs.student_name,
+        id: inputs.id,
+        date_of_birth: inputs.date_of_birth,
+        age: inputs.age,
+        weight: inputs.weight,
+        height: inputs.height,
+        hmo: inputs.hmo,
+        address: inputs.address,
+        framework: inputs.framework,
+        working_on: inputs.working_on,
+        instructor_id: inputs.instructor_id,
+        student_id: inputs.student_id
+      });
+
+      const studentsAllData = await (await axiosPrivate.get("/admin/students")).data.result
+      setStudentsInfo(studentsAllData.sort((a: Student, b: Student) => (a.student_id > b.student_id ? 1 : -1)))
 
     } else {
       alert("Please enter valid info!")
@@ -197,19 +229,19 @@ const Students = () => {
                   <option value="2">Meuhedet</option>
                 </select>
               </div>
-              <div className={styles.select}>
-                <div>
-                  <select name="instructor_id" id="instructor_id" value={inputs.instructor_id} onChange={handleChange}>
-                    <option>Pick Instructor</option>
-                    {instructorsInfo.map((instructor: Instructor) => {
-                      return <option key={instructor.instructor_id} value={instructor.instructor_id}>{instructor.instructor_name}</option>
-                    }
-                    )}
-                  </select>
-                </div>
+              <div className={styles.form_select}>
+                <label>For</label>
+                <select name="instructor_id" id="instructor_id" value={inputs.instructor_id} onChange={handleChange}>
+                  <option>Pick Instructor</option>
+                  {instructorsInfo.map((instructor: Instructor) => {
+                    return <option key={instructor.instructor_id} value={instructor.instructor_id}>{instructor.instructor_name}</option>
+                  }
+                  )}
+                </select>
               </div>
               <div className={styles.flex}>
-                <button className={styles.Btns} onClick={addStudent}>Add Student</button>
+                {!edit ? <button className={styles.Btns} onClick={addStudent}>Add Student</button>
+                  : <button className={styles.Btns} onClick={updateStudent}>Update Student</button>}
                 <button className={styles.Btns} onClick={shiftStateForm}>Return</button>
               </div>
             </form>
@@ -272,7 +304,10 @@ const Students = () => {
                 </div>
                 <img className={styles.svg} src={hmoNames[student.hmo as number].default} alt={hmoNames[student.hmo as number].toString()} />
                 {roles.includes("User") ? <></> :
-                  <button className={styles.deleteBtn} onClick={() => deleteStudent(student.student_id)}>Delete</button>}
+                  <div className={styles.btn_div}>
+                    <button className={styles.studentBtn} onClick={() => deleteStudent(student.student_id)}>Delete</button>
+                    <button className={styles.studentBtn} onClick={() => setForEdit(student)}>Edit</button>
+                  </div>}
               </div>
             })}
           </div>

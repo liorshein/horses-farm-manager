@@ -104,9 +104,10 @@
                 }
             }
 
-            .deleteBtn {
+            .studentBtn {
                 margin-top: 10px;
                 margin-bottom: 10px;
+                margin-left: 10px;
                 padding: 5px 10px;
                 background-color: #c8b8ab;
                 border-radius: 10px;
@@ -153,6 +154,7 @@
 
     .form_select {
         align-self: start;
+        margin-bottom: 10px;
 
         & > label {
             margin-right: 10px;
