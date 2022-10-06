@@ -33,24 +33,23 @@ app.use(json());
 app.use(cookieParser());
 
 //Serve static files
-app.use(express.static(path.join(__dirname, "..", 'client/build')))
+app.use(express.static(path.join(__dirname, 'client')))
 
 //Routes
 app.use('/', rootRouter);
-app.use('/register', registerRouter)
-app.use('/auth', authRouter)
-app.use('/logout', logOut)
+app.use('/api/register', registerRouter)
+app.use('/api/auth', authRouter)
+app.use('/api/logout', logOut)
 
 app.use(verifyJWT);
-app.use('/instructors', instructorRouter)
-app.use('/admin', adminRouter)
+app.use('/api/instructors', instructorRouter)
+app.use('/api/admin', adminRouter)
 
 app.get('*', (_req: any, res: any) => {
-    res.sendFile(path.join(__dirname, "..", 'client/build/index.html'));
+    res.sendFile(path.join(__dirname, 'client/index.html'));
 })
 
 const PORT = process.env.PORT || 3500;
 app.listen(PORT, () => {
     console.log('Hosted: http://localhost:' + PORT);
 });
-

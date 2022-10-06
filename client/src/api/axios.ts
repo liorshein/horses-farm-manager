@@ -1,12 +1,19 @@
 import axios from 'axios'
-const BASE_URL = 'http://localhost:3500'
+
+let baseURL;
+
+if (process.env.NODE_ENV === "production") {
+    baseURL = '/api'
+} else {
+    baseURL = 'http://localhost:3500/api'
+}
 
 export default axios.create({
-    baseURL: BASE_URL
+    baseURL: baseURL
 })
 
 export const axiosPrivate = axios.create({
-    baseURL: BASE_URL,
+    baseURL: baseURL,
     headers: { 'Content-Type': 'application/json' },
     withCredentials: true
 })

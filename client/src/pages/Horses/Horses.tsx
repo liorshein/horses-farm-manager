@@ -3,7 +3,6 @@ import Loader from '../../components/Loader/Loader'
 import styles from "./horses.module.scss"
 import { useNavigate, useLocation } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
-import jwt_decode from 'jwt-decode'
 import { axiosPrivate } from '../../api/axios'
 
 type Horse = {
