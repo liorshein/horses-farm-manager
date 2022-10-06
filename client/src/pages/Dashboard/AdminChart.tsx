@@ -39,7 +39,7 @@ const AdminChart = (props: Props) => {
                             }
                         },
                         y: {
-                            suggestedMax: 50,
+                            suggestedMax: 200,
                             ticks: {
                                 color: "black",
                                 font: {

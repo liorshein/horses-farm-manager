@@ -59,10 +59,7 @@ const AdminDashboard = () => {
             <Loader /> :
 
             <section className={styles.main_content}>
-                <div className={styles.upper}>
-                    <div className={styles.content2}></div>
-                </div>
-                <div className={styles.container}>
+                <div className={styles.container2}>
                     <div className={styles.select_content}>
                         <h1>Lessons Per Instructor</h1>
                         <select className={styles.select} name="month" id="month" value={selectedMonth} onChange={(e) => { setSelectedMonth(e.target.value) }}>
