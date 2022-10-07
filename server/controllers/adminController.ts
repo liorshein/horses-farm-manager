@@ -77,8 +77,8 @@ export const getAllStudentsData: RequestHandler = async (_req, res) => {
     const result = (await client.query(
         `SELECT students.*, instructors.instructor_name
         FROM students
-        JOIN instructors ON students.instructor_id = instructors.instructor_id`)).rows
-    res.send({ result });
+        LEFT JOIN instructors ON students.instructor_id = instructors.instructor_id`)).rows
+    res.send({ result });    
 }
 
 export const getLessonsPerMonth: RequestHandler = async (req, res) => {

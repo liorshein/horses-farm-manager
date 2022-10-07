@@ -18,18 +18,14 @@ export const signIn: RequestHandler = async (req, res) => {
     const hash = foundUser.rows[0].password
     const validPass = await bcrypt.compare(password, hash)
 
-    if (validPass) {
+    if (validPass) {    
         const userId = foundUser.rows[0].instructor_id
         const roles = foundUser.rows[0].roles
         const userName = foundUser.rows[0].instructor_name
 
         // Create refreshToken
         const cookieJWT = jwt.sign({
-            "UserInfo": {
-                "id": userId,
-                "name": userName,
-                "roles": roles
-            }
+            "id": userId
         },
             process.env.TOKEN_SECRET!,
             { expiresIn: '1d' }
@@ -45,10 +41,13 @@ export const signIn: RequestHandler = async (req, res) => {
 
 export const checkCookies: RequestHandler = (req, res) => {
     const jwtCookie = req.cookies.token;
-    
+
     try {
-        jwt.verify(jwtCookie, process.env.TOKEN_SECRET!, (_err: any, decoded: any) => {
-            res.json(decoded.UserInfo);
+        jwt.verify(jwtCookie, process.env.TOKEN_SECRET!, async (_err: any, decoded: any) => {            
+            const foundUser = await client.query(`SELECT * FROM instructors WHERE instructor_id = $1`, [decoded.id])
+            const roles = foundUser.rows[0].roles
+            const userName = foundUser.rows[0].instructor_name
+            res.json({ roles, userName });
         });
     } catch (error) {
         res.sendStatus(403)

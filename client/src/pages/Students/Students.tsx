@@ -80,6 +80,13 @@ const Students = () => {
           isMounted && setStudentsInfo(studentsData)
         } else {
           const studentsAllData = await (await axiosPrivate.get("/admin/students")).data.result
+          
+          for (let student of studentsAllData) {
+            if (student.instructor_id == null) {
+              student.instructor_name = "Not Set"
+            }
+          }
+          
           const allInstructors = await (await axiosPrivate.get("/admin/instructors")).data.result
           isMounted && setStudentsInfo(studentsAllData.sort((a: Student, b: Student) => (a.student_id > b.student_id ? 1 : -1)))
           isMounted && setInstructorsInfo(allInstructors)

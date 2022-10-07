@@ -14,9 +14,9 @@ const PersistLogin = () => {
         const checkLoggedIn = async () => {
             try {
                 const response = await axiosPrivate.get("/auth/re-login")            
-                if (response.status === 200) {
+                if (response.status === 200) {                                        
                     setRoles(response.data.roles)
-                    setName(response.data.name)
+                    setName(response.data.userName)
                     setLoggedIn(true)
                 } else {
                     setLoggedIn(false)

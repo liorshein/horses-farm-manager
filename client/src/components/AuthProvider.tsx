@@ -7,6 +7,7 @@ type Props = {
 }
 
 interface ContextInterface {
+    onLoginTest: (e: any, number: number) => void;
     onLogin: (e: any) => void;
     onLogout: () => void;
     loginValues: {
@@ -70,6 +71,42 @@ const AutoProvider = (props: Props) => {
         }
     };
 
+    const handleLoginTest = async (e: any, number: number) => {
+        e.preventDefault()
+
+        let response;        
+
+        if (number === 1) {
+            response = (await axios.post("/auth", {
+                email: "admin@gmail.com",
+                password: "admin123"
+            },
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                }))
+        } else {
+            response = (await axios.post("/auth", {
+                email: "lior@gmail.com",
+                password: "lior123"
+            },
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                }))
+        }
+
+        if (response.status === 200) {
+            setRoles(response.data.roles)
+            setName(response.data.userName)
+            const origin = location?.from?.pathname || '/dashboard';
+            navigate(origin);
+        } else {
+            alert("Wrong password / email")
+        }
+
+    };
+
     const handleLogout = async () => {
         await axios.get("/logout", { withCredentials: true })
         navigate('/login');
@@ -77,6 +114,7 @@ const AutoProvider = (props: Props) => {
 
     const value = {
         onLogin: handleLogin,
+        onLoginTest: handleLoginTest,
         onLogout: handleLogout,
         loginValues: loginInputs,
         onChange: handleChange,

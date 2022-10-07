@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv'
+import { client } from '../db';
 dotenv.config()
 
 export const verifyJWT = (req: any, res: any, next: () => void) => {    
@@ -7,10 +8,12 @@ export const verifyJWT = (req: any, res: any, next: () => void) => {
     jwt.verify(
         token,
         process.env.TOKEN_SECRET!,
-        (err: any, decoded: any) => {
+        async (err: any, decoded: any) => {
             if (err) return res.sendStatus(403); //invalid token            
-            req.user = decoded.UserInfo.id;
-            req.roles = decoded.UserInfo.roles;
+            req.user = decoded.id;
+            const foundUser = await client.query(`SELECT * FROM instructors WHERE instructor_id = $1`, [decoded.id])
+            const roles = foundUser.rows[0].roles
+            req.roles = roles
             next();
         }
     );
