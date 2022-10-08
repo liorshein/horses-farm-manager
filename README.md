@@ -44,6 +44,11 @@
 
 [Live app](https://horse-farm-manager.herokuapp.com)
 
+<ul>
+  <li>For Admin experience click on Test 1</li>
+  <li>For User experience click on Test 2</li>
+</ul>
+
 <!-- Roadmap -->
 ## Roadmap
 
