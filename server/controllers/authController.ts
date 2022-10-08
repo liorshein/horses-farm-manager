@@ -42,8 +42,10 @@ export const signIn: RequestHandler = async (req, res) => {
 export const checkCookies: RequestHandler = (req, res) => {
     const jwtCookie = req.cookies.token;
 
+    if (!jwtCookie) return res.sendStatus(403)
+
     try {
-        jwt.verify(jwtCookie, process.env.TOKEN_SECRET!, async (_err: any, decoded: any) => {            
+        jwt.verify(jwtCookie, process.env.TOKEN_SECRET!, async (_err: any, decoded: any) => {         
             const foundUser = await client.query(`SELECT * FROM instructors WHERE instructor_id = $1`, [decoded.id])
             const roles = foundUser.rows[0].roles
             const userName = foundUser.rows[0].instructor_name
