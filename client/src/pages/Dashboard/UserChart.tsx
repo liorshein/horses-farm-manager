@@ -5,46 +5,23 @@ import { axiosPrivate } from '../../api/axios';
 
 ChartJS.register(...registerables);
 
-const UserChart = () => {
-    const [chartData, setChartData] = useState({
-        labels: [],
-        count: []
-    })
+type Props = {
+    data: {
+        labels: never[];
+        count: never[];
+    }
+}
 
-    useEffect(() => {
-        let isMounted = true;
-        const controller = new AbortController();
-
-        const getData = async () => {
-            try {
-                const data = await (await axiosPrivate.get(`/instructors/lessons-per-month`)).data.result.rows
-                const labelsData = data.map((obj: string) => obj.substring)
-                const countData = data.map((obj: { count: any }) => obj.count)
-                isMounted && setChartData({
-                    labels: labelsData,
-                    count: countData,
-                })
-            } catch (error) {
-                console.error(error);
-            }
-        }
-        getData()
-
-        return () => {
-            isMounted = false;
-            controller.abort()
-        }
-    }, [])
-
+const UserChart = ({data}: Props) => {
     return (
         <>
             <Bar
                 data={{
-                    labels: chartData.labels,
+                    labels: data.labels,
                     datasets: [
                         {
                             label: "Lessons",
-                            data: chartData.count,
+                            data: data.count,
                             backgroundColor: "#77635A"
                         }
                     ],

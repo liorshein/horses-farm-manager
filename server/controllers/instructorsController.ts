@@ -1,28 +1,30 @@
 import { RequestHandler } from "express";
 import { client } from "../db"
 
-//! User related requests (students, lessons)
-
-export const getUserData: RequestHandler = async (req: any, res) => {    
+// Sends to client basic user info
+export const getUserInfo: RequestHandler = async (req: any, res) => {
     const InstructorId = req.user
-    
-    const result = (await client.query(`SELECT * FROM instructors WHERE instructor_id = $1`, [InstructorId])).rows[0];
+
+    const result = (await client.query(`
+    SELECT instructor_name, email, phone_number, address
+    FROM instructors 
+    WHERE instructor_id = $1`, [InstructorId])).rows[0];
     res.send({ result });
 }
 
-export const getSalaryPerMonth: RequestHandler = async (req: any, res) => {
-    const InstructorId = req.user
-    const yearMonthStr = req.query.year_month_str
-    const result = await client.query(`SELECT COUNT (*) FROM lessons WHERE instructor_id=$1 AND POSITION($2 IN date)>0`, [InstructorId, yearMonthStr]);
-    res.send({ result });
-}
-
+// Sends to client the lessons of the instructor per month
 export const getLessonsPerMonth: RequestHandler = async (req: any, res) => {
     const InstructorId = req.user
-    const result = await client.query(`SELECT COUNT (*),SUBSTRING(date, 1, 7) FROM lessons WHERE instructor_id=$1 GROUP BY SUBSTRING(date, 1, 7) ORDER BY SUBSTRING(date, 1, 7)`, [InstructorId]);
+    const result = await client.query(`
+    SELECT COUNT (*),SUBSTRING(date, 1, 7) 
+    FROM lessons 
+    WHERE instructor_id=$1 
+    GROUP BY SUBSTRING(date, 1, 7) 
+    ORDER BY SUBSTRING(date, 1, 7)`, [InstructorId]);
     res.send({ result });
 }
 
+// Sends to client all the horses he uses and how much
 export const getFavoriteHorse: RequestHandler = async (req: any, res) => {
     const InstructorId = req.user
     const result = (await client.query(
@@ -35,6 +37,7 @@ export const getFavoriteHorse: RequestHandler = async (req: any, res) => {
     res.send({ result });
 }
 
+// Sends to client all the months he have lessons on
 export const getMonthOfLessons: RequestHandler = async (req: any, res) => {
     const InstructorId = req.user
     const result = await client.query(`SELECT DISTINCT ON (1) SUBSTRING(date, 1, 7) FROM lessons WHERE instructor_id=$1`, [InstructorId]);
@@ -66,7 +69,7 @@ export const updateArrived: RequestHandler = async (req, _res) => {
 // Lessons related requests
 
 export const getLessons: RequestHandler = async (req: any, res) => {
-    const InstructorId = req.user    
+    const InstructorId = req.user
     const date = req.query.date
 
     const result = (await client.query(

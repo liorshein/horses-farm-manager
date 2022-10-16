@@ -22,7 +22,7 @@ const AdminDashboard = () => {
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
-        }, 1000);
+        }, 2000);
     }, []);
 
     useEffect(() => {
@@ -34,6 +34,24 @@ const AdminDashboard = () => {
                 const months = await (await axiosPrivate.get(`/admin/lessons-monthly`)).data.result.rows
                 const monthsData = months.map((obj: any) => obj.substring)
                 isMounted && setMonths(monthsData)
+            } catch (error) {
+                navigate('/login', { state: { from: location }, replace: true })
+            }
+        }
+        getData()
+
+        return () => {
+            isMounted = false;
+            controller.abort()
+        }
+    }, [])
+
+    useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+
+        const getData = async () => {
+            try {
                 let params = new URLSearchParams({ date: selectedMonth })
                 const data = await (await axiosPrivate.get(`/admin/instructors-lessons-per-month?${params}`)).data.result.rows
                 const labelsData = data.map((obj: any) => obj.instructor_name)

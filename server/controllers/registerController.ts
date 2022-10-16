@@ -24,7 +24,7 @@ export const signUp: RequestHandler = async (req, res) => {
                 address,
                 ["User"]
             ]);
-            res.status(201).json({ 'success': `New user created!` })
+            res.status(201).json({ 'message': `New user created!` })
         })
     } catch (error: any) {
         res.status(500).send({ message: error.message });

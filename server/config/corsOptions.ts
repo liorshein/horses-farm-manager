@@ -1,5 +1,6 @@
 import { allowedOrigins } from "./allowedOrigins";
 
+// Set cors access for allowed origins only
 export const corsOptions = {
     origin: (origin: any, callback: any) => {
         if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
