@@ -81,14 +81,12 @@ export const getAllStudentsData: RequestHandler = async (_req, res) => {
     res.send({ result });    
 }
 
-export const getLessonsPerMonth: RequestHandler = async (req, res) => {
-    const date = req.query.date
+export const getLessonsPerMonth: RequestHandler = async (_req, res) => {
     const result = await client.query(
         `SELECT COUNT (lessons.*),SUBSTRING(date, 1, 7), instructors.instructor_name
         FROM lessons
         JOIN instructors ON lessons.instructor_id = instructors.instructor_id
-        WHERE SUBSTRING(date, 1, 7)=$1
-        GROUP BY SUBSTRING(date, 1, 7), instructors.instructor_name`, [date]);
+        GROUP BY SUBSTRING(date, 1, 7), instructors.instructor_name`);
     res.send({ result });
 }
 

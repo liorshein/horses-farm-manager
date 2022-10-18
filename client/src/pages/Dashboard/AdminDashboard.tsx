@@ -1,20 +1,32 @@
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import Loader from "../../components/Loader/Loader";
 import styles from "./dashboard.module.scss"
 import AdminChart from "./AdminChart";
 import { axiosPrivate } from "../../api/axios";
 import { useNavigate, useLocation } from "react-router-dom";
 
-const today = new Date().toISOString().slice(0, 7)
+const currentMonth = new Date().toISOString().slice(0, 7)
+
+type LessonsData = {
+    count: number
+    substring: string
+    instructor_name: string
+}
+
+type ChartData = {
+    labels: string[]
+    count: number[]
+}
 
 const AdminDashboard = () => {
     const [loading, setLoading] = useState(true);
     const [months, setMonths] = useState<string[]>([])
-    const [selectedMonth, setSelectedMonth] = useState(today)
-    const [chartData, setChartData] = useState({
+    const [selectedMonth, setSelectedMonth] = useState(currentMonth)
+    const [chartData, setChartData] = useState<ChartData>({
         labels: [],
         count: []
     })
+    const [lessonsData, setLessonsData] = useState<LessonsData[]>([])
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -31,31 +43,14 @@ const AdminDashboard = () => {
 
         const getData = async () => {
             try {
-                const months = await (await axiosPrivate.get(`/admin/lessons-monthly`)).data.result.rows
-                const monthsData = months.map((obj: any) => obj.substring)
-                isMounted && setMonths(monthsData)
-            } catch (error) {
-                navigate('/login', { state: { from: location }, replace: true })
-            }
-        }
-        getData()
-
-        return () => {
-            isMounted = false;
-            controller.abort()
-        }
-    }, [])
-
-    useEffect(() => {
-        let isMounted = true;
-        const controller = new AbortController();
-
-        const getData = async () => {
-            try {
-                let params = new URLSearchParams({ date: selectedMonth })
-                const data = await (await axiosPrivate.get(`/admin/instructors-lessons-per-month?${params}`)).data.result.rows
-                const labelsData = data.map((obj: any) => obj.instructor_name)
-                const countData = data.map((obj: any) => obj.count)
+                const data = await (await axiosPrivate.get(`/admin/instructors-lessons-per-month`)).data.result.rows
+                const monthsData: string[] = data.map((obj: any) => obj.substring)
+                const months = [...new Set(monthsData)]
+                isMounted && setMonths(months)
+                isMounted && setLessonsData(data)
+                const currentMonthData = data.filter((obj: any) => obj.substring === currentMonth)
+                const labelsData = currentMonthData.map((obj: any) => obj.instructor_name)
+                const countData = currentMonthData.map((obj: any) => obj.count)
                 isMounted && setChartData({
                     labels: labelsData,
                     count: countData,
@@ -70,7 +65,18 @@ const AdminDashboard = () => {
             isMounted = false;
             controller.abort()
         }
-    }, [selectedMonth])
+    }, [])
+
+    const handleChange = (e: { target: { value: SetStateAction<string>; }; }) => {
+        setSelectedMonth(e.target.value)
+        const currentMonthData = lessonsData.filter((obj: any) => obj.substring === e.target.value)
+        const labelsData = currentMonthData.map((obj: any) => obj.instructor_name)
+        const countData = currentMonthData.map((obj: any) => obj.count)
+        setChartData({
+            labels: labelsData,
+            count: countData,
+        })
+    }
 
     return (
         <> {loading ?
@@ -80,7 +86,7 @@ const AdminDashboard = () => {
                 <div className={styles.container2}>
                     <div className={styles.select_content}>
                         <h1>Lessons Per Instructor</h1>
-                        <select className={styles.select} name="month" id="month" value={selectedMonth} onChange={(e) => { setSelectedMonth(e.target.value) }}>
+                        <select className={styles.select} name="month" id="month" value={selectedMonth} onChange={handleChange}>
                             <option value="">Choose Month</option>
                             {months.map((month: string) => {
                                 return <option key={month} value={month}>{month}</option>
