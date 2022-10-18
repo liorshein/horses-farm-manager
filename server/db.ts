@@ -36,7 +36,7 @@ export const initDb = async () => {
             horse_name TEXT NOT NULL,
             age INTEGER NOT NULL,
             breed TEXT NOT NULL,
-            assignable BOOLEAN NOT NULL,
+            assignable TEXT NOT NULL,
             UNIQUE (horse_name, age)
         );`
     );

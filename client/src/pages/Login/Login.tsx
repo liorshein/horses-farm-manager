@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Login from '../../components/LoginComp';
+import Login from '../../components/Login';
 import Register from '../../components/Register';
 import styles from "./login.module.scss"
 

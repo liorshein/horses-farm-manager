@@ -158,10 +158,10 @@ export const getAvailableHorses: RequestHandler = async (_req, res) => {
     res.send({ result });
 }
 
-export const addHorse: RequestHandler = async (req: any, res) => {
+export const addHorse: RequestHandler = async (req: any, res) => {    
     await client.query(
         `INSERT INTO horses(horse_name, age, breed, assignable) VALUES ($1, $2, $3, $4)`, [
-        req.body.name,
+        req.body.horse_name,
         req.body.age,
         req.body.breed,
         req.body.assignable,

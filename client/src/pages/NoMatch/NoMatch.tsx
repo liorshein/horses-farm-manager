@@ -1,11 +1,7 @@
 import { Link } from "react-router-dom"
 import styles from "./nomatch.module.scss"
 
-//TODO (1): Create 404 page with style
-
-type Props = {}
-
-const NoMatch = (props: Props) => {
+const NoMatch = () => {
   return (
     <section className={styles.page_404}>
       <div className={styles.gif}></div>
