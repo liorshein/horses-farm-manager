@@ -96,17 +96,23 @@
                 }
             }
 
-            .horseBtn {
-                margin-left: 10px;
-                padding: 5px 10px;
-                background-color: #c8b8ab;
-                border-radius: 10px;
-                border: none;
-                margin-bottom: 10px;
+            .btn_div {
+                display: flex;
+                justify-content: center;
+                width: 100%;
 
-                &:hover {
-                    cursor: pointer;
-                    box-shadow: 0 0 10px rgb(79, 63, 56);
+                .horseBtn {
+                    margin-right: 10px;
+                    padding: 5px 10px;
+                    background-color: #c8b8ab;
+                    border-radius: 10px;
+                    border: none;
+                    margin-bottom: 10px;
+
+                    &:hover {
+                        cursor: pointer;
+                        box-shadow: 0 0 10px rgb(79, 63, 56);
+                    }
                 }
             }
 

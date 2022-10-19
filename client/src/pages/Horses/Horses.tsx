@@ -1,9 +1,8 @@
 import { useState } from 'react'
-import styles from "./horses.module.scss"
-import { useLoaderData, Form, ActionFunction } from 'react-router-dom'
+import { useLoaderData, ActionFunction, useFetcher } from 'react-router-dom'
+import { addHorse, deleteHorse, editHorse, getHorses } from '../../api/horses'
 import useAuth from '../../hooks/useAuth'
-import { axiosPrivate } from '../../api/axios'
-import { addHorse, getHorses } from '../../api/horses'
+import styles from "./horses.module.scss"
 
 export type Horse = {
   horse_id: number
@@ -19,18 +18,32 @@ export const loader = async () => {
 
 export const action: ActionFunction = async ({ request }) => {
   switch (request.method) {
-    case "post": {
+    case "POST": {
       const formData = await request.formData();
-      const horse = Object.fromEntries(formData)
-      await addHorse(horse)
+      const horse = Object.fromEntries(formData);
+      await addHorse(horse);
+      break;
+    }
+
+    case "PUT": {
+      const formData = await request.formData();
+      const horse = Object.fromEntries(formData);
+      await editHorse(horse);
+      break;
+    }
+
+    case "DELETE": {
+      const horseId = request.url.split("?")[1];
+      await deleteHorse(horseId);
+      break;
     }
   }
 }
 
 const Horses = () => {
   const { roles } = useAuth()!
+  const fetcher = useFetcher();
   const horsesData = useLoaderData() as Horse[]
-  const [horsesInfo, setHorsesInfo] = useState<Horse[]>([]);
   const [hidden, setHidden] = useState(true)
   const [inputs, setInputs] = useState<Horse>({
     horse_id: 0,
@@ -57,55 +70,17 @@ const Horses = () => {
 
   const setForEdit = (horse: Horse) => {
     setHidden(false)
-
-    if (horse.assignable === true) {
-      horse.assignable = "True"
-    } else {
-      horse.assignable = "False"
-    }
     setInputs(horse)
     setEdit(true)
-  }
-
-  const updateHorse = async (e: any) => {
-    e.preventDefault()
-    if (inputs.age !== '' && inputs.assignable !== '' && inputs.breed !== '' && inputs.horse_name) {
-      if (inputs.assignable === "True") {
-        inputs.assignable = true
-      } else {
-        inputs.assignable = false
-      }
-
-      await axiosPrivate.put("/admin/edit-horse", {
-        name: inputs.horse_name,
-        age: Number(inputs.age),
-        breed: inputs.breed,
-        assignable: inputs.assignable,
-        horse_id: inputs.horse_id
-      })
-
-      const horsesData = await (await axiosPrivate.get("/instructors/horses")).data.result
-      setHorsesInfo(horsesData.sort((a: Horse, b: Horse) => (a.horse_id > b.horse_id ? 1 : -1)))
-
-    } else {
-      alert("Please enter valid info!")
-    }
-  }
-
-  const deleteHorse = (id: number) => {
-    let params = new URLSearchParams({ horse_id: id.toString() })
-    axiosPrivate.delete(`/admin/delete-horse?${params}`)
-    setHorsesInfo(() => {
-      return horsesInfo.filter(horse => horse.horse_id !== id)
-    })
   }
 
   return (
     <div className={styles.main_container}>
       <div className={styles.form_content}>
         {roles.includes("User") ? <div className={styles.emptyDiv}></div> : <>
-          <Form method='post' className={hidden ? styles.hidden : styles.form}>
+          <fetcher.Form method={edit ? 'put' : 'post'} className={hidden ? styles.hidden : styles.form}>
             <h2 className={styles.title}>Add Horse</h2>
+            <input className={styles.hidden} type="number" name="horse_id" id="horse_id" value={inputs.horse_id} onChange={handleChange} />
             <div className={styles.form_group}>
               <label>Name</label>
               <input type="text" name="horse_name" id="name" value={inputs.horse_name} onChange={handleChange} />
@@ -127,10 +102,10 @@ const Horses = () => {
             </div>
             <div className={styles.flex}>
               {!edit ? <button type="submit" className={styles.Btns}>Add Horse</button>
-                : <button className={styles.Btns} onClick={updateHorse}>Update Horse</button>}
+                : <button className={styles.Btns}>Update Horse</button>}
               <button className={styles.Btns} onClick={shiftStateForm}>Return</button>
             </div>
-          </Form>
+          </fetcher.Form>
           <button className={styles.addBtn} onClick={shiftStateForm}>Add Horse</button>
         </>
         }
@@ -162,7 +137,9 @@ const Horses = () => {
                 </div>
                 {roles.includes("User") ? <></> :
                   <div className={styles.btn_div}>
-                    <button className={styles.horseBtn} onClick={() => deleteHorse(horse.horse_id)}>Delete</button>
+                    <fetcher.Form method='delete' action={`/horses?${horse.horse_id}`}>
+                      <button className={styles.horseBtn}>Delete</button>
+                    </fetcher.Form>
                     <button className={styles.horseBtn} onClick={() => setForEdit(horse)}>Edit</button>
                   </div>}
               </div>

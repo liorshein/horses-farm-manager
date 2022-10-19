@@ -31,7 +31,7 @@ export const editHorse: RequestHandler = async (req, res) => {
         `UPDATE horses
         SET horse_name=$1, age=$2, breed=$3, assignable=$4
         WHERE horse_id=$5`, [
-        req.body.name,
+        req.body.horse_name,
         req.body.age,
         req.body.breed,
         req.body.assignable,
