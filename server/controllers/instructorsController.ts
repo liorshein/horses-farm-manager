@@ -54,7 +54,7 @@ export const getStudentsData: RequestHandler = async (req: any, res) => {
 
 export const updateArrived: RequestHandler = async (req, _res) => {
     const lessonId = req.query.lesson_id
-    let booleanStr = req.query.arrived
+    let booleanStr = req.query.arrived    
     let boolean: boolean
 
     if (booleanStr === "True") {

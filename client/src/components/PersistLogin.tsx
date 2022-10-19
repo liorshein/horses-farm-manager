@@ -13,7 +13,7 @@ const PersistLogin = () => {
     useEffect(() => {
         const checkLoggedIn = async () => {
             try {
-                const response = await axiosPrivate.get("/auth/re-login")            
+                const response = await axiosPrivate.get("/auth/re-login")
                 if (response.status === 200) {                                        
                     setRoles(response.data.roles)
                     setName(response.data.userName)
@@ -26,7 +26,7 @@ const PersistLogin = () => {
             }
         }
         checkLoggedIn()
-    }, [setRoles])
+    }, [])
 
     return (
         <>

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useLoaderData, ActionFunction, useFetcher } from 'react-router-dom'
+import { useLoaderData, ActionFunction, useFetcher, LoaderFunction } from 'react-router-dom'
 import { addHorse, deleteHorse, editHorse, getHorses } from '../../api/horses'
 import useAuth from '../../hooks/useAuth'
 import styles from "./horses.module.scss"
@@ -12,7 +12,7 @@ export type Horse = {
   assignable: boolean | string
 }
 
-export const loader = async () => {
+export const loader: LoaderFunction = async () => {
   return getHorses();
 }
 
@@ -44,6 +44,7 @@ const Horses = () => {
   const { roles } = useAuth()!
   const fetcher = useFetcher();
   const horsesData = useLoaderData() as Horse[]
+  
   const [hidden, setHidden] = useState(true)
   const [inputs, setInputs] = useState<Horse>({
     horse_id: 0,

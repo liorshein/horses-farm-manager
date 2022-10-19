@@ -9,7 +9,7 @@ export const editStudent: RequestHandler = async (req, res) => {
             weight=$5, height=$6, address=$7, framework=$8, working_on=$9,
             hmo=$10, instructor_id=$11
         WHERE student_id=$12`, [
-        req.body.name,
+        req.body.student_name,
         req.body.id,
         req.body.date_of_birth,
         req.body.age,
@@ -94,7 +94,7 @@ export const addStudent: RequestHandler = async (req: any, res) => {
     const result = await client.query(
         `INSERT INTO students(student_name, id, date_of_birth, age, weight, height, hmo, address, framework, working_on, instructor_id)
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`, [
-        req.body.name,
+        req.body.student_name,
         req.body.id,
         req.body.date_of_birth,
         req.body.age,
@@ -154,7 +154,7 @@ export const deleteLesson: RequestHandler = async (req: any, res) => {
 }
 
 export const getAvailableHorses: RequestHandler = async (_req, res) => {
-    const result = (await client.query('SELECT * FROM horses WHERE assignable=true')).rows
+    const result = (await client.query("SELECT * FROM horses WHERE assignable='true'")).rows
     res.send({ result });
 }
 

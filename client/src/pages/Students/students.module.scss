@@ -104,18 +104,24 @@
                 }
             }
 
-            .studentBtn {
-                margin-top: 10px;
-                margin-bottom: 10px;
-                margin-left: 10px;
-                padding: 5px 10px;
-                background-color: #c8b8ab;
-                border-radius: 10px;
-                border: none;
+            .btn_div {
+                display: flex;
+                justify-content: center;
+                width: 100%;
 
-                &:hover {
-                    cursor: pointer;
-                    box-shadow: 0 0 10px rgb(79, 63, 56);
+                .studentBtn {
+                    margin-top: 10px;
+                    margin-bottom: 10px;
+                    margin-right: 10px;
+                    padding: 5px 10px;
+                    background-color: #c8b8ab;
+                    border-radius: 10px;
+                    border: none;
+
+                    &:hover {
+                        cursor: pointer;
+                        box-shadow: 0 0 10px rgb(79, 63, 56);
+                    }
                 }
             }
         }

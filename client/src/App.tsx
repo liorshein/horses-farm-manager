@@ -6,14 +6,12 @@ import ProtectedRoute from './components/ProtectedRoute'
 import Layout from './components/Layout'
 import Horses, { loader as horsesLoader, action as horsesAction } from './pages/Horses/Horses'
 import Lessons from './pages/Lessons/Lessons'
-import Students from './pages/Students/Students'
+import Students, { loader as studentsLoader, action as studentsAction } from './pages/Students/Students'
 import PersistLogin from './components/PersistLogin'
 import "./general.scss"
-import { QueryClient } from 'react-query'
 import Forbidden from './pages/Forbidden/Forbidden'
 import NoMatch from './pages/NoMatch/NoMatch'
 
-const queryClient = new QueryClient()
 
 const AuthProviderLayout = () => (
     <AuthProvider>
@@ -35,7 +33,7 @@ const router = createBrowserRouter([
             },
             {
                 element: <PersistLogin />,
-                // errorElement: <Forbidden />,
+                errorElement: <Forbidden />,
                 children: [
                     {
                         path: "/",
@@ -51,7 +49,9 @@ const router = createBrowserRouter([
                                 path: "/students",
                                 element: <ProtectedRoute allowedRoles={["User", "Admin"]}>
                                     <Students />
-                                </ProtectedRoute>
+                                </ProtectedRoute>,
+                                loader: studentsLoader,
+                                action: studentsAction
                             },
                             {
                                 path: "/horses",
@@ -59,7 +59,7 @@ const router = createBrowserRouter([
                                     <Horses />
                                 </ProtectedRoute>,
                                 loader: horsesLoader,
-                                action: horsesAction,
+                                action: horsesAction
                             },
                             {
                                 path: "/lessons",
