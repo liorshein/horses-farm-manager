@@ -2,15 +2,8 @@ import { useState } from 'react'
 import { useLoaderData, ActionFunction, useFetcher, LoaderFunction } from 'react-router-dom'
 import { addHorse, deleteHorse, editHorse, getHorses } from '../../api/horses'
 import useAuth from '../../hooks/useAuth'
+import { Horse } from '../../util/types'
 import styles from "./horses.module.scss"
-
-export type Horse = {
-  horse_id: number
-  horse_name: string
-  age: string
-  breed: string
-  assignable: boolean | string
-}
 
 export const loader: LoaderFunction = async () => {
   return getHorses();

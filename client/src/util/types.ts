@@ -1,0 +1,58 @@
+export type Student = {
+    student_id: number
+    student_name: string
+    id: string
+    date_of_birth: string
+    age: string
+    weight: string
+    height: string
+    hmo: number | string
+    address: string
+    framework: string
+    working_on: string
+    instructor_id: number
+    instructor_name: string
+}
+
+export type Instructor = {
+    instructor_id: string
+    instructor_name: string
+}
+
+export type Horse = {
+    horse_id: number
+    horse_name: string
+    age: number | string
+    breed: string
+    assignable: string
+}
+
+export type Lesson = {
+    lesson_id: number
+    horse_name: string
+    date: string
+    lesson_time: string
+    student_name: string
+    hmo: number | string
+    arrived: boolean
+}
+
+export type LessonsData = {
+    count: number
+    substring: string
+    instructor_name: string
+}
+
+export type ChartData = {
+    labels: string[]
+    count: number[]
+}
+
+export type Month = {
+    substring: string
+}
+
+export type Salary = {
+    count: number
+    substring: string
+}

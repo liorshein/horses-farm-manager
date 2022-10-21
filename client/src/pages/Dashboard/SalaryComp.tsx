@@ -1,6 +1,6 @@
 import { useState } from "react";
+import { Salary, Month } from "../../util/types";
 import styles from "./dashboard.module.scss"
-import { Month, Salary } from "./UserDashboard ";
 
 type Props = {
     salaryArr: Salary[]

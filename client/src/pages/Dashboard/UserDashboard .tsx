@@ -7,15 +7,7 @@ import PersonalComp from './PersonalComp';
 import FavHorseComp from './FavHorseComp';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { axiosPrivate } from '../../api/axios';
-
-export type Month = {
-  substring: string
-}
-
-export type Salary = {
-  count: number
-  substring: string
-}
+import { Salary } from '../../util/types';
 
 const currentMonth = new Date().toISOString().slice(0, 7)
 

@@ -1,5 +1,5 @@
 import axios from "axios"
-import { Student } from "../pages/Students/Students";
+import { Student } from "../util/types";
 import { axiosPrivate } from "./axios";
 
 let baseURL;

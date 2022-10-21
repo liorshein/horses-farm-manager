@@ -7,20 +7,10 @@ import { isSaturday } from './SearchTime';
 import Loader from '../../components/Loader/Loader';
 import { axiosPrivate } from '../../api/axios';
 import useAuth from '../../hooks/useAuth';
-import { Instructor } from '../Students/Students';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { Instructor, Lesson } from '../../util/types';
 const leftArrow = require("../../assets/icons/leftarrow.svg")
 const rightArrow = require("../../assets/icons/rightarrow.svg")
-
-export type Lesson = {
-  lesson_id: number
-  horse_name: string
-  date: string
-  lesson_time: string
-  student_name: string
-  hmo: number | string
-  arrived: boolean
-}
 
 const Lessons = () => {
   const { roles } = useAuth()!

@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import "react-datepicker/dist/react-datepicker.css";
 import SearchTime from './SearchTime';
 import styles from './lessons.module.scss'
-import { Lesson } from './Lessons';
 import { axiosPrivate } from '../../api/axios';
+import { Lesson, Student } from '../../util/types';
 
 type Props = {
     mainDay: Date
@@ -12,12 +12,6 @@ type Props = {
     setDay: (a: Date) => void
     setLessons: (value: React.SetStateAction<Lesson[]>) => void
     selectedInstructor: string
-}
-
-type Student = {
-    student_id: number
-    student_name: string
-    age: number
 }
 
 const AddLesson = (props: Props) => {

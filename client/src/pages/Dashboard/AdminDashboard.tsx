@@ -4,19 +4,9 @@ import styles from "./dashboard.module.scss"
 import AdminChart from "./AdminChart";
 import { axiosPrivate } from "../../api/axios";
 import { useNavigate, useLocation } from "react-router-dom";
+import { ChartData, LessonsData } from "../../util/types";
 
 const currentMonth = new Date().toISOString().slice(0, 7)
-
-type LessonsData = {
-    count: number
-    substring: string
-    instructor_name: string
-}
-
-type ChartData = {
-    labels: string[]
-    count: number[]
-}
 
 const AdminDashboard = () => {
     const [loading, setLoading] = useState(true);

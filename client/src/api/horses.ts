@@ -1,5 +1,5 @@
 import axios from "axios"
-import { Horse } from "../pages/Horses/Horses";
+import { Horse } from "../util/types";
 
 let baseURL;
 

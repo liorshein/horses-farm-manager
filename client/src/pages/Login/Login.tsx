@@ -3,10 +3,7 @@ import Login from '../../components/Login';
 import Register from '../../components/Register';
 import styles from "./login.module.scss"
 
-type Props = {
-}
-
-const Home = (_props: Props) => {
+const Home = () => {
   const [switchPage, setSwitchPage] = useState("Login")
 
   return (

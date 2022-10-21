@@ -2,6 +2,7 @@ import { getDay } from 'date-fns'
 import { useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
 import { axiosPrivate } from '../../api/axios'
+import { Horse } from '../../util/types'
 import styles from './lessons.module.scss'
 
 type Props = {
@@ -10,14 +11,6 @@ type Props = {
     selectedHorse: string
     day: Date
     setDay: (a: Date) => void
-}
-
-type Horse = {
-    horse_id: number
-    horse_name: string
-    age: number
-    breed: string
-    assignable: boolean
 }
 
 const SearchTime = (props: Props) => {

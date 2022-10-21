@@ -1,20 +1,11 @@
 import { SetStateAction, useEffect, useRef, useState } from "react"
 import { axiosPrivate } from "../../api/axios"
 import useAuth from "../../hooks/useAuth"
+import { Lesson } from "../../util/types"
 import styles from "./lessons.module.scss"
 const clalit = require("../../assets/icons/clalit.svg")
 const meuhedet = require("../../assets/icons/meuhedet.svg")
 const macabi = require("../../assets/icons/macabi.svg")
-
-type Lesson = {
-    lesson_id: number
-    horse_name: string
-    date: string
-    lesson_time: string
-    student_name: string
-    hmo: number | string
-    arrived: boolean
-}
 
 type Props = {
     lessons: Lesson[]
