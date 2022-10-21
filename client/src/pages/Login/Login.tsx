@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import Login from '../../components/Login';
-import Register from '../../components/Register';
+import Login from './LoginComp';
+import Register from './RegisterComp';
 import styles from "./login.module.scss"
 
 const Home = () => {

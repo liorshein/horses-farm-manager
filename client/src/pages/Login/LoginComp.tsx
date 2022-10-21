@@ -1,5 +1,5 @@
-import useAuth from "../hooks/useAuth"
-import styles from "../pages/Login/loginComp.module.scss"
+import useAuth from "../../hooks/useAuth"
+import styles from "./loginComp.module.scss"
 
 type Props = {
   switchPage: (a: string) => void
