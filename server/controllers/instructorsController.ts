@@ -54,16 +54,8 @@ export const getStudentsData: RequestHandler = async (req: any, res) => {
 
 export const updateArrived: RequestHandler = async (req, _res) => {
     const lessonId = req.query.lesson_id
-    let booleanStr = req.query.arrived    
-    let boolean: boolean
-
-    if (booleanStr === "True") {
-        boolean = true
-    } else {
-        boolean = false
-    }
-
-    await client.query(`UPDATE lessons SET arrived=$1 WHERE lesson_id=$2`, [boolean, lessonId])
+    let booleanStr = req.query.arrived
+    await client.query(`UPDATE lessons SET arrived=$1 WHERE lesson_id=$2`, [booleanStr, lessonId])
 }
 
 // Lessons related requests

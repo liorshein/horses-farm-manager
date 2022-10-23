@@ -58,7 +58,7 @@ const AutoProvider = (props: Props) => {
                     withCredentials: true
                 }))
 
-            if (response.status === 200) {
+            if (response.status === 200) {                
                 setRoles(response.data.roles)
                 setName(response.data.userName)
                 const origin = location?.from?.pathname || '/dashboard';

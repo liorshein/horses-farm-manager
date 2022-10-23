@@ -1,38 +1,29 @@
-import { SetStateAction, useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { axiosPrivate } from "../../api/axios"
 import useAuth from "../../hooks/useAuth"
 import { Lesson } from "../../util/types"
 import styles from "./lessons.module.scss"
-const clalit = require("../../assets/icons/clalit.svg")
-const meuhedet = require("../../assets/icons/meuhedet.svg")
-const macabi = require("../../assets/icons/macabi.svg")
+const clalit = require("../../assets/icons/clalit.svg").default
+const meuhedet = require("../../assets/icons/meuhedet.svg").default
+const macabi = require("../../assets/icons/macabi.svg").default
 
 type Props = {
-    lessons: Lesson[]
+    lesson: Lesson | undefined
     deleteLesson: (id: number) => void
-    hour: string
 }
 
 const hmoNames = [clalit, macabi, meuhedet]
 
-const LessonComp = (props: Props) => {
+const LessonComp = ({ lesson, deleteLesson }: Props) => {
     const { roles } = useAuth()!
-    const [currentLesson, setCurrentLesson] = useState<Lesson>()
     const [arrived, setArrived] = useState<string | undefined>(undefined)
     const [status, setStatus] = useState(false)
 
     useEffect(() => {
-        let isMounted = true;
-        const controller = new AbortController();
         const getData = () => {
             try {
-                let filteredLesson = props.lessons.filter((lesson: Lesson) => { return lesson.lesson_time === props.hour })
-                isMounted && setCurrentLesson(filteredLesson[0])
-                if (currentLesson?.arrived === true) {
-                    setArrived("True")
-                    setStatus(true)
-                } else if (currentLesson?.arrived === false) {
-                    setArrived("False")
+                if (lesson?.arrived) {
+                    setArrived(lesson.arrived)
                     setStatus(true)
                 } else {
                     setArrived(undefined)
@@ -43,35 +34,30 @@ const LessonComp = (props: Props) => {
             }
         }
         getData()
-
-        return () => {
-            isMounted = false;
-            controller.abort()
-        }
     })
 
-    const handleChange = (e: { target: { value: SetStateAction<string | undefined>; setAttribute: (arg0: string, arg1: string) => void } }) => {
+    const handleChange = (e: any) => {
         if (e.target.value !== "undefined" && e.target.value !== "Arrived?") {
+            console.log(e.target.value);
             setArrived(e.target.value)
             e.target.setAttribute("disabled", "disabled")
-            let boolean: string = e.target.value as string
-            let params = new URLSearchParams({ lesson_id: currentLesson!.lesson_id.toString(), arrived: boolean })
+            let params = new URLSearchParams({ lesson_id: lesson!.lesson_id.toString(), arrived: e.target.value })
             axiosPrivate.put(`/instructors/update-arrived?${params}`)
         }
     }
 
-    return (currentLesson ?
+    return (lesson ?
         <>
-            <span className={styles.content}>{currentLesson.student_name}</span>
-            <span className={styles.content}>{currentLesson.horse_name}</span>
-            <img className={styles.svg} src={hmoNames[currentLesson.hmo as number].default} alt={hmoNames[currentLesson.hmo as number].toString()} />
+            <span className={styles.content}>{lesson.student_name}</span>
+            <span className={styles.content}>{lesson.horse_name}</span>
+            <img className={styles.svg} src={hmoNames[lesson.hmo as number]} alt={hmoNames[lesson.hmo as number].toString()} />
             <select className={styles.arrivedSelect} value={arrived} onChange={handleChange} disabled={status}>
                 <option value={undefined}>Arrived?</option>
                 <option value="True">True</option>
                 <option value="False">False</option>
             </select>
-            {!roles.includes("User") ? <button className={styles.deleteBtn} onClick={() => props.deleteLesson(currentLesson.lesson_id)}>&#10006;</button> : <></>}
-        </> : <></>
+            {!roles.includes("User") ? <button className={styles.deleteBtn} onClick={() => deleteLesson(lesson.lesson_id)}>&#10006;</button> : <></>}
+        </> : null
     )
 }
 

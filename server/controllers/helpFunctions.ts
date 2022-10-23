@@ -1,4 +1,4 @@
-const workHours = [
+export const workHours = [
     "08:00-08:45",
     "08:45-09:30",
     "09:30-10:15",

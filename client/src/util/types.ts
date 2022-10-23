@@ -37,7 +37,7 @@ export type Lesson = {
     lesson_time: string
     student_name: string
     hmo: number | string
-    arrived: boolean
+    arrived: string
 }
 
 export type LessonsData = {

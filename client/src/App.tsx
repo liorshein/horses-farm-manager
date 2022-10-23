@@ -5,12 +5,12 @@ import AuthProvider from './components/AuthProvider'
 import ProtectedRoute from './components/ProtectedRoute'
 import Layout from './components/Layout'
 import Horses, { loader as horsesLoader, action as horsesAction } from './pages/Horses/Horses'
-import Lessons from './pages/Lessons/Lessons'
 import Students, { loader as studentsLoader, action as studentsAction } from './pages/Students/Students'
 import PersistLogin from './components/PersistLogin'
 import "./general.scss"
 import Forbidden from './pages/Forbidden/Forbidden'
 import NoMatch from './pages/NoMatch/NoMatch'
+import Lessons from './pages/Lessons/Lessons'
 
 
 const AuthProviderLayout = () => (
@@ -66,7 +66,7 @@ const router = createBrowserRouter([
                                 path: "/lessons",
                                 element: <ProtectedRoute allowedRoles={["User", "Admin"]}>
                                     <Lessons />
-                                </ProtectedRoute>
+                                </ProtectedRoute>,
                             }
                         ]
                     }

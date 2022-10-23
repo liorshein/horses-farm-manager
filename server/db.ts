@@ -71,7 +71,7 @@ export const initDb = async () => {
             ON DELETE CASCADE,
             date TEXT NOT NULL,
             lesson_time TEXT NOT NULL,
-            arrived BOOLEAN,
+            arrived TEXT,
             instructor_id INTEGER NOT NULL,
             FOREIGN KEY(instructor_id)
             REFERENCES instructors(instructor_id)
