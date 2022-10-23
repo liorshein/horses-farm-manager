@@ -32,8 +32,8 @@ export const getFavoriteHorse: RequestHandler = async (req: any, res) => {
         FROM lessons 
         JOIN horses ON horses.horse_id = lessons.horse_id
         WHERE lessons.instructor_id=$1 
-        GROUP BY lessons.horse_id, horses.horse_name`, [InstructorId]));
-
+        GROUP BY lessons.horse_id, horses.horse_name
+        ORDER BY COUNT(lessons.horse_id) DESC`, [InstructorId]));    
     res.send({ result });
 }
 

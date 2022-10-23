@@ -1,26 +1,41 @@
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, registerables } from 'chart.js';
+import { ChartData, LessonsData } from '../../util/types';
+import { useEffect, useState } from 'react';
 
 ChartJS.register(...registerables);
 
 type Props = {
-    chartData: {
-        labels: any[];
-        count: any[];
-    }
+    dashboardData: LessonsData[]
+    selectedMonth: string
 }
 
-const AdminChart = (props: Props) => {
+const AdminChart = ({ dashboardData, selectedMonth }: Props) => {
+    const [chartData, setChartData] = useState<ChartData>()
+
+    useEffect(() => {
+        const getData = async () => {
+            const currentMonthData = dashboardData.filter((obj: LessonsData) => obj.substring === selectedMonth)
+            const labelsData: string[] = currentMonthData.map((obj: LessonsData) => obj.instructor_name)
+            const countData: number[] = currentMonthData.map((obj: LessonsData) => obj.count)
+            setChartData({
+                labels: labelsData,
+                count: countData,
+            })
+        }
+        getData()
+    }, [selectedMonth])
+
     return (
         <>
 
             <Bar
                 data={{
-                    labels: props.chartData.labels,
+                    labels: chartData?.labels,
                     datasets: [
                         {
                             label: "Lessons",
-                            data: props.chartData.count,
+                            data: chartData?.count,
                             backgroundColor: "#77635A"
                         }
                     ],

@@ -1,5 +1,5 @@
 import { Navigate, createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom'
-import Dashboard from './pages/Dashboard/Dashboard'
+import Dashboard, { loader as dashboardLoader } from './pages/Dashboard/Dashboard'
 import Login from './pages/Login/Login'
 import AuthProvider from './components/AuthProvider'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -43,7 +43,8 @@ const router = createBrowserRouter([
                                 path: "/dashboard",
                                 element: <ProtectedRoute allowedRoles={["User", "Admin"]}>
                                     <Dashboard />
-                                </ProtectedRoute>
+                                </ProtectedRoute>,
+                                loader: dashboardLoader
                             },
                             {
                                 path: "/students",

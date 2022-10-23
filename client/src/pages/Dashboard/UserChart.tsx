@@ -1,27 +1,38 @@
-import { useEffect, useState } from 'react'
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, registerables } from 'chart.js';
-import { axiosPrivate } from '../../api/axios';
+import { ChartData, Salary } from '../../util/types';
+import { useEffect, useState } from 'react';
 
 ChartJS.register(...registerables);
 
 type Props = {
-    data: {
-        labels: never[];
-        count: never[];
-    }
+    data: Salary[]
 }
 
-const UserChart = ({data}: Props) => {
+const UserChart = ({ data }: Props) => {
+    const [chartData, setChartData] = useState<ChartData>()
+
+    useEffect(() => {
+        const getData = async () => {
+            const labelsData = data.map((obj: Salary) => obj.substring)
+            const countData = data.map((obj: Salary) => obj.count)
+            setChartData({
+                labels: labelsData,
+                count: countData,
+            })
+        }
+        getData()
+    }, [])
+    
     return (
         <>
             <Bar
                 data={{
-                    labels: data.labels,
+                    labels: chartData?.labels,
                     datasets: [
                         {
                             label: "Lessons",
-                            data: data.count,
+                            data: chartData?.count,
                             backgroundColor: "#77635A"
                         }
                     ],

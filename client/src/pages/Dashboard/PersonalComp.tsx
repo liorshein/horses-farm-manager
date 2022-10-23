@@ -1,15 +1,8 @@
-import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { axiosPrivate } from "../../api/axios";
+import { Instructor } from "../../util/types";
 import styles from "./dashboard.module.scss"
 
 type Props = {
-    data: {
-        instructor_name: string;
-        email: string;
-        phone_number: string;
-        address: string;
-    }
+    data: Instructor
 }
 
 const PersonalComp = ({data}: Props) => {

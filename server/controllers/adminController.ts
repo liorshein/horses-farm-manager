@@ -154,7 +154,9 @@ export const deleteLesson: RequestHandler = async (req: any, res) => {
 }
 
 export const getAvailableHorses: RequestHandler = async (_req, res) => {
-    const result = (await client.query("SELECT * FROM horses WHERE assignable='true'")).rows
+    const result = (await client.query("SELECT * FROM horses WHERE assignable='True'")).rows
+    console.log(result);
+    
     res.send({ result });
 }
 

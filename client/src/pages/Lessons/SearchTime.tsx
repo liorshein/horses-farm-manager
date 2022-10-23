@@ -23,6 +23,8 @@ const SearchTime = (props: Props) => {
         const getData = async () => {
             try {
                 const horsesData = await (await axiosPrivate.get("/admin/horses-available")).data.result
+                console.log(horsesData);
+                
                 isMounted && setHorseInfo(horsesData)
             } catch (error) {
                 console.error(error);

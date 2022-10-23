@@ -27,6 +27,7 @@ const StudentsForm = ({ instructorsData, edit, setEdit, hidden, setHidden, input
             setHidden(true)
         }
         setEdit(false)
+        setInputs(cleanForm)
     }
 
     return (
@@ -98,6 +99,22 @@ const StudentsForm = ({ instructorsData, edit, setEdit, hidden, setHidden, input
             <button className={styles.addBtn} onClick={shiftStateForm}>Add Student</button>
         </>
     )
+}
+
+const cleanForm = {
+    student_id: 0,
+    student_name: '',
+    id: '',
+    date_of_birth: '',
+    age: '',
+    weight: '',
+    height: '',
+    hmo: '',
+    address: '',
+    framework: '',
+    working_on: '',
+    instructor_id: 0,
+    instructor_name: ''
 }
 
 export default StudentsForm

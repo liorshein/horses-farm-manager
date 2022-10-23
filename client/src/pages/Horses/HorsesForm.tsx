@@ -26,6 +26,7 @@ const HorsesForm = ({ edit, hidden, inputs, setInputs, setEdit, setHidden }: Pro
             setHidden(true)
         }
         setEdit(false)
+        setInputs(cleanForm)
     }
 
     return (
@@ -53,7 +54,7 @@ const HorsesForm = ({ edit, hidden, inputs, setInputs, setEdit, setHidden }: Pro
                     </select>
                 </div>
                 <div className={styles.flex}>
-                    {!edit ? <button type="submit" className={styles.Btns}>Add Horse</button>
+                    {!edit ? <button type="submit" className={styles.Btns} onClick={() => setHidden(true)}>Add Horse</button>
                         : <button className={styles.Btns}>Update Horse</button>}
                     <button className={styles.Btns} onClick={shiftStateForm}>Return</button>
                 </div>
@@ -61,6 +62,14 @@ const HorsesForm = ({ edit, hidden, inputs, setInputs, setEdit, setHidden }: Pro
             <button className={styles.addBtn} onClick={shiftStateForm}>Add Horse</button>
         </>
     )
+}
+
+const cleanForm = {
+    horse_id: 0,
+    horse_name: '',
+    age: '',
+    breed: '',
+    assignable: 'True',
 }
 
 export default HorsesForm

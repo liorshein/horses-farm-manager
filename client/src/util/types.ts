@@ -17,6 +17,9 @@ export type Student = {
 export type Instructor = {
     instructor_id: string
     instructor_name: string
+    address: string
+    email: string
+    phone_number: string
 }
 
 export type Horse = {
@@ -55,4 +58,19 @@ export type Month = {
 export type Salary = {
     count: number
     substring: string
+}
+
+export type HorseData = {
+    count: string
+    horse_name: string
+}
+
+export type UserDashboardData = {
+    salaryData: Salary[]
+    horsesData: HorseData[]
+    personalData: Instructor
+}
+
+export type DashboardData = {
+    dashboardData: LessonsData[] | UserDashboardData
 }
