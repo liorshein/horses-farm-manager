@@ -38,7 +38,6 @@ const LessonComp = ({ lesson, deleteLesson }: Props) => {
 
     const handleChange = (e: any) => {
         if (e.target.value !== "undefined" && e.target.value !== "Arrived?") {
-            console.log(e.target.value);
             setArrived(e.target.value)
             e.target.setAttribute("disabled", "disabled")
             let params = new URLSearchParams({ lesson_id: lesson!.lesson_id.toString(), arrived: e.target.value })
