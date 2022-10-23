@@ -12,7 +12,6 @@ import Forbidden from './pages/Forbidden/Forbidden'
 import NoMatch from './pages/NoMatch/NoMatch'
 import Lessons from './pages/Lessons/Lessons'
 
-
 const AuthProviderLayout = () => (
     <AuthProvider>
         <Outlet />

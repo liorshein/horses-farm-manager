@@ -21,7 +21,7 @@ interface ContextInterface {
         };
     }) => void
     roles: string[]
-    setRoles: React.Dispatch<React.SetStateAction<never[]>>
+    setRoles: React.Dispatch<React.SetStateAction<string[]>>
     name: string
     setName: React.Dispatch<React.SetStateAction<string>>
 }
@@ -39,7 +39,7 @@ const AutoProvider = (props: Props) => {
         email: "",
         password: "",
     })
-    const [roles, setRoles] = useState([])
+    const [roles, setRoles] = useState<string[]>([])
     const [name, setName] = useState('')
 
     const handleChange = (event: { target: { name: string; value: string } }) => {
