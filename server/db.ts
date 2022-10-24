@@ -26,7 +26,7 @@ export const initDb = async () => {
             phone_number TEXT NOT NULL,
             address TEXT NOT NULL,
             roles TEXT[] NOT NULL,
-            UNIQUE (email, password)
+            UNIQUE (email, password, instructor_name)
         );`
     );
 

@@ -117,16 +117,17 @@ export const deleteStudent: RequestHandler = async (req: any, res) => {
 }
 
 export const getAvailableHours: RequestHandler = async (req: any, res) => {
-    const InstructorId = req.user
+    const InstructorId = req.query.selectedInstructor    
     const horseId = req.query.horse_id
     const date = req.query.date    
 
     const result = (await client.query(
-        `SELECT lesson_time FROM lessons WHERE date=$3 OR horse_id=$1 AND date=$3 OR instructor_id=$2 AND date=$3`, [
+        `SELECT lesson_time FROM lessons 
+        WHERE horse_id=$1 AND date=$3 OR instructor_id=$2 AND date=$3`, [
         horseId,
         InstructorId,
         date,
-    ])).rows;    
+    ])).rows;
 
     const assignedHours = result.map(obj => obj.lesson_time)
     const filteredResults = filterHours(assignedHours)

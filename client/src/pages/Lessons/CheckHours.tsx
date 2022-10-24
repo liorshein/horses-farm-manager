@@ -8,11 +8,12 @@ type Props = {
     setAvailableHours: (a: string[]) => void
     setSelectedHorse: (a: string) => void
     selectedHorse: string
+    selectedInstructor: string
     date: Date
     setDate: React.Dispatch<React.SetStateAction<Date>>
 }
 
-const CheckHours = ({ selectedHorse, setAvailableHours, setSelectedHorse, date }: Props) => {
+const CheckHours = ({ selectedInstructor, selectedHorse, setAvailableHours, setSelectedHorse, date }: Props) => {
     const [horseInfo, setHorseInfo] = useState<Horse[]>([])
 
     useEffect(() => {
@@ -38,8 +39,8 @@ const CheckHours = ({ selectedHorse, setAvailableHours, setSelectedHorse, date }
     const handleClick = async (e: { preventDefault: () => void }) => {
         e.preventDefault()
         if (selectedHorse && selectedHorse !== "Pick Horse") {
-            let dateFormat = date.toISOString().split("T")[0];            
-            let params = new URLSearchParams({ horse_id: selectedHorse, date: dateFormat })
+            let dateFormat = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+ date.getDate();
+            let params = new URLSearchParams({ horse_id: selectedHorse, date: dateFormat, selectedInstructor: selectedInstructor })
             const availableHours = await (await axiosPrivate.get(`/admin/lessons-available?${params}`)).data.filteredResults
             setAvailableHours(availableHours);
         } else {

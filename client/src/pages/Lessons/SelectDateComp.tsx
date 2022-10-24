@@ -23,7 +23,7 @@ const SelectDateComp = ({ date, setDate }: Props) => {
         let prevDay = date.setDate(date.getDate() - 1)
         setDate(new Date(prevDay))
     }
-
+    
     return (
         <div className={styles.date_container}>
             <button onClick={dateLeft} className={styles.arrowBtn}><img className={styles.arrow} src={leftArrow.default} alt="logo" /></button>

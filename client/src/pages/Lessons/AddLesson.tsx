@@ -9,11 +9,10 @@ type Props = {
     date: Date
     setDate: React.Dispatch<React.SetStateAction<Date>>
     setLessons: (value: React.SetStateAction<Lesson[]>) => void
-    lessons: Lesson[]
     selectedInstructor: string
 }
 
-const AddLesson = ({ date, setDate, setLessons, selectedInstructor, lessons }: Props) => {
+const AddLesson = ({ date, setDate, setLessons, selectedInstructor }: Props) => {
     const [studentInfo, setStudentInfo] = useState<Student[]>([]);
     const [selectedStudent, setSelectedStudent] = useState('')
     const [availableHours, setAvailableHours] = useState<string[]>([])
@@ -56,8 +55,8 @@ const AddLesson = ({ date, setDate, setLessons, selectedInstructor, lessons }: P
     const handleClick = async (e: { preventDefault: () => void; }) => {
         e.preventDefault()
         if (selectedHorseId !== '' && selectedHour !== '' && selectedStudent !== '' && selectedInstructor !== "") {
-            let dateFormat = date.toISOString().split("T")[0];
-
+            let dateFormat = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+ date.getDate()
+            
             let newLesson: any = {
                 horse_id: Number(selectedHorseId),
                 date: dateFormat,
@@ -83,7 +82,7 @@ const AddLesson = ({ date, setDate, setLessons, selectedInstructor, lessons }: P
             <button className={styles.addBtn} onClick={shiftStateForm}>Add Lesson</button>
             <form className={hidden ? styles.hidden : styles.form}>
                 <h2 className={styles.title}>Add Lesson</h2>
-                <CheckHours setAvailableHours={setAvailableHours} selectedHorse={selectedHorseId} setSelectedHorse={setSelectedHorseId} date={date} setDate={setDate} />
+                <CheckHours selectedInstructor={selectedInstructor} setAvailableHours={setAvailableHours} selectedHorse={selectedHorseId} setSelectedHorse={setSelectedHorseId} date={date} setDate={setDate} />
                 <div className={styles.select_multi}>
                     <div className={styles.students}>
                         <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)}>

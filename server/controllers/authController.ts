@@ -19,7 +19,7 @@ export const signIn: RequestHandler = async (req, res) => {
     const validPass = await bcrypt.compare(password, hash)
 
     if (validPass) {    
-        const userId = foundUser.rows[0].instructor_id
+        const userId = foundUser.rows[0].instructor_id        
         const roles = foundUser.rows[0].roles
         const userName = foundUser.rows[0].instructor_name
 

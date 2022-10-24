@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import AddLesson from './AddLesson';
 import styles from "./lessons.module.scss"
-import LessonComp from './LessonComp';
 import { axiosPrivate } from '../../api/axios';
 import useAuth from '../../hooks/useAuth';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -93,7 +92,7 @@ const Lessons = () => {
                 }
                 )}
               </select>
-              {selectedInstructor !== "" ? <AddLesson lessons={lessons} selectedInstructor={selectedInstructor} date={date} setDate={setDate} setLessons={setLessons} /> : <div className={styles.emptyDiv}></div>}
+              {selectedInstructor !== "" ? <AddLesson selectedInstructor={selectedInstructor} date={date} setDate={setDate} setLessons={setLessons} /> : <div className={styles.emptyDiv}></div>}
             </>}
         </div>
         <LessonsList lessons={lessons} deleteLesson={deleteLesson} />
