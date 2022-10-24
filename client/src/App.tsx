@@ -8,7 +8,6 @@ import Horses, { loader as horsesLoader, action as horsesAction } from './pages/
 import Students, { loader as studentsLoader, action as studentsAction } from './pages/Students/Students'
 import PersistLogin from './components/PersistLogin'
 import "./general.scss"
-import Forbidden from './pages/Forbidden/Forbidden'
 import NoMatch from './pages/NoMatch/NoMatch'
 import Lessons from './pages/Lessons/Lessons'
 
@@ -32,7 +31,7 @@ const router = createBrowserRouter([
             },
             {
                 element: <PersistLogin />,
-                errorElement: <Forbidden />,
+                errorElement: <Login />,
                 children: [
                     {
                         path: "/",
