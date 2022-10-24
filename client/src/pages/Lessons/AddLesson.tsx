@@ -39,6 +39,9 @@ const AddLesson = ({ date, setDate, setLessons, selectedInstructor }: Props) => 
                     let params = new URLSearchParams({ instructor_id: selectedInstructor })
                     const studentsData = await (await axiosPrivate.get(`/admin/instructor-students?${params}`)).data.result
                     isMounted && setStudentInfo(studentsData)
+                    setSelectedStudent('')
+                    setSelectedHorseId('')
+                    setSelectedHour('')
                 }
             } catch (error) {
                 console.error(error);
@@ -55,8 +58,8 @@ const AddLesson = ({ date, setDate, setLessons, selectedInstructor }: Props) => 
     const handleClick = async (e: { preventDefault: () => void; }) => {
         e.preventDefault()
         if (selectedHorseId !== '' && selectedHour !== '' && selectedStudent !== '' && selectedInstructor !== "") {
-            let dateFormat = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+ date.getDate()
-            
+            let dateFormat = formatDate(date)
+
             let newLesson: any = {
                 horse_id: Number(selectedHorseId),
                 date: dateFormat,
@@ -108,6 +111,23 @@ const AddLesson = ({ date, setDate, setLessons, selectedInstructor }: Props) => 
             </form>
         </>
     )
+}
+
+export const formatDate = (date: Date) => {
+    let day: number | string = date.getDate()
+    let month: number | string = date.getMonth() + 1
+    let year = date.getFullYear()
+
+    if (day.toString().length === 1) {
+        day = "0" + date.getDate()
+    }
+
+    if (month.toString().length === 1) {
+        month = "0" + (date.getMonth() + 1)
+    }
+
+    let dateFormat = year + "-" + month + "-" + day;
+    return dateFormat
 }
 
 export default AddLesson

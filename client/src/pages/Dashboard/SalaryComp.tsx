@@ -12,7 +12,7 @@ const salaryPerHour: number = 75;
 const SalaryComp = ({ salaryArr }: Props) => {
     const [salaryMonth, setSalaryMonth] = useState(currentMonth)
     const [salary, setSalary] = useState(0)
-
+    
     useEffect(() => {
         const getData = async () => {
             const currentSalary = salaryArr.find((obj: Salary) => obj.substring === salaryMonth)?.count

@@ -15,7 +15,7 @@ const AdminChart = ({ dashboardData, selectedMonth }: Props) => {
 
     useEffect(() => {
         const getData = async () => {
-            const currentMonthData = dashboardData.filter((obj: LessonsData) => obj.substring === selectedMonth)
+            const currentMonthData = dashboardData.filter((obj: LessonsData) => obj.substring === selectedMonth).sort((a: LessonsData, b: LessonsData) => (a.instructor_name > b.instructor_name ? 1 : -1))            
             const labelsData: string[] = currentMonthData.map((obj: LessonsData) => obj.instructor_name)
             const countData: number[] = currentMonthData.map((obj: LessonsData) => obj.count)
             setChartData({

@@ -37,13 +37,6 @@ export const getFavoriteHorse: RequestHandler = async (req: any, res) => {
     res.send({ result });
 }
 
-// Sends to client all the months he have lessons on
-export const getMonthOfLessons: RequestHandler = async (req: any, res) => {
-    const InstructorId = req.user
-    const result = await client.query(`SELECT DISTINCT ON (1) SUBSTRING(date, 1, 7) FROM lessons WHERE instructor_id=$1`, [InstructorId]);
-    res.send({ result });
-}
-
 // Students related requests
 
 export const getStudentsData: RequestHandler = async (req: any, res) => {

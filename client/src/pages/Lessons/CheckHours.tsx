@@ -2,6 +2,7 @@ import { getDay } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { axiosPrivate } from '../../api/axios'
 import { Horse } from '../../util/types'
+import { formatDate } from './AddLesson'
 import styles from './lessons.module.scss'
 
 type Props = {
@@ -39,7 +40,7 @@ const CheckHours = ({ selectedInstructor, selectedHorse, setAvailableHours, setS
     const handleClick = async (e: { preventDefault: () => void }) => {
         e.preventDefault()
         if (selectedHorse && selectedHorse !== "Pick Horse") {
-            let dateFormat = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+ date.getDate();
+            let dateFormat = formatDate(date)            
             let params = new URLSearchParams({ horse_id: selectedHorse, date: dateFormat, selectedInstructor: selectedInstructor })
             const availableHours = await (await axiosPrivate.get(`/admin/lessons-available?${params}`)).data.filteredResults
             setAvailableHours(availableHours);

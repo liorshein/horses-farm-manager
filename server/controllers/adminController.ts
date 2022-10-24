@@ -63,11 +63,6 @@ export const getInstructorLessons: RequestHandler = async (req: any, res) => {
     res.send({ result });
 }
 
-export const getMonthOfLessons: RequestHandler = async (_req, res) => {
-    const result = await client.query(`SELECT DISTINCT ON (1) SUBSTRING(date, 1, 7) FROM lessons`);
-    res.send({ result });
-}
-
 export const getAllInstructorsData: RequestHandler = async (_req, res) => {
     const result = (await client.query(`SELECT * FROM instructors WHERE instructor_id>1`)).rows;
     res.send({ result });

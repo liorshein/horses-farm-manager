@@ -1,5 +1,4 @@
 import { getDay } from "date-fns"
-import { useState } from "react"
 import DatePicker from 'react-datepicker'
 import styles from "./lessons.module.scss"
 const leftArrow = require("../../assets/icons/leftarrow.svg")

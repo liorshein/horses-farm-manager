@@ -10,7 +10,7 @@ type Props = {
 
 const currentMonth = new Date().toISOString().slice(0, 7)
 
-const AdminDashboard = ({ dashboardData }: Props) => {
+const AdminDashboard = ({ dashboardData }: Props) => {    
     const [selectedMonth, setSelectedMonth] = useState(currentMonth)  
 
     return (
