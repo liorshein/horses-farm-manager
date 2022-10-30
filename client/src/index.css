@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body,
+html {
+    height: 100vh;
+    width: 100vw;
+    font-family: 'Josefin Sans', sans-serif;
+    overflow: hidden;
+}
+
+.active {
+    font-weight: bold;
+}
+
+.react-datepicker__input-container>input {
+    text-align: center;
+    background-color: #c8b8ab;
+}
+
+react-datepicker__input-container>input:hover {
+    cursor: pointer;
+}

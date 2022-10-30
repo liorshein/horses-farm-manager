@@ -1,13 +1,12 @@
 import { Outlet } from 'react-router-dom'
 import Navbar from './Navbar'
-import "../general.scss"
 
 const Layout = () => {
 
     return (
-        <main className="main_container">
+        <main className="flex bg-slate-50">
             <Navbar />
-            <Outlet />
+            {/* <Outlet /> */}
         </main>
     )
 }

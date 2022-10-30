@@ -7,7 +7,6 @@ import Layout from './components/Layout'
 import Horses, { loader as horsesLoader, action as horsesAction } from './pages/Horses/Horses'
 import Students, { loader as studentsLoader, action as studentsAction } from './pages/Students/Students'
 import PersistLogin from './components/PersistLogin'
-import "./general.scss"
 import NoMatch from './pages/NoMatch/NoMatch'
 import Lessons from './pages/Lessons/Lessons'
 
