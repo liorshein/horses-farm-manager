@@ -28,7 +28,7 @@ const Navbar = () => {
             <button onClick={handleActiveMenu} className={`absolute top-4 sm:hidden left-4 text-2xl ${menuActive ? '' : 'hidden'}`}>
                 <GiHamburgerMenu />
             </button>
-            <div className={`z-50 h-screen overflow-hidden w-0 opacity-0 shadow-xl sm:w-64 sm:opacity-100 transition-all ${menuActive ? '' : 'w-64 opacity-100'}`}>
+            <div className={`relative z-50 h-screen overflow-hidden w-0 opacity-0 shadow-xl sm:w-64 sm:opacity-100 transition-all ${menuActive ? '' : 'w-64 opacity-100'}`}>
                 <div className="flex justify-between items-center h-14 w-full border-b-black border-b">
                     <div className="h-full flex justify-start items-center ml-4">
                         <img className="w-8" src={horseIcon} alt="horse icon" />
@@ -45,15 +45,15 @@ const Navbar = () => {
                     </li>
                     <li className="flex mb-8">
                         <img src={scheduleIcon} alt="schedule icon" />
-                        <NavLink className="ml-4 uppercase" to="/dashboard">schedule</NavLink>
+                        <NavLink className="ml-4 uppercase" to="/lessons">schedule</NavLink>
                     </li>
                     <li className="flex mb-8">
                         <img src={manIcon} alt="man icon" />
-                        <NavLink className="ml-4 uppercase" to="/dashboard">students</NavLink>
+                        <NavLink className="ml-4 uppercase" to="/students">students</NavLink>
                     </li>
                     <li className="flex mb-8">
                         <img src={horseIcon} alt="horse icon" />
-                        <NavLink className="ml-4 uppercase" to="/dashboard">horses</NavLink>
+                        <NavLink className="ml-4 uppercase" to="/horses">horses</NavLink>
                     </li>
                 </ul>
                 <div className="absolute bottom-0 w-64 h-14 border-t-black border-t">
@@ -73,45 +73,6 @@ const Navbar = () => {
             </div>
         </>
     )
-    // return (
-    //     <>
-    //         <div className={styles.flex_col}>
-    //             <div className={styles.navbar}>
-    //                 <div className={styles.logo}>
-    //                     <img src={logo} alt="logo" />
-    //                 </div>
-    //                 <div className={styles.personal_info_nav}>
-    //                     <h1 className={styles.name}>{name.split(' ')[0]} <br /> {name.split(' ')[1]}</h1>
-    //                     <p className={styles.job}>{roles[0] === "User" ? <>Instructor</> : <></>}</p>
-    //                 </div>
-    //             </div>
-    //             <div className={styles.navbar_links}>
-    //                 <div className={styles.link_container}>
-    //                     <img src={dashIcon} alt="dashboard icon" />
-    //                     <NavLink className={styles.link} to="/dashboard">Dashboard</NavLink>
-    //                 </div>
-    //                 <div className={styles.link_container}>
-    //                     <img src={scheduleIcon} alt="schedule icon" />
-    //                     <NavLink className={styles.link} to="/lessons">Schedule</NavLink>
-    //                 </div>
-    //                 <div className={styles.link_container}>
-    //                     <img src={manIcon} alt="man icon" />
-    //                     <NavLink className={styles.link} to="/students">Students</NavLink>
-    //                 </div>
-    //                 <div className={styles.link_container}>
-    //                     <img src={horseIcon} alt="horse icon" />
-    //                     <NavLink className={styles.link} to="/horses">Horses</NavLink>
-    //                 </div>
-    //                 <div className={styles.signout_container}>
-    //                     <img className={styles.svg} src={signoutIcon} alt="signout icon" />
-    //                     <button className={styles.signout} type="button" onClick={onLogout}>
-    //                         Sign Out
-    //                     </button>
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     </>
-    // )
 }
 
 export default Navbar

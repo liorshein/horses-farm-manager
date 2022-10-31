@@ -6,7 +6,7 @@ const Layout = () => {
     return (
         <main className="flex bg-slate-50">
             <Navbar />
-            {/* <Outlet /> */}
+            <Outlet />
         </main>
     )
 }

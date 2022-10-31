@@ -61,7 +61,7 @@ export type Salary = {
 }
 
 export type HorseData = {
-    count: string
+    count: number
     horse_name: string
 }
 

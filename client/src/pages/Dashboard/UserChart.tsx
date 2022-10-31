@@ -31,6 +31,7 @@ const UserChart = ({ data }: Props) => {
                     labels: chartData?.labels,
                     datasets: [
                         {
+                            categoryPercentage: 0.7,
                             label: "Lessons",
                             data: chartData?.count,
                             backgroundColor: "#77635A"
@@ -40,6 +41,9 @@ const UserChart = ({ data }: Props) => {
                 options={{
                     scales: {
                         x: {
+                            grid: {
+                                display: false
+                            },
                             ticks: {
                                 color: "black",
                                 font: {
@@ -48,7 +52,7 @@ const UserChart = ({ data }: Props) => {
                             }
                         },
                         y: {
-                            suggestedMax: 50,
+                            suggestedMax: Number(chartData?.count[0]!) + 15,
                             ticks: {
                                 color: "black",
                                 font: {
