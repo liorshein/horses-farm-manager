@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./client/src/assets/icons/logo.svg" alt="logo" width="200" height="auto" />
+  <img src="./client/src/assets/icons/horse.svg" alt="logo" width="200" height="auto" />
   <h1>Horse Farm Manager</h1>
   <p>An application for managing a therapeutic horse farm.</p>
 </div>
