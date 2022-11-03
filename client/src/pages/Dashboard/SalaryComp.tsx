@@ -23,8 +23,8 @@ const SalaryComp = ({ salaryArr }: Props) => {
 
     return (
         <div className='flex-1 shadow-xl flex flex-col justify-start items-start border'>
-            <div className="flex items-center justify-between w-full mx-6">
-                <div className="flex items-center text-2xl ml-6 mt-3 font-bold">
+            <div className="flex items-center justify-between w-full mr-[0.375rem] whitespace-nowrap">
+                <div className="flex items-center text-2xl mx-6 mt-3 font-bold">
                     <AiOutlineDollarCircle />
                     <h2 className='tracking-tight ml-1 pt-[0.375rem]'>Salary</h2>
                 </div>

@@ -13,8 +13,8 @@ const UserDashboard = ({ dashboardData }: Props) => {
   const { salaryData, personalData, horsesData } = dashboardData;
 
   return (
-    <section className="flex-grow h-screen flex flex-col items-center justify-between">
-      <div className="flex mt-6 w-[75vw] justify-between gap-4 flex-wrap mx-4">
+    <section className="flex-grow h-screen flex flex-col items-center max-sm:overflow-auto">
+      <div className="flex w-[75vw] mt-6 justify-between gap-4 flex-wrap mx-4">
         <PersonalComp data={personalData} />
         <SalaryComp salaryArr={salaryData} />
         <FavHorseComp data={horsesData[0]} />

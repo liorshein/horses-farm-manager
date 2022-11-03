@@ -8,7 +8,7 @@ type Props = {
 const FavHorseComp = ({ data }: Props) => {
     return (
         <div className='flex-1 shadow-xl flex flex-col justify-start items-start border'>
-            <div className="flex items-center text-2xl ml-6 mt-3 font-bold">
+            <div className="flex items-center text-2xl ml-6 mt-3 font-bold whitespace-nowrap mr-4 max-sm:mr-[4.875rem]">
                 <GiHorseshoe />
                 <h2 className='tracking-tight ml-1 pt-[0.375rem]'>Favorite Horse</h2>
             </div>
