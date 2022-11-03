@@ -1,86 +1,58 @@
-import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, registerables } from 'chart.js';
-import { ChartData, Salary } from '../../util/types';
-import { useEffect, useState } from 'react';
-
-ChartJS.register(...registerables);
+import {
+    Category,
+    ChartComponent,
+    DataLabel,
+    Legend,
+    Tooltip,
+    Inject,
+    AxisModel,
+    SeriesCollectionDirective,
+    SeriesDirective,
+    ColumnSeries,
+    TooltipSettingsModel,
+} from "@syncfusion/ej2-react-charts";
+import { Salary } from "../../util/types";
 
 type Props = {
-    data: Salary[]
-}
+    salaryData: Salary[];
+};
 
-const UserChart = ({ data }: Props) => {
-    const [chartData, setChartData] = useState<ChartData>()
+const UserChart = ({ salaryData }: Props) => {
+    const primaryxAxis: AxisModel = { valueType: "Category" };
+    const primaryyAxis: AxisModel = { minimum: 0, maximum: 80, interval: 10 };
+    const legendSettings = { visible: false };
+    const tooltip: TooltipSettingsModel = { enable: true };
 
-    useEffect(() => {
-        const getData = async () => {
-            const labelsData = data.map((obj: Salary) => obj.substring)
-            const countData = data.map((obj: Salary) => obj.count)
-            setChartData({
-                labels: labelsData,
-                count: countData,
-            })
-        }
-        getData()
-    }, [])
-    
     return (
-        <>
-            <Bar
-                data={{
-                    labels: chartData?.labels,
-                    datasets: [
-                        {
-                            categoryPercentage: 0.7,
-                            label: "Lessons",
-                            data: chartData?.count,
-                            backgroundColor: "#77635A"
-                        }
-                    ],
-                }}
-                options={{
-                    scales: {
-                        x: {
-                            grid: {
-                                display: false
-                            },
-                            ticks: {
-                                color: "black",
-                                font: {
-                                    size: 16,
-                                }
-                            }
-                        },
-                        y: {
-                            suggestedMax: Number(chartData?.count[0]!) + 15,
-                            ticks: {
-                                color: "black",
-                                font: {
-                                    size: 16,
-                                }
-                            }
-                        }
-                    },
-                    layout: {
-                        padding: 10
-                    },
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        title: {
-                            display: true,
-                            position: 'top',
-                            text: "Lessons Per Month",
-                            font: { size: 24 },
-                            color: "black"
-                        }
-                    },
-                }}
-            />
-        </>
-    )
-}
+        <div className="flex-1 w-full h-fit">
+            <ChartComponent
+                id="charts"
+                primaryXAxis={primaryxAxis}
+                primaryYAxis={primaryyAxis}
+                legendSettings={legendSettings}
+                tooltip={tooltip}
+            >
+                <Inject
+                    services={[
+                        ColumnSeries,
+                        Legend,
+                        Tooltip,
+                        DataLabel,
+                        Category,
+                    ]}
+                />
+                <SeriesCollectionDirective>
+                    <SeriesDirective
+                        dataSource={salaryData}
+                        xName="substring"
+                        yName="count"
+                        name="Lessons Per Month"
+                        type="Column"
+                    />
+                </SeriesCollectionDirective>
+            </ChartComponent>
+        </div>
+    );
+};
 
-export default UserChart
+export default UserChart;

@@ -1,5 +1,5 @@
 import useAuth from '../../hooks/useAuth';
-import UserDashboard from './UserDashboard ';
+import UserDashboard from './UserDashboard';
 import AdminDashboard from './AdminDashboard';
 import { LoaderFunction, useLoaderData } from 'react-router-dom';
 import { getData } from '../../api/dashboard';

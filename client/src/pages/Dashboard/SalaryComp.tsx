@@ -23,12 +23,12 @@ const SalaryComp = ({ salaryArr }: Props) => {
 
     return (
         <div className='flex-1 shadow-xl flex flex-col justify-start items-start border'>
-            <div className="flex items-center justify-between w-full mr-[0.375rem] whitespace-nowrap">
+            <div className="flex items-center justify-between w-full flex-col sm:flex-row">
                 <div className="flex items-center text-2xl mx-6 mt-3 font-bold">
                     <AiOutlineDollarCircle />
-                    <h2 className='tracking-tight ml-1 pt-[0.375rem]'>Salary</h2>
+                    <h2 className='tracking-tight ml-1'>Salary</h2>
                 </div>
-                <select className='mr-6 mt-3 px-0 pt-1 bg-transparent border-0 border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-gray-200' name="months" id="months" value={salaryMonth} onChange={(e) => setSalaryMonth(e.target.value)}>
+                <select className='mt-3 pt-1 bg-transparent border-0 border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-gray-200' name="months" id="months" value={salaryMonth} onChange={(e) => setSalaryMonth(e.target.value)}>
                     <option value={undefined}>Select month</option>
                     {salaryArr?.map((month: Month) => {
                         return <option key={month.substring} value={month.substring}>{month.substring}</option>

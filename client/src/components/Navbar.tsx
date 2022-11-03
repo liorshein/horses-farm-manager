@@ -25,10 +25,10 @@ const Navbar = () => {
 
     return (
         <>
-            <button onClick={handleActiveMenu} className={`absolute top-4 sm:hidden left-4 text-2xl ${menuActive ? '' : 'hidden'}`}>
+            <button onClick={handleActiveMenu} className={`absolute top-2 sm:hidden left-2 text-2xl ${menuActive ? '' : 'hidden'}`}>
                 <GiHamburgerMenu />
             </button>
-            <div className={`absolute bg-slate-50 z-50 h-screen overflow-hidden w-0 opacity-0 shadow-xl sm:relative sm:w-64 sm:min-w-[16rem] sm:opacity-100 transition-all ${menuActive ? '' : 'w-64 opacity-100'}`}>
+            <div className={`absolute bg-slate-50 z-50 h-screen overflow-hidden w-0 opacity-0 shadow-xl sm:w-64 sm:min-w-[16rem] sm:opacity-100 transition-all ${menuActive ? '' : 'w-64 opacity-100'}`}>
                 <div className="flex justify-between items-center h-14 border-b-black border-b">
                     <div className="h-full flex justify-start items-center ml-4">
                         <img className="w-8" src={horseIcon} alt="horse icon" />
