@@ -28,7 +28,7 @@ const SalaryComp = ({ salaryArr }: Props) => {
                     <AiOutlineDollarCircle />
                     <h2 className='tracking-tight ml-1'>Salary</h2>
                 </div>
-                <select className='mt-3 pt-1 bg-transparent border-0 border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-gray-200' name="months" id="months" value={salaryMonth} onChange={(e) => setSalaryMonth(e.target.value)}>
+                <select className='mt-3 mr-2 pt-1 bg-transparent border-0 border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-gray-200' name="months" id="months" value={salaryMonth} onChange={(e) => setSalaryMonth(e.target.value)}>
                     <option value={undefined}>Select month</option>
                     {salaryArr?.map((month: Month) => {
                         return <option key={month.substring} value={month.substring}>{month.substring}</option>

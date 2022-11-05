@@ -11,6 +11,7 @@ import {
     ColumnSeries,
     TooltipSettingsModel,
 } from "@syncfusion/ej2-react-charts";
+import { RiNumbersLine } from "react-icons/ri";
 import { Salary } from "../../util/types";
 
 type Props = {
@@ -24,33 +25,40 @@ const UserChart = ({ salaryData }: Props) => {
     const tooltip: TooltipSettingsModel = { enable: true };
 
     return (
-        <div className="flex-1 w-full h-fit">
-            <ChartComponent
-                id="charts"
-                primaryXAxis={primaryxAxis}
-                primaryYAxis={primaryyAxis}
-                legendSettings={legendSettings}
-                tooltip={tooltip}
-            >
-                <Inject
-                    services={[
-                        ColumnSeries,
-                        Legend,
-                        Tooltip,
-                        DataLabel,
-                        Category,
-                    ]}
-                />
-                <SeriesCollectionDirective>
-                    <SeriesDirective
-                        dataSource={salaryData}
-                        xName="substring"
-                        yName="count"
-                        name="Lessons Per Month"
-                        type="Column"
+        <div className="flex flex-col h-full w-full shadow-xl border min-w-[240px] min-h-[80vh] xl:min-h-0">
+            <div className="flex-0 flex items-center text-2xl ml-6 my-3 font-bold">
+                <RiNumbersLine />
+                <h2 className="tracking-tight ml-1 pt-[0.375rem]">Lessons</h2>
+            </div>
+            <div className="flex-1 w-full h-fit">
+                <ChartComponent
+                    style={{ height: "100%", width: "100%" }}
+                    id="charts"
+                    primaryXAxis={primaryxAxis}
+                    primaryYAxis={primaryyAxis}
+                    legendSettings={legendSettings}
+                    tooltip={tooltip}
+                >
+                    <Inject
+                        services={[
+                            ColumnSeries,
+                            Legend,
+                            Tooltip,
+                            DataLabel,
+                            Category,
+                        ]}
                     />
-                </SeriesCollectionDirective>
-            </ChartComponent>
+                    <SeriesCollectionDirective>
+                        <SeriesDirective
+                            dataSource={salaryData}
+                            xName="substring"
+                            yName="count"
+                            name="Lessons Per Month"
+                            type="Column"
+                        />
+                    </SeriesCollectionDirective>
+                </ChartComponent>
+            </div>
         </div>
     );
 };
