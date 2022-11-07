@@ -11,7 +11,7 @@ const horseIcon = require("../assets/icons/horse.svg").default
 const signoutIcon = require("../assets/icons/signout.svg").default
 
 const Navbar = () => {
-    const { onLogout, roles, name } = useAuth()!
+    const { onLogout, name } = useAuth()!
     const [menuActive, setMenuActive] = useState(true)
     const [logoutMenuActive, setLogoutMenuActive] = useState(false)
 
@@ -41,19 +41,19 @@ const Navbar = () => {
                 <ul className="ml-5 mt-10">
                     <li className="flex mb-8">
                         <img src={dashIcon} alt="dashboard icon" />
-                        <NavLink className="ml-4 uppercase" to="/dashboard">dashboard</NavLink>
+                        <NavLink className="ml-4 uppercase" to="/dashboard" onClick={handleActiveMenu}>dashboard</NavLink>
                     </li>
                     <li className="flex mb-8">
                         <img src={scheduleIcon} alt="schedule icon" />
-                        <NavLink className="ml-4 uppercase" to="/lessons">schedule</NavLink>
+                        <NavLink className="ml-4 uppercase" to="/lessons" onClick={handleActiveMenu}>schedule</NavLink>
                     </li>
                     <li className="flex mb-8">
                         <img src={manIcon} alt="man icon" />
-                        <NavLink className="ml-4 uppercase" to="/students">students</NavLink>
+                        <NavLink className="ml-4 uppercase" to="/students" onClick={handleActiveMenu}>students</NavLink>
                     </li>
                     <li className="flex mb-8">
                         <img src={horseIcon} alt="horse icon" />
-                        <NavLink className="ml-4 uppercase" to="/horses">horses</NavLink>
+                        <NavLink className="ml-4 uppercase" to="/horses" onClick={handleActiveMenu}>horses</NavLink>
                     </li>
                 </ul>
                 <div className="absolute bottom-0 w-64 h-14 border-t-black border-t">

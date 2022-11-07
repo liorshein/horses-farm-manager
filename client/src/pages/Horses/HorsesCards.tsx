@@ -1,6 +1,5 @@
 import { useFetcher } from "react-router-dom"
 import { Horse } from "../../util/types"
-import styles from "./horses.module.scss"
 
 type Props = {
     horsesData: Horse[]
@@ -15,14 +14,13 @@ const HorsesCards = ({ horsesData, roles, searchTerm, setHidden, setEdit, setInp
     const fetcher = useFetcher();
 
     const setForEdit = (student: Horse) => {
-        setHidden(false)
+        setHidden(true)
         setInputs(student)
         setEdit(true)
     }
 
     return (
-        <div className={styles.flexRow}>
-            <div className={styles.wrapper}>
+        <div className='w-full overflow-scroll justify-around flex items-center no-scrollbar flex-wrap'>
                 {horsesData.filter((horse: Horse) => {
                     if (searchTerm === "") {
                         return horse
@@ -30,32 +28,31 @@ const HorsesCards = ({ horsesData, roles, searchTerm, setHidden, setEdit, setInp
                         return horse
                     }
                 }).map((horse: Horse) => {
-                    return <div key={horse.horse_id} className={styles.horse_container}>
-                        <div className={styles.name}>{horse.horse_name}</div>
-                        <div className={styles.container}>
-                            <div className={styles.info}>
-                                <label className={styles.label}>Age:</label>
+                    return <div key={horse.horse_id} className='bg-white my-4 shadow-lg flex flex-col items-center relative mx-3 w-1/4 min-w-fit flex-1'>
+                        <div className='text-2xl mt-2 font-bold'>{horse.horse_name}</div>
+                        <div className='flex flex-col items-center w-full px-4'>
+                            <div className='mx-5 mt-3 text-lg'>
+                                <label className='font-bold mr-2'>Age:</label>
                                 <span>{horse.age}</span>
                             </div>
-                            <div className={styles.info}>
-                                <label className={styles.label}>Breed:</label>
+                            <div className='mx-5 mt-3 text-lg'>
+                                <label className='font-bold mr-2'>Breed:</label>
                                 <span>{horse.breed}</span>
                             </div>
-                            <div className={styles.info}>
-                                <label className={styles.label}>Assignable:</label>
+                            <div className='mx-5 my-3 text-lg'>
+                                <label className='font-bold mr-2'>Assignable:</label>
                                 <span>{horse.assignable.toString()}</span>
                             </div>
                         </div>
                         {roles.includes("User") ? <></> :
-                            <div className={styles.btn_div}>
+                            <div className='flex'>
                                 <fetcher.Form method='delete' action={`/horses?${horse.horse_id}`}>
-                                    <button className={styles.horseBtn}>Delete</button>
+                                    <button className='my-3 mr-3 px-3 rounded-lg py-1 bg-slate-400'>Delete</button>
                                 </fetcher.Form>
-                                <button className={styles.horseBtn} onClick={() => setForEdit(horse)}>Edit</button>
+                                <button className='my-3 mr-3 px-3 rounded-lg py-1 bg-slate-400' onClick={() => setForEdit(horse)}>Edit</button>
                             </div>}
                     </div>
                 })}
-            </div>
         </div>
     )
 }

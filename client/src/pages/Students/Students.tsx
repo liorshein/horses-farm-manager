@@ -12,7 +12,6 @@ import {
 } from "../../api/students";
 import useAuth from "../../hooks/useAuth";
 import { Instructor, Student } from "../../util/types";
-import styles from "./students.module.scss";
 import StudentsForm from "./StudentsForm";
 import StudentCards from "./StudentCards";
 import { FiUserPlus } from "react-icons/fi";
@@ -82,7 +81,7 @@ const Students = () => {
         <section className="flex-grow w-full sm:ml-64 h-screen flex flex-col items-center overflow-auto">
             <div className="flex w-full justify-between pb-4">
                 <input
-                    className="mt-5 sm:ml-10 ml-16 py-1 px-4 placeholder:text-black"
+                    className="mt-5 sm:ml-10 ml-14 py-1 px-4 placeholder:text-black"
                     type="text"
                     name="search"
                     placeholder="Search student..."
@@ -90,7 +89,7 @@ const Students = () => {
                 />
                 {roles.includes("User") ? null : (
                     <button
-                        className="mt-5 text-2xl mr-10"
+                        className="mt-5 text-2xl mr-5 sm:mr-10"
                         onClick={shiftComponent}
                     >
                         <FiUserPlus />

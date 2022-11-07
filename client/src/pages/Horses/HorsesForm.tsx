@@ -1,6 +1,5 @@
 import { useFetcher } from "react-router-dom";
 import { Horse } from "../../util/types";
-import styles from "./horses.module.scss";
 
 type Props = {
     edit: boolean;

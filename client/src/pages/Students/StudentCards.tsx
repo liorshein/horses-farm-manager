@@ -76,7 +76,7 @@ const StudentCards = ({ studentsData, roles, searchTerm, setHidden, setEdit, set
                             {!roles.includes("User") ? <div className='mb-4'>
                                 <label className='font-bold'>Instructor</label>
                                 <div>{student.instructor_name}</div>
-                            </div> : <></>}
+                            </div> : null}
                         </div>
                     </div>
                     <img className='absolute right-3 top-14 sm:top-3' src={hmoNames[student.hmo as number]} alt={hmoNames[student.hmo as number].toString()} />

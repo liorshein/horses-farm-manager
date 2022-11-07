@@ -56,8 +56,8 @@ const StudentsForm = ({
                     value={inputs.student_id}
                     onChange={handleChange}
                 />
-                <div className="flex flex-col sm:flex-row">
-                    <div className="mx-2">
+                <div className="flex flex-col sm:flex-row mx-2 w-full flex-wrap justify-center">
+                    <div className="sm:mx-2 max-sm:w-full">
                         <div className="mb-2 flex flex-col">
                             <label className="mb-1">Name</label>
                             <input
@@ -109,7 +109,7 @@ const StudentsForm = ({
                             />
                         </div>
                     </div>
-                    <div className="mx-2">
+                    <div className="sm:mx-2 max-sm:w-full">
                         <div className="mb-2 flex flex-col">
                             <label className="mb-1">Height</label>
                             <input
@@ -169,26 +169,28 @@ const StudentsForm = ({
                         </div>
                     </div>
                 </div>
-                <div>
-                    <select
-                        name="instructor_id"
-                        id="instructor_id"
-                        className="py-[0.20rem] my-2"
-                        value={inputs.instructor_id}
-                        onChange={handleChange}
-                    >
-                        <option>Assign Instructor</option>
-                        {instructorsData.map((instructor: Instructor) => {
-                            return (
-                                <option
-                                    key={instructor.instructor_id}
-                                    value={instructor.instructor_id}
-                                >
-                                    {instructor.instructor_name}
-                                </option>
-                            );
-                        })}
-                    </select>
+                <div className="sm:mx-2 max-sm:w-full">
+                    <div className="mb-2 flex flex-col">
+                        <select
+                            name="instructor_id"
+                            id="instructor_id"
+                            className="py-[0.20rem] my-2"
+                            value={inputs.instructor_id}
+                            onChange={handleChange}
+                        >
+                            <option>Assign Instructor</option>
+                            {instructorsData.map((instructor: Instructor) => {
+                                return (
+                                    <option
+                                        key={instructor.instructor_id}
+                                        value={instructor.instructor_id}
+                                    >
+                                        {instructor.instructor_name}
+                                    </option>
+                                );
+                            })}
+                        </select>
+                    </div>
                 </div>
                 <div className="flex justify-around mb-4">
                     {!edit ? (
