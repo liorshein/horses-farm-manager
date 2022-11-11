@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import {
-    addStudent, addLesson, addHorse, editStudent,
+    addStudent, addLesson, addHorse, editStudent, addLessonData,
     deleteStudent, deleteHorse, deleteLesson,
     getAvailableHorses, getAvailableHours, getInstructorLessons, 
     getLessonsPerMonth, getAllStudentsData, getAllInstructorsData, getStudentsData, editHorse} from '../../controllers/adminController';
@@ -9,6 +9,7 @@ const ROLES_LIST = require('../../config/rolesList')
 
 const adminRouter = Router();
 
+adminRouter.post('/addLesson', verifyRoles(ROLES_LIST.Admin), addLessonData);
 adminRouter.get('/instructors-lessons-per-month', verifyRoles(ROLES_LIST.Admin), getLessonsPerMonth)
 adminRouter.get('/instructor-lessons', verifyRoles(ROLES_LIST.Admin), getInstructorLessons)
 adminRouter.get('/instructor-students', verifyRoles(ROLES_LIST.Admin), getStudentsData)

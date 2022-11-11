@@ -84,5 +84,28 @@ export const initDb = async () => {
         );`
     );
 
+    await client.query(
+        `CREATE TABLE IF NOT EXISTS lessons2(
+            lesson_id SERIAL PRIMARY KEY,
+            horse_id INTEGER NOT NULL,
+            CONSTRAINT fk_horse FOREIGN KEY(horse_id)
+            REFERENCES horses(horse_id)
+            ON DELETE CASCADE,
+            start_time TIMESTAMPTZ NOT NULL,
+            end_time TIMESTAMPTZ NOT NULL,
+            arrived TEXT,
+            instructor_id INTEGER NOT NULL,
+            FOREIGN KEY(instructor_id)
+            REFERENCES instructors(instructor_id)
+            ON DELETE CASCADE,
+            student_id INTEGER NOT NULL,
+            FOREIGN KEY(student_id)
+            REFERENCES students(student_id)
+            ON DELETE CASCADE,
+            student_name TEXT NOT NULL,
+            UNIQUE (horse_id, start_time, end_time)
+        );`
+    );
+
     console.log("create");
 }
