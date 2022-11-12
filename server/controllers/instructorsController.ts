@@ -77,12 +77,13 @@ export const getLessons: RequestHandler = async (req, res) => {
 
     const result = (
         await client.query(
-            `SELECT *
-        FROM lessons2
-        WHERE lessons2.start_time >= $1 AND lessons2.end_time <= $2 AND lessons2.instructor_id=$3`,
+            `SELECT lessons2.*, students.student_name
+            FROM lessons2
+            JOIN students ON lessons2.student_id = students.student_id
+            WHERE lessons2.start_time >= $1 AND lessons2.end_time <= $2 AND lessons2.instructor_id=$3`,
             [start, end, instructor]
         )
-    ).rows;
+    ).rows;  
 
     res.send(result);
 };

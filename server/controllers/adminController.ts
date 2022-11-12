@@ -5,14 +5,13 @@ import { filterHours } from "./helpFunctions";
 export const addLessonData: RequestHandler = async (req, res) => {
     console.log(req.body);
     const response = await client.query(
-        `INSERT INTO lessons2(horse_id, start_time, end_time, instructor_id, student_id, student_name) VALUES ($1, $2, $3, $4, $5, $6)`,
+        `INSERT INTO lessons2(horse_id, start_time, end_time, instructor_id, student_id) VALUES ($1, $2, $3, $4, $5)`,
         [
             req.body.horse_id,
             req.body.start_time,
             req.body.end_time,
             req.body.instructor_id,
             req.body.student_id,
-            req.body.student_name
         ]
     );
 

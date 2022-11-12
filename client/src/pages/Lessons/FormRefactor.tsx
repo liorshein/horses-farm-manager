@@ -1,9 +1,7 @@
 import DateTime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Horse, Student } from "../../util/types";
-import { axiosPrivate } from "../../api/axios";
-import { useNavigate, useLocation } from "react-router-dom";
 import { addLesson } from "../../api/lessons";
 import moment from "moment";
 import { Lesson } from "./Schedule";
@@ -11,8 +9,10 @@ import { Lesson } from "./Schedule";
 type Props = {
     start: Date | undefined;
     end: Date | undefined;
-    selectedInstructor: string;
+    instructor: string;
     events: Lesson[];
+    studentInfo: Student[]
+    horseInfo: Horse[]
     setEvents: React.Dispatch<React.SetStateAction<Lesson[]>>;
     setStart: React.Dispatch<React.SetStateAction<Date | undefined>>;
     setEnd: React.Dispatch<React.SetStateAction<Date | undefined>>;
@@ -21,68 +21,16 @@ type Props = {
 const FormRefactor = ({
     start,
     end,
-    selectedInstructor,
+    instructor,
     events,
     setEvents,
     setStart,
     setEnd,
+    studentInfo,
+    horseInfo
 }: Props) => {
-    const [studentInfo, setStudentInfo] = useState<Student[]>([]);
-    const [horseInfo, setHorseInfo] = useState<Horse[]>([]);
     const [selectedStudent, setSelectedStudent] = useState("");
     const [selectedHorse, setSelectedHorse] = useState("");
-
-    useEffect(() => {
-        let isMounted = true;
-        const controller = new AbortController();
-
-        const getData = async () => {
-            try {
-                const horsesData = await (
-                    await axiosPrivate.get("/admin/horses-available")
-                ).data.result;
-                isMounted && setHorseInfo(horsesData);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        getData();
-
-        return () => {
-            isMounted = false;
-            controller.abort();
-        };
-    }, []);
-
-    useEffect(() => {
-        let isMounted = true;
-        const controller = new AbortController();
-
-        const getData = async () => {
-            try {
-                if (selectedInstructor !== "") {
-                    let params = new URLSearchParams({
-                        instructor_id: selectedInstructor,
-                    });
-                    const studentsData = await (
-                        await axiosPrivate.get(
-                            `/admin/instructor-students?${params}`
-                        )
-                    ).data.result;
-                    isMounted && setStudentInfo(studentsData);
-                    setSelectedStudent("");
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        getData();
-
-        return () => {
-            isMounted = false;
-            controller.abort();
-        };
-    }, [selectedInstructor]);
 
     const handleClick = async (e: { preventDefault: () => void }) => {
         e.preventDefault();
@@ -91,8 +39,8 @@ const FormRefactor = ({
             end_time: end as Date,
             student_id: Number(selectedStudent),
             horse_id: Number(selectedHorse),
-            instructor_id: Number(selectedInstructor),
-            arrived: null
+            instructor_id: Number(instructor),
+            arrived: null,
         };
 
         await addLesson(lesson);
@@ -101,6 +49,12 @@ const FormRefactor = ({
             (student: Student) => student.student_id === Number(selectedStudent)
         )?.student_name;
         lesson.student_name = studentName as string;
+
+        lesson["start"] = lesson["start_time"]
+        lesson["end"] = lesson["end_time"]
+        delete lesson["start_time"];
+        delete lesson["end_time"];
+
         setEvents([...events, lesson]);
     };
 

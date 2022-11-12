@@ -15,7 +15,6 @@ if (process.env.NODE_ENV === "production") {
 const LessonsRefactor = () => {
     const { roles } = useAuth()!;
     const [instructorsInfo, setInstructorsInfo] = useState([]);
-    const [selectedInstructor, setSelectedInstructor] = useState("");
     const navigate = useNavigate();
     const location = useLocation();
 
