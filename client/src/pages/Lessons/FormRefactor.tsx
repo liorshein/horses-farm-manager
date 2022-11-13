@@ -43,19 +43,23 @@ const FormRefactor = ({
             arrived: null,
         };
 
-        await addLesson(lesson);
-
-        let studentName = studentInfo.find(
-            (student: Student) => student.student_id === Number(selectedStudent)
-        )?.student_name;
-        lesson.student_name = studentName as string;
-
-        lesson["start"] = lesson["start_time"]
-        lesson["end"] = lesson["end_time"]
-        delete lesson["start_time"];
-        delete lesson["end_time"];
-
-        setEvents([...events, lesson]);
+        try {
+            let response = await addLesson(lesson);
+            const studentName = studentInfo.find(
+                (student: Student) => student.student_id === Number(selectedStudent)
+            )?.student_name;
+            lesson.student_name = studentName as string;
+            lesson.lesson_id = response.lesson_id
+    
+            lesson["start"] = lesson["start_time"]
+            lesson["end"] = lesson["end_time"]
+            delete lesson["start_time"];
+            delete lesson["end_time"];
+    
+            setEvents([...events, lesson]);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (

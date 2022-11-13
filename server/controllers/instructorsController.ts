@@ -83,7 +83,7 @@ export const getLessons: RequestHandler = async (req, res) => {
             WHERE lessons2.start_time >= $1 AND lessons2.end_time <= $2 AND lessons2.instructor_id=$3`,
             [start, end, instructor]
         )
-    ).rows;  
+    ).rows;
 
     res.send(result);
 };

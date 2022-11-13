@@ -20,16 +20,18 @@ export const getLessons = async (start: any, end: any, instructor: any) => {
         end: end,
         instructor: instructor,
     });
-    const response = await lessonsApi.get(`/instructors/lessons?${params}`);    
+    const response = await lessonsApi.get(`/instructors/lessons?${params}`);
     return response.data;
 };
 
 export const addLesson = async (lesson: Lesson) => {
-    await lessonsApi.post("/admin/addLesson", lesson);
+    let results = await lessonsApi.post("/admin/addLesson", lesson);    
+    return results.data.rows[0];
 };
 
-export const editHorse = async (horse: any) => {
-    await lessonsApi.put("/admin/edit-horse", horse);
+export const editLesson = async (lesson_id: number, start: any, end: any) => {    
+    const data = { lesson_id: lesson_id, start: start, end: end };    
+    await lessonsApi.put("/admin/edit-lesson", data);
 };
 
 export const deleteHorse = async (horseId: string) => {

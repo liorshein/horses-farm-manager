@@ -3,9 +3,8 @@ import { client } from "../db";
 import { filterHours } from "./helpFunctions";
 
 export const addLessonData: RequestHandler = async (req, res) => {
-    console.log(req.body);
-    const response = await client.query(
-        `INSERT INTO lessons2(horse_id, start_time, end_time, instructor_id, student_id) VALUES ($1, $2, $3, $4, $5)`,
+    const result = await client.query(
+        `INSERT INTO lessons2(horse_id, start_time, end_time, instructor_id, student_id) VALUES ($1, $2, $3, $4, $5) RETURNING lesson_id`,
         [
             req.body.horse_id,
             req.body.start_time,
@@ -15,7 +14,16 @@ export const addLessonData: RequestHandler = async (req, res) => {
         ]
     );
 
-    console.log(response);
+    res.send(result);
+};
+
+export const editLesson: RequestHandler = async (req, res) => {    
+    await client.query(
+        `UPDATE lessons2
+        SET start_time=$1, end_time=$2
+        WHERE lesson_id=$3`,
+        [req.body.start, req.body.end, req.body.lesson_id]
+    );
     res.end();
 };
 

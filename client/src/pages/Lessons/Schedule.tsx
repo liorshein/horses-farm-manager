@@ -3,11 +3,11 @@ import FullCalendar, {
     EventClickArg,
 } from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
+import interactionPlugin, { EventDragStartArg, EventDragStopArg } from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { useEffect, useState } from "react";
 import FormRefactor from "./FormRefactor";
-import { getLessons } from "../../api/lessons";
+import { editLesson, getLessons } from "../../api/lessons";
 import { Link, useParams } from "react-router-dom";
 import { BsArrowLeftCircleFill } from "react-icons/bs";
 import { axiosPrivate } from "../../api/axios";
@@ -16,6 +16,7 @@ import { Horse, Student } from "../../util/types";
 let baseURL: string;
 
 export type Lesson = {
+    lesson_id?: number;
     start_time?: Date;
     start?: Date;
     end_time?: Date;
@@ -33,7 +34,6 @@ if (process.env.NODE_ENV === "production") {
     baseURL = "http://localhost:3500/api";
 }
 
-type Props = {};
 
 const Schedule = () => {
     const { instructor } = useParams();
@@ -83,7 +83,9 @@ const Schedule = () => {
             dateInfo.end.toISOString(),
             instructor
         );
-        let events = results.map((eventEl: Lesson) => ({
+
+        const events = results.map((eventEl: Lesson) => ({
+            lesson_id: eventEl.lesson_id,
             student_name: eventEl.student_name,
             start: eventEl.start_time,
             end: eventEl.end_time,
@@ -102,6 +104,14 @@ const Schedule = () => {
     const handleEventClick = (arg: EventClickArg) => {
         console.log(arg.el);
     };
+
+    const handleEventEdit = async (arg: EventDragStopArg) => {        
+        try {
+            await editLesson(arg.event.extendedProps.lesson_id, arg.event.start, arg.event.end)
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
         <div className="relative sm:ml-64 overflow-auto no-scrollbar w-full h-full sm:mt-0 mt-10">
@@ -123,6 +133,8 @@ const Schedule = () => {
                 eventClick={handleEventClick}
                 select={handleSelectClick}
                 eventContent={renderEventContent}
+                eventDrop={handleEventEdit}
+                eventResize={handleEventEdit}
             />
             {formDisplay ? (
                 <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 bg-white z-[99999]">
