@@ -1,9 +1,10 @@
 import FullCalendar, {
     DateSelectArg,
     EventClickArg,
+    EventMountArg,
 } from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin, { EventDragStartArg, EventDragStopArg } from "@fullcalendar/interaction";
+import interactionPlugin, { EventDragStopArg } from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { useEffect, useState } from "react";
 import FormRefactor from "./FormRefactor";
@@ -33,7 +34,6 @@ if (process.env.NODE_ENV === "production") {
 } else {
     baseURL = "http://localhost:3500/api";
 }
-
 
 const Schedule = () => {
     const { instructor } = useParams();
@@ -105,16 +105,20 @@ const Schedule = () => {
         console.log(arg.el);
     };
 
-    const handleEventEdit = async (arg: EventDragStopArg) => {        
+    const handleEventEdit = async (arg: EventDragStopArg) => {
         try {
-            await editLesson(arg.event.extendedProps.lesson_id, arg.event.start, arg.event.end)
+            await editLesson(
+                arg.event.extendedProps.lesson_id,
+                arg.event.start,
+                arg.event.end
+            );
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
     return (
-        <div className="relative sm:ml-64 overflow-auto no-scrollbar w-full h-full sm:mt-0 mt-10">
+        <div className="relative sm:ml-64 overflow-auto no-scrollbar w-full h-full sm:pt-0 pt-10">
             <FullCalendar
                 height="100%"
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -127,7 +131,7 @@ const Schedule = () => {
                 initialEvents={getEvents}
                 editable={true}
                 events={events}
-                dayMaxEvents={true}
+                dayMaxEventRows={1}
                 displayEventTime={false}
                 selectable={true}
                 eventClick={handleEventClick}
@@ -137,7 +141,7 @@ const Schedule = () => {
                 eventResize={handleEventEdit}
             />
             {formDisplay ? (
-                <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 bg-white z-[99999]">
+                <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 bg-white z-[99999]">
                     <FormRefactor
                         start={start}
                         end={end}
@@ -153,8 +157,7 @@ const Schedule = () => {
             ) : null}
             <Link
                 className="fixed bottom-3 ml-2 z-[99999] text-2xl"
-                to="/lessons"
-            >
+                to="/lessons">
                 <BsArrowLeftCircleFill />
             </Link>
         </div>
@@ -164,7 +167,7 @@ const Schedule = () => {
 function renderEventContent(eventInfo: any) {
     return (
         <>
-            <div className="bg-blue-400 w-full h-full rounded-md whitespace-normal">
+            <div className="bg-blue-400 w-full h-full rounded-md text-black overflow-hidden">
                 {eventInfo.event.extendedProps.student_name}
             </div>
         </>

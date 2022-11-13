@@ -3,6 +3,7 @@ import { axiosPrivate } from "../../api/axios";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { Instructor } from "../../util/types";
+import { BsPersonCircle } from "react-icons/bs";
 
 let baseURL: string;
 
@@ -46,14 +47,21 @@ const LessonsRefactor = () => {
     }, []);
 
     return (
-        <div className="relative ml-64 overflow-auto no-scrollbar w-full">
+        <div className="relative sm:ml-64 mr-5 overflow-auto no-scrollbar w-full flex content-start flex-wrap max-md:justify-center">
             {roles.includes("User")
                 ? null
                 : instructorsInfo.map((instructor: Instructor) => {
                       return (
-                          <div key={instructor.instructor_id}>
-                              <Link to={`${instructor.instructor_id}`}>{instructor.instructor_name}</Link>
-                          </div>
+                          <Link
+                              key={instructor.instructor_id}
+                              to={`${instructor.instructor_id}`}
+                              className="ml-5 bg-white w-56 h-40 flex flex-col items-center justify-between border mt-5 shadow-lg"
+                          >
+                              <BsPersonCircle className="text-4xl ml-2 my-2" />
+                              <p className="text-2xl mb-12">
+                                  {instructor.instructor_name}
+                              </p>
+                          </Link>
                       );
                   })}
         </div>

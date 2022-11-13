@@ -26,6 +26,53 @@ html {
     width: 100%;
 }
 
+.fc-header-toolbar {
+    margin-top: 0.5rem;
+    padding: 0 0.5rem;
+}
+
+@media screen and (max-width: 860px) {
+    .fc-header-toolbar {
+        font-size: 0.75rem !important;
+    }
+}
+
+@media screen and (max-width: 720px) {
+    .fc-header-toolbar {
+        font-size: 0.5rem !important;
+    }
+}
+
+@media screen and (max-width: 639px) {
+    .fc-header-toolbar {
+        font-size: 1rem !important;
+    }
+
+    .fc-toolbar-title {
+        position: absolute;
+        top: 5px;
+        left: 50%;
+        transform: translate(-50%);
+        line-break: loose;
+        white-space: nowrap;
+        font-size: 1.5rem !important;
+    }
+}
+
+@media screen and (max-width: 370px) {
+    .fc-col-header {
+        font-size: 0.75rem !important;
+    }
+
+    .fc-header-toolbar {
+        flex-direction: column;
+    }
+
+    .fc-toolbar-chunk {
+        margin-bottom: 5px;
+    }
+}
+
 .active {
     font-weight: bold;
 }
