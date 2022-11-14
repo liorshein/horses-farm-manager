@@ -1,9 +1,13 @@
 import FullCalendar, {
     DateSelectArg,
     EventClickArg,
+    EventDropArg,
 } from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin, { EventDragStopArg } from "@fullcalendar/interaction";
+import interactionPlugin, {
+    EventDragStopArg,
+    EventResizeDoneArg,
+} from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { useEffect, useState } from "react";
 import FormRefactor from "./FormRefactor";
@@ -45,8 +49,6 @@ const Schedule = () => {
     const [end, setEnd] = useState<Date>();
     const [formDisplay, setFormDisplay] = useState(false);
     const [popupDisplay, setPopupDisplay] = useState(false);
-
-    console.log(selectedEvent)
 
     useEffect(() => {
         let isMounted = true;
@@ -107,37 +109,51 @@ const Schedule = () => {
     };
 
     const handleEventClick = (arg: EventClickArg) => {
-        const { start, end, extendedProps } = arg.event;        
+        const { start, end, extendedProps } = arg.event;
         const { horse_name, student_name, lesson_id } = extendedProps;
         setSelectedEvent({
             start: start as Date,
             end: end as Date,
             horse_name: horse_name,
             student_name: student_name,
-            lesson_id: lesson_id
+            lesson_id: lesson_id,
         });
         setPopupDisplay(!popupDisplay);
     };
 
-    const handleEventEdit = async (arg: EventDragStopArg) => {
-        try {
-            await editLesson(
-                arg.event.extendedProps.lesson_id,
-                arg.event.start,
-                arg.event.end
-            );
-        } catch (error) {
-            console.log(error);
+    const handleEventDrop = async (arg: EventDropArg) => {
+        const response = await editLesson(
+            arg.event.extendedProps.lesson_id,
+            arg.event.start,
+            arg.event.end
+        );
+
+        if (response.status === 409) {
+            arg.revert();
+            alert(response.data.message);
+        }
+    };
+
+    const handleEventResize = async (arg: EventResizeDoneArg) => {
+        const response = await editLesson(
+            arg.event.extendedProps.lesson_id,
+            arg.event.start,
+            arg.event.end
+        );
+
+        if (response.status === 409) {
+            arg.revert();
+            alert(response.data.message);
         }
     };
 
     const handleClick = () => {
         formDisplay && setFormDisplay(false);
         popupDisplay && setPopupDisplay(false);
-    }
+    };
 
     return (
-        <div className="relative sm:ml-64 overflow-auto no-scrollbar w-full h-full sm:pt-0 pt-10">
+        <div className="relative sm:ml-64 overflow-hidden no-scrollbar w-full h-full sm:pt-0 pt-10">
             <FullCalendar
                 height="100%"
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -153,11 +169,12 @@ const Schedule = () => {
                 dayMaxEventRows={1}
                 displayEventTime={false}
                 selectable={true}
+                eventOverlap={false}
                 eventClick={handleEventClick}
                 select={handleSelectClick}
                 eventContent={renderEventContent}
-                eventDrop={handleEventEdit}
-                eventResize={handleEventEdit}
+                eventDrop={handleEventDrop}
+                eventResize={handleEventResize}
             />
             <div
                 className={

@@ -45,27 +45,35 @@ const FormRefactor = ({
             instructor_id: Number(instructor),
         };
 
-        try {
+        if (!Object.values(lesson).includes(0)) {
             let response = await addLesson(lesson);
-            const studentName = studentInfo.find(
-                (student: Student) =>
-                    student.student_id === Number(selectedStudent)
-            )?.student_name;
-            const horseName = horseInfo.find((horse: Horse) => horse.horse_id === Number(selectedHorse))?.horse_name
-            lesson.student_name = studentName as string;
-            lesson.horse_name = horseName as string;
-            lesson.lesson_id = response.lesson_id;
 
-            lesson["start"] = lesson["start_time"];
-            lesson["end"] = lesson["end_time"];
-            delete lesson["start_time"];
-            delete lesson["end_time"];
+            if (response.status !== 409) {
+                const studentName = studentInfo.find(
+                    (student: Student) =>
+                        student.student_id === Number(selectedStudent)
+                )?.student_name;
+                const horseName = horseInfo.find(
+                    (horse: Horse) => horse.horse_id === Number(selectedHorse)
+                )?.horse_name;
+                lesson.student_name = studentName as string;
+                lesson.horse_name = horseName as string;
+                lesson.lesson_id = response.lesson_id;
 
-            setEvents([...events, lesson]);
-        } catch (error) {
-            console.log(error);
+                lesson["start"] = lesson["start_time"];
+                lesson["end"] = lesson["end_time"];
+                delete lesson["start_time"];
+                delete lesson["end_time"];
+
+                setEvents([...events, lesson]);
+                setFormDisplay(false);
+            } else {
+                alert(response.data.message);
+            }
+            console.log(response);
+        } else {
+            alert("Please select valid info!");
         }
-        setFormDisplay(false);
     };
 
     return (

@@ -19,9 +19,7 @@ const PopUp = ({
     const handleClick = async (e: { preventDefault: () => void }) => {
         e.preventDefault();
         const LessonId = selectedEvent?.lesson_id;
-        const response = await deleteLesson(LessonId!.toString()!);
-        console.log(response);
-        
+        const response = await deleteLesson(LessonId!.toString()!);        
         if (response.status === 200) {
             const eventFiltered = events.filter((lesson: Lesson) => lesson.lesson_id !== LessonId);
             setEvents(eventFiltered);

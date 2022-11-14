@@ -25,17 +25,25 @@ export const getLessons = async (start: any, end: any, instructor: any) => {
 };
 
 export const addLesson = async (lesson: Lesson) => {
-    let results = await lessonsApi.post("/admin/addLesson", lesson);    
-    return results.data.rows[0];
+    try {
+        let results = await lessonsApi.post("/admin/addLesson", lesson);
+        return results.data.rows[0];
+    } catch (error: any) {
+        return error.response
+    }
 };
 
-export const editLesson = async (lesson_id: number, start: any, end: any) => {    
-    const data = { lesson_id: lesson_id, start: start, end: end };    
-    await lessonsApi.put("/admin/edit-lesson", data);
+export const editLesson = async (lesson_id: number, start: any, end: any) => {
+    try {
+        const data = { lesson_id: lesson_id, start: start, end: end };
+        await lessonsApi.put("/admin/edit-lesson", data);
+    } catch (error: any) {        
+        return error.response;
+    }
 };
 
 export const deleteLesson = async (lessonId: string) => {
     let params = new URLSearchParams({ lesson_id: lessonId });
     const response = await lessonsApi.delete(`/admin/delete-lesson?${params}`);
-    return response
+    return response;
 };

@@ -3,28 +3,36 @@ import { client } from "../db";
 import { filterHours } from "./helpFunctions";
 
 export const addLessonData: RequestHandler = async (req, res) => {
-    const result = await client.query(
-        `INSERT INTO lessons2(horse_id, start_time, end_time, instructor_id, student_id) VALUES ($1, $2, $3, $4, $5) RETURNING lesson_id`,
-        [
-            req.body.horse_id,
-            req.body.start_time,
-            req.body.end_time,
-            req.body.instructor_id,
-            req.body.student_id,
-        ]
-    );
+    try {
+        const result = await client.query(
+            `INSERT INTO lessons2(horse_id, start_time, end_time, instructor_id, student_id) VALUES ($1, $2, $3, $4, $5) RETURNING lesson_id`,
+            [
+                req.body.horse_id,
+                req.body.start_time,
+                req.body.end_time,
+                req.body.instructor_id,
+                req.body.student_id,
+            ]
+        );
 
-    res.send(result);
+        res.send(result);
+    } catch (error) {
+        res.status(409).send({ message: "Horse is not available, contact farm management." });
+    }
 };
 
-export const editLesson: RequestHandler = async (req, res) => {    
-    await client.query(
-        `UPDATE lessons2
-        SET start_time=$1, end_time=$2
-        WHERE lesson_id=$3`,
-        [req.body.start, req.body.end, req.body.lesson_id]
-    );
-    res.end();
+export const editLesson: RequestHandler = async (req, res) => {
+    try {
+        await client.query(
+            `UPDATE lessons2
+            SET start_time=$1, end_time=$2
+            WHERE lesson_id=$3`,
+            [req.body.start, req.body.end, req.body.lesson_id]
+        );
+        res.end();
+    } catch (error) {
+        res.status(409).send({ message: "Cannot update lesson, contact farm management." });
+    }
 };
 
 export const editStudent: RequestHandler = async (req, res) => {
@@ -192,7 +200,10 @@ export const addLesson: RequestHandler = async (req: any, res) => {
 
 export const deleteLesson: RequestHandler = async (req: any, res) => {
     const lessonId = req.query.lesson_id;
-    const result = await client.query(`DELETE FROM lessons2 WHERE lesson_id=$1`, [lessonId]);
+    const result = await client.query(
+        `DELETE FROM lessons2 WHERE lesson_id=$1`,
+        [lessonId]
+    );
     res.send(result);
 };
 
