@@ -34,7 +34,8 @@ export const editLesson = async (lesson_id: number, start: any, end: any) => {
     await lessonsApi.put("/admin/edit-lesson", data);
 };
 
-export const deleteHorse = async (horseId: string) => {
-    let params = new URLSearchParams({ horse_id: horseId });
-    await lessonsApi.delete(`/admin/delete-horse?${params}`);
+export const deleteLesson = async (lessonId: string) => {
+    let params = new URLSearchParams({ lesson_id: lessonId });
+    const response = await lessonsApi.delete(`/admin/delete-lesson?${params}`);
+    return response
 };

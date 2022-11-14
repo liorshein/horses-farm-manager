@@ -192,8 +192,8 @@ export const addLesson: RequestHandler = async (req: any, res) => {
 
 export const deleteLesson: RequestHandler = async (req: any, res) => {
     const lessonId = req.query.lesson_id;
-    await client.query(`DELETE FROM lessons WHERE lesson_id=$1`, [lessonId]);
-    res.send({ success: true });
+    const result = await client.query(`DELETE FROM lessons2 WHERE lesson_id=$1`, [lessonId]);
+    res.send(result);
 };
 
 export const getAvailableHorses: RequestHandler = async (_req, res) => {

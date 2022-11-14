@@ -1,7 +1,6 @@
 import FullCalendar, {
     DateSelectArg,
     EventClickArg,
-    EventMountArg,
 } from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin, { EventDragStopArg } from "@fullcalendar/interaction";
@@ -13,6 +12,7 @@ import { Link, useParams } from "react-router-dom";
 import { BsArrowLeftCircleFill } from "react-icons/bs";
 import { axiosPrivate } from "../../api/axios";
 import { Horse, Student } from "../../util/types";
+import PopUp from "./PopUp";
 
 let baseURL: string;
 
@@ -22,10 +22,10 @@ export type Lesson = {
     start?: Date;
     end_time?: Date;
     end?: Date;
-    student_id: number;
-    horse_id: number;
-    instructor_id: number;
-    arrived: boolean | null;
+    student_id?: number;
+    horse_id?: number;
+    horse_name?: string;
+    instructor_id?: number;
     student_name?: string;
 };
 
@@ -38,11 +38,15 @@ if (process.env.NODE_ENV === "production") {
 const Schedule = () => {
     const { instructor } = useParams();
     const [events, setEvents] = useState<Lesson[]>([]);
+    const [selectedEvent, setSelectedEvent] = useState<Lesson>();
     const [studentInfo, setStudentInfo] = useState<Student[]>([]);
     const [horseInfo, setHorseInfo] = useState<Horse[]>([]);
     const [start, setStart] = useState<Date>();
     const [end, setEnd] = useState<Date>();
     const [formDisplay, setFormDisplay] = useState(false);
+    const [popupDisplay, setPopupDisplay] = useState(false);
+
+    console.log(selectedEvent)
 
     useEffect(() => {
         let isMounted = true;
@@ -87,6 +91,7 @@ const Schedule = () => {
         const events = results.map((eventEl: Lesson) => ({
             lesson_id: eventEl.lesson_id,
             student_name: eventEl.student_name,
+            horse_name: eventEl.horse_name,
             start: eventEl.start_time,
             end: eventEl.end_time,
         }));
@@ -102,7 +107,16 @@ const Schedule = () => {
     };
 
     const handleEventClick = (arg: EventClickArg) => {
-        console.log(arg.el);
+        const { start, end, extendedProps } = arg.event;        
+        const { horse_name, student_name, lesson_id } = extendedProps;
+        setSelectedEvent({
+            start: start as Date,
+            end: end as Date,
+            horse_name: horse_name,
+            student_name: student_name,
+            lesson_id: lesson_id
+        });
+        setPopupDisplay(!popupDisplay);
     };
 
     const handleEventEdit = async (arg: EventDragStopArg) => {
@@ -116,6 +130,11 @@ const Schedule = () => {
             console.log(error);
         }
     };
+
+    const handleClick = () => {
+        formDisplay && setFormDisplay(false);
+        popupDisplay && setPopupDisplay(false);
+    }
 
     return (
         <div className="relative sm:ml-64 overflow-auto no-scrollbar w-full h-full sm:pt-0 pt-10">
@@ -140,21 +159,45 @@ const Schedule = () => {
                 eventDrop={handleEventEdit}
                 eventResize={handleEventEdit}
             />
-            {formDisplay ? (
-                <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 bg-white z-[99999]">
-                    <FormRefactor
-                        start={start}
-                        end={end}
-                        setStart={setStart}
-                        setEnd={setEnd}
-                        instructor={instructor as string}
-                        setEvents={setEvents}
-                        events={events}
-                        studentInfo={studentInfo}
-                        horseInfo={horseInfo}
-                    />
-                </div>
-            ) : null}
+            <div
+                className={
+                    formDisplay
+                        ? "absolute z-[99999] visible top-2 left-1/2 transition-all ease-in-out duration-500 -translate-x-1/2"
+                        : "absolute -translate-x-1/2 invisible z-[-1] -top-1/2 left-1/2 transition-all ease-in-out duration-500"
+                }>
+                <FormRefactor
+                    start={start}
+                    end={end}
+                    setStart={setStart}
+                    setEnd={setEnd}
+                    instructor={instructor as string}
+                    setEvents={setEvents}
+                    events={events}
+                    studentInfo={studentInfo}
+                    horseInfo={horseInfo}
+                    setFormDisplay={setFormDisplay}
+                />
+            </div>
+            <div
+                className={
+                    popupDisplay
+                        ? "absolute z-[99999] visible top-2 left-1/2 transition-all ease-in-out duration-500 -translate-x-1/2"
+                        : "absolute -translate-x-1/2 invisible z-[-1] -top-1/2 left-1/2 transition-all ease-in-out duration-500"
+                }>
+                <PopUp
+                    selectedEvent={selectedEvent}
+                    setPopupDisplay={setPopupDisplay}
+                    setEvents={setEvents}
+                    events={events}
+                />
+            </div>
+            <div
+                onClick={handleClick}
+                className={
+                    popupDisplay || formDisplay
+                        ? "absolute opacity-0 visible bg-white z-[99998] w-full h-full top-0 transition-all ease-in-out duration-500"
+                        : "absolute invisible opacity-0 z-[-1] bg-white w-full h-full transition-all ease-in-out duration-500"
+                }></div>
             <Link
                 className="fixed bottom-3 ml-2 z-[99999] text-2xl"
                 to="/lessons">

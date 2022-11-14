@@ -77,9 +77,10 @@ export const getLessons: RequestHandler = async (req, res) => {
 
     const result = (
         await client.query(
-            `SELECT lessons2.*, students.student_name
+            `SELECT lessons2.*, students.student_name, horses.horse_name
             FROM lessons2
             JOIN students ON lessons2.student_id = students.student_id
+            JOIN horses ON lessons2.horse_id = horses.horse_id
             WHERE lessons2.start_time >= $1 AND lessons2.end_time <= $2 AND lessons2.instructor_id=$3`,
             [start, end, instructor]
         )
