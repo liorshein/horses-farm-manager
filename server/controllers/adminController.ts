@@ -4,20 +4,39 @@ import { filterHours } from "./helpFunctions";
 
 export const addLessonData: RequestHandler = async (req, res) => {
     try {
-        const result = await client.query(
-            `INSERT INTO lessons2(horse_id, start_time, end_time, instructor_id, student_id) VALUES ($1, $2, $3, $4, $5) RETURNING lesson_id`,
-            [
-                req.body.horse_id,
-                req.body.start_time,
-                req.body.end_time,
-                req.body.instructor_id,
-                req.body.student_id,
-            ]
-        );
+        const lessons = (
+            await client.query(
+                `SELECT *
+                FROM lessons2
+                WHERE (lessons2.start_time <= $1 AND lessons2.end_time >= $2 AND lessons2.instructor_id=$3) OR (lessons2.start_time >= $1 AND lessons2.end_time <= $2 AND lessons2.instructor_id=$3)`,
+                [req.body.start_time, req.body.end_time, req.body.instructor_id]
+            )
+        ).rows;
 
-        res.send(result);
+        if (lessons.length > 0) {
+            res.status(409).send({
+                message: "Lesson overlaps another!",
+            });
+        } else {
+            const result = await client.query(
+                `INSERT INTO lessons2(horse_id, start_time, end_time, instructor_id, student_id)
+                VALUES ($1, $2, $3, $4, $5)
+                WHERE
+                RETURNING lesson_id`,
+                [
+                    req.body.horse_id,
+                    req.body.start_time,
+                    req.body.end_time,
+                    req.body.instructor_id,
+                    req.body.student_id,
+                ]
+            );
+            res.send(result);
+        }
     } catch (error) {
-        res.status(409).send({ message: "Horse is not available, contact farm management." });
+        res.status(409).send({
+            message: "Horse is not available, contact farm management.",
+        });
     }
 };
 
@@ -31,7 +50,9 @@ export const editLesson: RequestHandler = async (req, res) => {
         );
         res.end();
     } catch (error) {
-        res.status(409).send({ message: "Cannot update lesson, contact farm management." });
+        res.status(409).send({
+            message: "Cannot update lesson, contact farm management.",
+        });
     }
 };
 

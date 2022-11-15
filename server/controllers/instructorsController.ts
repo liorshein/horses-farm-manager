@@ -74,7 +74,7 @@ export const getLessons: RequestHandler = async (req, res) => {
     const instructor = req.query.instructor;
     const start = req.query.start;
     const end = req.query.end;
-
+    
     const result = (
         await client.query(
             `SELECT lessons2.*, students.student_name, horses.horse_name
