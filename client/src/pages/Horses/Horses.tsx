@@ -1,19 +1,22 @@
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { FaHorseHead } from "react-icons/fa";
 import { BsPlus } from "react-icons/bs";
 import {
     useLoaderData,
     ActionFunction,
     LoaderFunction,
+    defer,
+    Await,
 } from "react-router-dom";
 import { addHorse, deleteHorse, editHorse, getHorses } from "../../api/horses";
 import useAuth from "../../hooks/useAuth";
 import { Horse } from "../../util/types";
 import HorsesCards from "./HorsesCards";
 import HorsesForm from "./HorsesForm";
+import Loader from "../../components/Loader/Loader";
 
 export const loader: LoaderFunction = async () => {
-    return getHorses();
+    return defer({ myData: getHorses() });
 };
 
 export const action: ActionFunction = async ({ request }) => {
@@ -42,7 +45,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 const Horses = () => {
     const { roles } = useAuth()!;
-    const horsesData = useLoaderData() as Horse[];
+    const loaderData = useLoaderData() as any;
 
     const [showForm, setShowForm] = useState(false);
     const [inputs, setInputs] = useState<Horse>({
@@ -59,7 +62,7 @@ const Horses = () => {
         e.preventDefault();
         setShowForm(!showForm);
     };
-    
+
     return (
         <section className="flex-grow w-full sm:ml-64 h-screen flex flex-col items-center overflow-auto">
             <div className="flex w-full justify-between pb-4">
@@ -73,8 +76,7 @@ const Horses = () => {
                 {roles.includes("User") ? null : (
                     <button
                         className="mt-5 text-2xl mr-5 sm:mr-10"
-                        onClick={shiftComponent}
-                    >
+                        onClick={shiftComponent}>
                         <div className="flex">
                             <BsPlus />
                             <FaHorseHead />
@@ -82,25 +84,35 @@ const Horses = () => {
                     </button>
                 )}
             </div>
-            {showForm ? (
-                <HorsesForm
-                    inputs={inputs}
-                    edit={edit}
-                    hidden={showForm}
-                    setInputs={setInputs}
-                    setEdit={setEdit}
-                    setHidden={setShowForm}
-                />
-            ) : (
-                <HorsesCards
-                    horsesData={horsesData}
-                    roles={roles}
-                    searchTerm={searchTerm}
-                    setHidden={setShowForm}
-                    setEdit={setEdit}
-                    setInputs={setInputs}
-                />
-            )}
+            <Suspense fallback={<Loader />}>
+                <Await
+                    resolve={loaderData.myData}
+                    errorElement={<p>Error loading horses!</p>}>
+                    {(loadedHorses) => (
+                        <>
+                            {showForm ? (
+                                <HorsesForm
+                                    inputs={inputs}
+                                    edit={edit}
+                                    hidden={showForm}
+                                    setInputs={setInputs}
+                                    setEdit={setEdit}
+                                    setHidden={setShowForm}
+                                />
+                            ) : (
+                                <HorsesCards
+                                    horsesData={loadedHorses}
+                                    roles={roles}
+                                    searchTerm={searchTerm}
+                                    setHidden={setShowForm}
+                                    setEdit={setEdit}
+                                    setInputs={setInputs}
+                                />
+                            )}
+                        </>
+                    )}
+                </Await>
+            </Suspense>
         </section>
     );
 };

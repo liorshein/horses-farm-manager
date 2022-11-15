@@ -5,18 +5,18 @@ import FullCalendar, {
 } from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin, {
-    EventDragStopArg,
     EventResizeDoneArg,
 } from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { useEffect, useState } from "react";
-import FormRefactor from "./FormRefactor";
+import LessonForm from "./LessonForm";
 import { editLesson, getLessons } from "../../api/lessons";
 import { Link, useParams } from "react-router-dom";
 import { BsArrowLeftCircleFill } from "react-icons/bs";
 import { axiosPrivate } from "../../api/axios";
 import { Horse, Student } from "../../util/types";
 import PopUp from "./PopUp";
+import useAuth from "../../hooks/useAuth";
 
 let baseURL: string;
 
@@ -40,6 +40,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const Schedule = () => {
+    const { roles } = useAuth()!;
     const { instructor } = useParams();
     const [events, setEvents] = useState<Lesson[]>([]);
     const [selectedEvent, setSelectedEvent] = useState<Lesson>();
@@ -55,24 +56,26 @@ const Schedule = () => {
         const controller = new AbortController();
 
         const getData = async () => {
-            try {
-                if (instructor !== "") {
-                    let params = new URLSearchParams({
-                        instructor_id: instructor as string,
-                    });
-                    const studentsData = await (
-                        await axiosPrivate.get(
-                            `/admin/instructor-students?${params}`
-                        )
-                    ).data.result;
-                    const horsesData = await (
-                        await axiosPrivate.get("/admin/horses-available")
-                    ).data.result;
-                    isMounted && setHorseInfo(horsesData);
-                    isMounted && setStudentInfo(studentsData);
+            if (roles.includes("Admin")) {
+                try {
+                    if (instructor !== "") {
+                        let params = new URLSearchParams({
+                            instructor_id: instructor as string,
+                        });
+                        const studentsData = await (
+                            await axiosPrivate.get(
+                                `/admin/instructor-students?${params}`
+                            )
+                        ).data.result;
+                        const horsesData = await (
+                            await axiosPrivate.get("/admin/horses-available")
+                        ).data.result;
+                        isMounted && setHorseInfo(horsesData);
+                        isMounted && setStudentInfo(studentsData);
+                    }
+                } catch (error) {
+                    console.error(error);
                 }
-            } catch (error) {
-                console.error(error);
             }
         };
         getData();
@@ -164,14 +167,14 @@ const Schedule = () => {
                 }}
                 initialView="dayGridMonth"
                 initialEvents={getEvents}
-                editable={true}
+                editable={roles.includes("Admin") ? true : false}
                 events={events}
                 dayMaxEventRows={1}
                 displayEventTime={false}
                 selectable={true}
                 eventOverlap={false}
                 eventClick={handleEventClick}
-                select={handleSelectClick}
+                select={roles.includes("Admin") ? handleSelectClick : undefined}
                 eventContent={renderEventContent}
                 eventDrop={handleEventDrop}
                 eventResize={handleEventResize}
@@ -182,7 +185,7 @@ const Schedule = () => {
                         ? "absolute z-[99999] visible top-2 left-1/2 transition-all ease-in-out duration-500 -translate-x-1/2"
                         : "absolute -translate-x-1/2 invisible z-[-1] -top-1/2 left-1/2 transition-all ease-in-out duration-500"
                 }>
-                <FormRefactor
+                <LessonForm
                     start={start}
                     end={end}
                     setStart={setStart}

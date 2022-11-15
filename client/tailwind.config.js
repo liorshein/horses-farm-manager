@@ -7,6 +7,9 @@ module.exports = {
       transitionProperty: {
         'width': 'width'
       },
+      backgroundImage: {
+        'horse': "url('/src/assets/gifs/horse.gif')"
+      }
     },
   },
   plugins: [],

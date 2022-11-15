@@ -12,7 +12,7 @@ export const addLessonData: RequestHandler = async (req, res) => {
                 [req.body.start_time, req.body.end_time, req.body.instructor_id]
             )
         ).rows;
-
+        
         if (lessons.length > 0) {
             res.status(409).send({
                 message: "Lesson overlaps another!",
@@ -21,7 +21,6 @@ export const addLessonData: RequestHandler = async (req, res) => {
             const result = await client.query(
                 `INSERT INTO lessons2(horse_id, start_time, end_time, instructor_id, student_id)
                 VALUES ($1, $2, $3, $4, $5)
-                WHERE
                 RETURNING lesson_id`,
                 [
                     req.body.horse_id,
@@ -30,10 +29,10 @@ export const addLessonData: RequestHandler = async (req, res) => {
                     req.body.instructor_id,
                     req.body.student_id,
                 ]
-            );
+            );            
             res.send(result);
         }
-    } catch (error) {
+    } catch (error) {        
         res.status(409).send({
             message: "Horse is not available, contact farm management.",
         });
@@ -149,10 +148,10 @@ export const getAllStudentsData: RequestHandler = async (_req, res) => {
 
 export const getLessonsPerMonth: RequestHandler = async (_req, res) => {
     const result = await client.query(
-        `SELECT COUNT (lessons.*),SUBSTRING(date, 1, 7), instructors.instructor_name
-        FROM lessons
-        JOIN instructors ON lessons.instructor_id = instructors.instructor_id
-        GROUP BY SUBSTRING(date, 1, 7), instructors.instructor_name`
+        `SELECT COUNT (lessons2.*),trim(TO_CHAR(end_time, 'Month')) || ', ' || trim(TO_CHAR(end_time, 'yyyy')) as mydate, instructors.instructor_name
+        FROM lessons2
+        JOIN instructors ON lessons2.instructor_id = instructors.instructor_id
+        GROUP BY mydate, instructors.instructor_name`
     );
     res.send({ result });
 };

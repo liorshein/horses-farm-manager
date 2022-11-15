@@ -20,7 +20,7 @@ type Props = {
     setFormDisplay: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const FormRefactor = ({
+const LessonForm = ({
     start,
     end,
     instructor,
@@ -70,7 +70,6 @@ const FormRefactor = ({
             } else {
                 alert(response.data.message);
             }
-            console.log(response);
         } else {
             alert("Please select valid info!");
         }
@@ -154,4 +153,4 @@ const FormRefactor = ({
     );
 };
 
-export default FormRefactor;
+export default LessonForm;

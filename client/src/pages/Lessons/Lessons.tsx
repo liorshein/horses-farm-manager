@@ -1,104 +1,58 @@
-import { useEffect, useState } from 'react'
-import AddLesson from './AddLesson';
-import styles from "./lessons.module.scss"
-import { axiosPrivate } from '../../api/axios';
-import useAuth from '../../hooks/useAuth';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { Instructor, Lesson } from '../../util/types';
-import SelectDateComp from './SelectDateComp';
-import LessonsList from './LessonsList';
+import {
+    Await,
+    defer,
+    Link,
+    LoaderFunction,
+    useLoaderData,
+} from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import { Instructor } from "../../util/types";
+import { BsPersonCircle } from "react-icons/bs";
+import { getInstructors } from "../../api/lessons";
+import Loader from "../../components/Loader/Loader";
+import { Suspense } from "react";
+
+export const loader: LoaderFunction = async () => {
+    return defer({ myData: getInstructors() });
+};
 
 const Lessons = () => {
-  const { roles } = useAuth()!
-  const [lessons, setLessons] = useState<Lesson[]>([])
-  const [date, setDate] = useState(new Date())
-  const [instructorsInfo, setInstructorsInfo] = useState([])
-  const [selectedInstructor, setSelectedInstructor] = useState('')
+    const { roles } = useAuth()!;
+    const loaderData = useLoaderData() as any;
 
-  const navigate = useNavigate()
-  const location = useLocation()
-
-  useEffect(() => {
-    let isMounted = true;
-    const controller = new AbortController();
-
-    const getData = async () => {
-      try {
-        if (!roles.includes("User")) {
-          const allInstructors = await (await axiosPrivate.get("/admin/instructors")).data.result
-          isMounted && setInstructorsInfo(allInstructors)
-        }
-      } catch (error) {
-        navigate('/login', { state: { from: location }, replace: true })
-      }
-    }
-    getData()
-
-    return () => {
-      isMounted = false;
-      controller.abort()
-    }
-  }, [])
-
-  useEffect(() => {
-    let isMounted = true;
-    const controller = new AbortController();
-
-    const getData = async () => {
-      if (roles.includes("User")) {
-        let dateFormatted = date.toISOString().split("T")[0];
-        let params = new URLSearchParams({ date: dateFormatted })
-        const lessonsData = await (await axiosPrivate.get(`/instructors/lessons?${params}`)).data.result
-        isMounted && setLessons(lessonsData)
-      } else {
-        if (selectedInstructor !== "") {
-          let dateFormatted = date.toISOString().split("T")[0];
-          let params = new URLSearchParams({ date: dateFormatted, instructor_id: selectedInstructor })
-          const lessonsData = await (await axiosPrivate.get(`/admin/instructor-lessons?${params}`)).data.result
-          isMounted && setLessons(lessonsData)
-        } else {
-          isMounted && setLessons([])
-        }
-      }
-    }
-    getData()
-
-    return () => {
-      isMounted = false;
-      controller.abort()
-    }
-
-  }, [date, selectedInstructor])
-
-  const deleteLesson = (id: number) => {
-    let params = new URLSearchParams({ lesson_id: id.toString() })
-    axiosPrivate.delete(`/admin/delete-lesson?${params}`)
-    setLessons(() => {
-      return lessons.filter(lesson => lesson.lesson_id !== id)
-    })
-  }
-
-  return (
-    <div className={styles.main_container}>
-      <div className={styles.main_content}>
-        <div className={styles.upper_part}>
-          <SelectDateComp date={date} setDate={setDate} />
-          {roles.includes("User") ? <div className={styles.emptyDiv}></div> :
-            <>
-              <select className={styles.instructor_select} name="instructor_id" id="instructor_id" value={selectedInstructor} onChange={(e) => { setSelectedInstructor(e.target.value) }}>
-                <option value=''>Choose Instructor</option>
-                {instructorsInfo.map((instructor: Instructor) => {
-                  return <option key={instructor.instructor_id} value={instructor.instructor_id}>{instructor.instructor_name}</option>
-                }
-                )}
-              </select>
-              {selectedInstructor !== "" ? <AddLesson selectedInstructor={selectedInstructor} date={date} setDate={setDate} setLessons={setLessons} /> : <div className={styles.emptyDiv}></div>}
-            </>}
+    return (
+        <div className="relative sm:ml-64 mr-5 overflow-auto no-scrollbar w-full flex content-start flex-wrap max-md:justify-center">
+            <Suspense fallback={<Loader />}>
+                <Await
+                    resolve={loaderData.myData}
+                    errorElement={<p>Error loading lessons!</p>}>
+                    {(loadedInstructors) => (
+                        <>
+                            {roles.includes("User")
+                                ? null
+                                : loadedInstructors.map(
+                                      (instructor: Instructor) => {
+                                          return (
+                                              <Link
+                                                  key={instructor.instructor_id}
+                                                  to={`${instructor.instructor_id}`}
+                                                  className="ml-5 bg-white w-56 h-40 flex flex-col items-center justify-between border mt-5 shadow-lg">
+                                                  <BsPersonCircle className="text-4xl ml-2 my-2" />
+                                                  <p className="text-2xl mb-12">
+                                                      {
+                                                          instructor.instructor_name
+                                                      }
+                                                  </p>
+                                              </Link>
+                                          );
+                                      }
+                                  )}
+                        </>
+                    )}
+                </Await>
+            </Suspense>
         </div>
-        <LessonsList lessons={lessons} deleteLesson={deleteLesson} />
-      </div>
-    </div>
-  )
-}
+    );
+};
 
-export default Lessons
+export default Lessons;

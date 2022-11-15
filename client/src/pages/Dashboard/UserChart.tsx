@@ -19,6 +19,8 @@ type Props = {
 };
 
 const UserChart = ({ salaryData }: Props) => {
+    console.log(salaryData);
+    
     const primaryxAxis: AxisModel = { valueType: "Category" };
     const primaryyAxis: AxisModel = { minimum: 0, maximum: 80, interval: 10 };
     const legendSettings = { visible: false };
@@ -51,7 +53,7 @@ const UserChart = ({ salaryData }: Props) => {
                     <SeriesCollectionDirective>
                         <SeriesDirective
                             dataSource={salaryData}
-                            xName="substring"
+                            xName="mydate"
                             yName="count"
                             name="Lessons Per Month"
                             type="Column"

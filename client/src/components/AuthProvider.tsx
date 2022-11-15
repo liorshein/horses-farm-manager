@@ -24,6 +24,7 @@ interface ContextInterface {
     setRoles: React.Dispatch<React.SetStateAction<string[]>>
     name: string
     setName: React.Dispatch<React.SetStateAction<string>>
+    userId: number
 }
 
 interface stateType {
@@ -41,6 +42,7 @@ const AutoProvider = (props: Props) => {
     })
     const [roles, setRoles] = useState<string[]>([])
     const [name, setName] = useState('')
+    const [userId, setUserId] = useState(0)
 
     const handleChange = (event: { target: { name: string; value: string } }) => {
         setLoginInputs({ ...loginInputs, [event.target.name]: event.target.value })
@@ -58,7 +60,8 @@ const AutoProvider = (props: Props) => {
                     withCredentials: true
                 }))
 
-            if (response.status === 200) {                
+            if (response.status === 200) {        
+                setUserId(response.data.userId)
                 setRoles(response.data.roles)
                 setName(response.data.userName)
                 const origin = location?.from?.pathname || '/dashboard';
@@ -97,6 +100,7 @@ const AutoProvider = (props: Props) => {
         }
 
         if (response.status === 200) {
+            setUserId(response.data.userId)
             setRoles(response.data.roles)
             setName(response.data.userName)
             const origin = location?.from?.pathname || '/dashboard';
@@ -122,6 +126,7 @@ const AutoProvider = (props: Props) => {
         name: name,
         setRoles: setRoles,
         setName: setName,
+        userId: userId,
     };
 
     return (

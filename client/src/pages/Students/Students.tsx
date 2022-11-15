@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import {
     ActionFunction,
     LoaderFunction,
     useLoaderData,
+    defer,
+    Await,
 } from "react-router-dom";
 import {
     addStudent,
@@ -11,18 +13,14 @@ import {
     getStudents,
 } from "../../api/students";
 import useAuth from "../../hooks/useAuth";
-import { Instructor, Student } from "../../util/types";
+import { Student } from "../../util/types";
 import StudentsForm from "./StudentsForm";
 import StudentCards from "./StudentCards";
 import { FiUserPlus } from "react-icons/fi";
-
-type Data = {
-    instructorsData: Instructor[];
-    studentsData: Student[];
-};
+import Loader from "../../components/Loader/Loader";
 
 export const loader: LoaderFunction = async () => {
-    return getStudents();
+    return defer({ myData: getStudents() });
 };
 
 export const action: ActionFunction = async ({ request }) => {
@@ -51,7 +49,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 const Students = () => {
     const { roles } = useAuth()!;
-    const { instructorsData, studentsData } = useLoaderData() as Data;
+    const loaderData = useLoaderData() as any;
 
     const [showForm, setShowForm] = useState(false);
     const [edit, setEdit] = useState(false);
@@ -90,32 +88,43 @@ const Students = () => {
                 {roles.includes("User") ? null : (
                     <button
                         className="mt-5 text-2xl mr-5 sm:mr-10"
-                        onClick={shiftComponent}
-                    >
+                        onClick={shiftComponent}>
                         <FiUserPlus />
                     </button>
                 )}
             </div>
-            {showForm ? (
-                <StudentsForm
-                    instructorsData={instructorsData}
-                    inputs={inputs}
-                    edit={edit}
-                    hidden={showForm}
-                    setInputs={setInputs}
-                    setEdit={setEdit}
-                    setHidden={setShowForm}
-                />
-            ) : (
-                <StudentCards
-                    studentsData={studentsData}
-                    roles={roles}
-                    searchTerm={searchTerm}
-                    setHidden={setShowForm}
-                    setEdit={setEdit}
-                    setInputs={setInputs}
-                />
-            )}
+            <Suspense fallback={<Loader />}>
+                <Await
+                    resolve={loaderData.myData}
+                    errorElement={<p>Error loading students</p>}>
+                    {(loadedStudents) => (
+                        <>
+                            {showForm ? (
+                                <StudentsForm
+                                    instructorsData={
+                                        loadedStudents.instructorsData
+                                    }
+                                    inputs={inputs}
+                                    edit={edit}
+                                    hidden={showForm}
+                                    setInputs={setInputs}
+                                    setEdit={setEdit}
+                                    setHidden={setShowForm}
+                                />
+                            ) : (
+                                <StudentCards
+                                    studentsData={loadedStudents.studentsData}
+                                    roles={roles}
+                                    searchTerm={searchTerm}
+                                    setHidden={setShowForm}
+                                    setEdit={setEdit}
+                                    setInputs={setInputs}
+                                />
+                            )}
+                        </>
+                    )}
+                </Await>
+            </Suspense>
         </section>
     );
 };

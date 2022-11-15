@@ -42,7 +42,7 @@ export type Lesson = {
 
 export type LessonsData = {
     count: number
-    substring: string
+    mydate: string
     instructor_name: string
 }
 
@@ -52,12 +52,12 @@ export type ChartData = {
 }
 
 export type Month = {
-    substring: string
+    mydate: string
 }
 
 export type Salary = {
     count: number
-    substring: string
+    mydate: string
 }
 
 export type HorseData = {

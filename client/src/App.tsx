@@ -21,8 +21,9 @@ import Students, {
 } from "./pages/Students/Students";
 import PersistLogin from "./components/PersistLogin";
 import NoMatch from "./pages/NoMatch/NoMatch";
-import Lessons from "./pages/Lessons/Lessons";
-import LessonsRefactor from "./pages/Lessons/LessonsRefactor";
+import Lessons, {
+    loader as lessonsLoader,
+} from "./pages/Lessons/Lessons";
 import Schedule from "./pages/Lessons/Schedule";
 
 const AuthProviderLayout = () => (
@@ -55,8 +56,7 @@ const router = createBrowserRouter([
                                 path: "/dashboard",
                                 element: (
                                     <ProtectedRoute
-                                        allowedRoles={["User", "Admin"]}
-                                    >
+                                        allowedRoles={["User", "Admin"]}>
                                         <Dashboard />
                                     </ProtectedRoute>
                                 ),
@@ -66,8 +66,7 @@ const router = createBrowserRouter([
                                 path: "/students",
                                 element: (
                                     <ProtectedRoute
-                                        allowedRoles={["User", "Admin"]}
-                                    >
+                                        allowedRoles={["User", "Admin"]}>
                                         <Students />
                                     </ProtectedRoute>
                                 ),
@@ -78,8 +77,7 @@ const router = createBrowserRouter([
                                 path: "/horses",
                                 element: (
                                     <ProtectedRoute
-                                        allowedRoles={["User", "Admin"]}
-                                    >
+                                        allowedRoles={["User", "Admin"]}>
                                         <Horses />
                                     </ProtectedRoute>
                                 ),
@@ -90,12 +88,11 @@ const router = createBrowserRouter([
                                 path: "/lessons",
                                 element: (
                                     <ProtectedRoute
-                                        allowedRoles={["User", "Admin"]}
-                                    >
-                                        {/* <Lessons /> */}
-                                        <LessonsRefactor />
+                                        allowedRoles={["User", "Admin"]}>
+                                        <Lessons />
                                     </ProtectedRoute>
                                 ),
+                                loader: lessonsLoader
                             },
                             {
                                 path: "/lessons/:instructor",

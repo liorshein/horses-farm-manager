@@ -21,14 +21,14 @@ export const getUserInfo: RequestHandler = async (req: any, res) => {
 export const getLessonsPerMonth: RequestHandler = async (req: any, res) => {
     const InstructorId = req.user;
     const result = await client.query(
-        `
-    SELECT COUNT (*),SUBSTRING(date, 1, 7) 
-    FROM lessons 
+    `SELECT COUNT (*),trim(TO_CHAR(end_time, 'Month')) || ', ' || trim(TO_CHAR(end_time, 'yyyy')) as mydate
+    FROM lessons2 
     WHERE instructor_id=$1 
-    GROUP BY SUBSTRING(date, 1, 7) 
-    ORDER BY SUBSTRING(date, 1, 7)`,
+    GROUP BY mydate 
+    ORDER BY mydate`,
         [InstructorId]
     );
+    
     res.send({ result });
 };
 
@@ -36,12 +36,12 @@ export const getLessonsPerMonth: RequestHandler = async (req: any, res) => {
 export const getFavoriteHorse: RequestHandler = async (req: any, res) => {
     const InstructorId = req.user;
     const result = await client.query(
-        `SELECT COUNT(lessons.horse_id), horses.horse_name
-        FROM lessons 
-        JOIN horses ON horses.horse_id = lessons.horse_id
-        WHERE lessons.instructor_id=$1 
-        GROUP BY lessons.horse_id, horses.horse_name
-        ORDER BY COUNT(lessons.horse_id) DESC`,
+        `SELECT COUNT(lessons2.horse_id), horses.horse_name
+        FROM lessons2
+        JOIN horses ON horses.horse_id = lessons2.horse_id
+        WHERE lessons2.instructor_id=$1 
+        GROUP BY lessons2.horse_id, horses.horse_name
+        ORDER BY COUNT(lessons2.horse_id) DESC`,
         [InstructorId]
     );
     res.send({ result });
@@ -74,7 +74,7 @@ export const getLessons: RequestHandler = async (req, res) => {
     const instructor = req.query.instructor;
     const start = req.query.start;
     const end = req.query.end;
-    
+
     const result = (
         await client.query(
             `SELECT lessons2.*, students.student_name, horses.horse_name

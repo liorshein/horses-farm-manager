@@ -11,7 +11,7 @@ const horseIcon = require("../assets/icons/horse.svg").default
 const signoutIcon = require("../assets/icons/signout.svg").default
 
 const Navbar = () => {
-    const { onLogout, name } = useAuth()!
+    const { onLogout, name, roles, userId } = useAuth()!
     const [menuActive, setMenuActive] = useState(true)
     const [logoutMenuActive, setLogoutMenuActive] = useState(false)
 
@@ -45,7 +45,7 @@ const Navbar = () => {
                     </li>
                     <li className="flex mb-8">
                         <img src={scheduleIcon} alt="schedule icon" />
-                        <NavLink className="ml-4 uppercase" to="/lessons" onClick={handleActiveMenu}>schedule</NavLink>
+                        <NavLink className="ml-4 uppercase" to={roles.includes("Admin") ? "/lessons" : `/lessons/${userId}`} onClick={handleActiveMenu}>schedule</NavLink>
                     </li>
                     <li className="flex mb-8">
                         <img src={manIcon} alt="man icon" />

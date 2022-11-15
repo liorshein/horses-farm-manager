@@ -1,7 +1,7 @@
-import { useState } from "react";
 import { Lesson } from "./Schedule";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { deleteLesson } from "../../api/lessons";
+import useAuth from "../../hooks/useAuth";
 
 type Props = {
     selectedEvent: Lesson | undefined;
@@ -16,14 +16,18 @@ const PopUp = ({
     events,
     setEvents,
 }: Props) => {
+    const { roles } = useAuth()!;
+
     const handleClick = async (e: { preventDefault: () => void }) => {
         e.preventDefault();
         const LessonId = selectedEvent?.lesson_id;
-        const response = await deleteLesson(LessonId!.toString()!);        
+        const response = await deleteLesson(LessonId!.toString()!);
         if (response.status === 200) {
-            const eventFiltered = events.filter((lesson: Lesson) => lesson.lesson_id !== LessonId);
+            const eventFiltered = events.filter(
+                (lesson: Lesson) => lesson.lesson_id !== LessonId
+            );
             setEvents(eventFiltered);
-            setPopupDisplay(false)
+            setPopupDisplay(false);
         }
     };
 
@@ -62,12 +66,14 @@ const PopUp = ({
                         })}
                     </p>
                 </div>
-                <button
-                    className="px-2 py-1 bg-slate-300 rounded-lg my-2 mx-1 self-center text-xl"
-                    type="submit"
-                    onClick={handleClick}>
-                    Delete
-                </button>
+                {roles.includes("Admin") ? (
+                    <button
+                        className="px-2 py-1 bg-slate-300 rounded-lg my-2 mx-1 self-center text-xl"
+                        type="submit"
+                        onClick={handleClick}>
+                        Delete
+                    </button>
+                ) : null}
             </div>
         </div>
     );

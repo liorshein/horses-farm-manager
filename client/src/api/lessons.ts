@@ -14,6 +14,11 @@ const lessonsApi = axios.create({
     withCredentials: true,
 });
 
+export const getInstructors= async () => {
+    const instructors = await (await lessonsApi.get("/admin/instructors")).data.result
+    return instructors
+}
+
 export const getLessons = async (start: any, end: any, instructor: any) => {
     let params = new URLSearchParams({
         start: start,

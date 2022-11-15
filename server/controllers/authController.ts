@@ -33,7 +33,7 @@ export const signIn: RequestHandler = async (req, res) => {
 
         // Creates httpOnly Cookie with jwt token
         res.cookie("token", cookieJWT, { httpOnly: true, secure: true, maxAge: 24 * 60 * 60 * 1000 })
-        res.json({ roles, userName })
+        res.json({ roles, userName, userId })
     } else {
         res.sendStatus(401)
     }

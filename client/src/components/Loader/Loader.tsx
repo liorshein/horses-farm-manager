@@ -1,8 +1,8 @@
-import styles from "./loader.module.scss"
-
 const Loader = () => {
   return (
-    <div className={styles.loader_container}></div>
+    <section className="flex-grow w-full h-screen flex flex-col items-center overflow-auto">
+      <div className="w-full h-full bg-horse bg-center bg-no-repeat"></div>
+    </section>
   )
 }
 
