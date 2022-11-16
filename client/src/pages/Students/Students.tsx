@@ -17,7 +17,7 @@ import { Student } from "../../util/types";
 import StudentsForm from "./StudentsForm";
 import StudentCards from "./StudentCards";
 import { FiUserPlus } from "react-icons/fi";
-import Loader from "../../components/Loader/Loader";
+import Loader from "../../components/Loader";
 
 export const loader: LoaderFunction = async () => {
     return defer({ myData: getStudents() });

@@ -13,7 +13,7 @@ import useAuth from "../../hooks/useAuth";
 import { Horse } from "../../util/types";
 import HorsesCards from "./HorsesCards";
 import HorsesForm from "./HorsesForm";
-import Loader from "../../components/Loader/Loader";
+import Loader from "../../components/Loader";
 
 export const loader: LoaderFunction = async () => {
     return defer({ myData: getHorses() });

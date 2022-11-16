@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { axiosPrivate } from '../api/axios'
 import useAuth from '../hooks/useAuth'
-import Loader from './Loader/Loader'
+import Loader from './Loader'
 
 const PersistLogin = () => {
     const { setRoles, setName } = useAuth()!

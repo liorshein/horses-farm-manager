@@ -20,15 +20,15 @@
         padding-left: 5px;
     }
 
-    .is_invalid {
-        border: 2px solid #ce4343;
-    }
-
+    
     .invalid_feedback {
         padding-top: 10px;
         height: 23px;
         color: #ce4343;
     }
+}
+.is_invalid {
+    border: 2px solid #ce4343;
 }
 
 .signin_btn {

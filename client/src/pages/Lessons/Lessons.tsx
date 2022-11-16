@@ -9,7 +9,7 @@ import useAuth from "../../hooks/useAuth";
 import { Instructor } from "../../util/types";
 import { BsPersonCircle } from "react-icons/bs";
 import { getInstructors } from "../../api/lessons";
-import Loader from "../../components/Loader/Loader";
+import Loader from "../../components/Loader";
 import { Suspense } from "react";
 
 export const loader: LoaderFunction = async () => {

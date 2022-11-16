@@ -12,7 +12,7 @@ const UserDashboard = ({ dashboardData }: Props) => {
     const { salaryData, personalData, horsesData } = dashboardData;
 
     return (
-        <section className="flex-grow w-full sm:ml-64 h-screen flex flex-col items-center overflow-auto">
+        <>
             <div className="flex w-full mt-6 justify-between gap-4 flex-wrap px-10 flex-col lg:flex-row">
                 <PersonalComp data={personalData} />
                 <SalaryComp salaryArr={salaryData} />
@@ -21,7 +21,7 @@ const UserDashboard = ({ dashboardData }: Props) => {
             <div className="my-4 h-full w-full px-10">
                 <UserChart salaryData={salaryData} />
             </div>
-        </section>
+        </>
     );
 };
 

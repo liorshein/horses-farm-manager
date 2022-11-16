@@ -8,7 +8,8 @@ module.exports = {
         'width': 'width'
       },
       backgroundImage: {
-        'horse': "url('/src/assets/gifs/horse.gif')"
+        'horse': "url('/src/assets/gifs/horse.gif')",
+        'loginImage': "url('/src/assets/images/horseDrawing2.jpg')"
       }
     },
   },

@@ -218,11 +218,13 @@ const Schedule = () => {
                         ? "absolute opacity-0 visible bg-white z-[99998] w-full h-full top-0 transition-all ease-in-out duration-500"
                         : "absolute invisible opacity-0 z-[-1] bg-white w-full h-full transition-all ease-in-out duration-500"
                 }></div>
-            <Link
-                className="fixed bottom-3 ml-2 z-[99999] text-2xl"
-                to="/lessons">
-                <BsArrowLeftCircleFill />
-            </Link>
+            {roles.includes("User") ? null : (
+                <Link
+                    className="fixed bottom-3 max-sm:right-4 ml-2 z-[99999] text-2xl"
+                    to="/lessons">
+                    <BsArrowLeftCircleFill />
+                </Link>
+            )}
         </div>
     );
 };
