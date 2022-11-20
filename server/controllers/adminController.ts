@@ -175,35 +175,47 @@ export const deleteStudent: RequestHandler = async (req: any, res) => {
 
 //TODO - Adding error handling for horses editing, removing and adding
 export const addHorse: RequestHandler = async (req: any, res) => {
-  await client.query(
-    `INSERT INTO horses(horse_name, age, breed, assignable)
-    VALUES ($1, $2, $3, $4)`, [req.body.horse_name, req.body.age, req.body.breed, req.body.assignable]
-  )
+  try {
+    await client.query(
+      `INSERT INTO horses(horse_name, age, breed, assignable)
+      VALUES ($1, $2, $3, $4)`, [req.body.horse_name, req.body.age, req.body.breed, req.body.assignable]
+    )
 
-  res.send({ success: true })
+    res.status(200).json({ message: "Horse added successfully" })
+  } catch (error) {
+    res.status(409).json({ message: "Error occurred, please try again or contact the farm management" })
+  }
 }
 
 export const editHorse: RequestHandler = async (req, res) => {
-  const result = await client.query(
-    `UPDATE horses
-    SET horse_name=$1, age=$2, breed=$3, assignable=$4
-    WHERE horse_id=$5`,
-    [
-      req.body.horse_name,
-      req.body.age,
-      req.body.breed,
-      req.body.assignable,
-      req.body.horse_id,
-    ]
-  )
+  try {
+    await client.query(
+      `UPDATE horses
+      SET horse_name=$1, age=$2, breed=$3, assignable=$4
+      WHERE horse_id=$5`,
+      [
+        req.body.horse_name,
+        req.body.age,
+        req.body.breed,
+        req.body.assignable,
+        req.body.horse_id,
+      ]
+    )
 
-  res.send(result)
+    res.status(200).json({ message: "Horse updated successfully" })
+  } catch (error) {
+    res.status(409).json({ message: "Error occurred, please try again or contact the farm management" })
+  }
 }
 
 export const deleteHorse: RequestHandler = async (req: any, res) => {
   const horseId = req.query.horse_id
-  await client.query(`DELETE FROM horses WHERE horse_id=$1`, [horseId])
-  res.send({ success: true })
+  try {
+    await client.query(`DELETE FROM horses WHERE horse_id=$1`, [horseId])
+    res.status(200).json({ message: "Horse deleted successfully" })
+  } catch (error) {
+    res.status(409).json({ message: "Error occurred, please try again or contact the farm management" })
+  }
 }
 
 //* Data fetching --------------------------------------------------------------------------------------------------------------------------------------------------------------

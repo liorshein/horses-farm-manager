@@ -36,7 +36,7 @@ const HorsesForm = () => {
         e.preventDefault();
         const response = await addHorse(inputs)
         if (response === 200) {
-            navigate("/students")
+            navigate("/horses")
         }
     }
 
@@ -46,14 +46,14 @@ const HorsesForm = () => {
         console.log(response);
 
         if (response === 200) {
-            navigate("/students")
+            navigate("/horses")
         }
     }
 
     return (
         <section className="flex-grow w-full sm:ml-64 h-screen flex flex-col items-center overflow-auto">
             <div className="w-full flex justify-center">
-                <form className="flex w-3/5 flex-col items-center mt-3 bg-slate-200 shadow-lg px-5">
+                <form autoComplete="off" className="flex w-3/5 flex-col items-center mt-3 bg-slate-200 shadow-lg px-5">
                     <h2 className="text-2xl my-2 underline tracking-tight">
                         Add Horse
                     </h2>
@@ -139,14 +139,6 @@ const HorsesForm = () => {
             </div>
         </section>
     );
-};
-
-const cleanForm = {
-    horse_id: 0,
-    horse_name: "",
-    age: "",
-    breed: "",
-    assignable: "True",
 };
 
 export default HorsesForm;

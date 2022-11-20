@@ -36,7 +36,7 @@ export const initDb = async () => {
             age INTEGER NOT NULL,
             breed TEXT NOT NULL,
             assignable TEXT NOT NULL,
-            UNIQUE (horse_name, age)
+            UNIQUE (horse_name)
         );`
   )
 

@@ -13,11 +13,9 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./components/Layout";
 import Horses, {
     loader as horsesLoader,
-    action as horsesAction,
 } from "./pages/Horses/Horses";
 import Students, {
     loader as studentsLoader,
-    // action as studentsAction,
 } from "./pages/Students/Students";
 import PersistLogin from "./components/PersistLogin";
 import NoMatch from "./pages/NoMatch/NoMatch";
@@ -99,7 +97,6 @@ const router = createBrowserRouter([
                                     </ProtectedRoute>
                                 ),
                                 loader: horsesLoader,
-                                action: horsesAction,
                             },
                             {
                                 path: "/horses/new",

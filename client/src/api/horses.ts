@@ -52,5 +52,13 @@ export const editHorse = async (horse: any) => {
 
 export const deleteHorse = async (horseId: string) => {
     let params = new URLSearchParams({ horse_id: horseId })
-    await horsesApi.delete(`/admin/delete-horse?${params}`)
+    try {
+        const response = await horsesApi.delete(`/admin/delete-horse?${params}`)
+        alert(response.data.message)
+        return response.status
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            alert(error.response?.data.message)
+        }
+    }
 }

@@ -122,8 +122,8 @@ const StudentCards = ({ studentsData, roles, searchTerm }: Props) => {
                                         Delete
                                     </button>
                                     <Link
-                                        className="my-3 mr-3 px-3 rounded-lg py-1 bg-slate-400"
                                         to={`/students/${student.student_id}`}
+                                        className="my-3 mr-3 px-3 rounded-lg py-1 bg-slate-400"
                                         state={student}>
                                         Edit
                                     </Link>
