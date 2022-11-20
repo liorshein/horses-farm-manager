@@ -94,6 +94,7 @@ const AdminChart = ({ salaryData }: Props) => {
                 <ChartComponent
                     style={{ height: "100%", width: "100%" }}
                     id="charts"
+                    palettes={["#927e68"]}
                     primaryXAxis={primaryxAxis}
                     primaryYAxis={primaryyAxis}
                     legendSettings={legendSettings}

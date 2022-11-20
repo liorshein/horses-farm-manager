@@ -53,7 +53,7 @@ const HorsesForm = () => {
     return (
         <section className="flex-grow w-full sm:ml-64 h-screen flex flex-col items-center overflow-auto">
             <div className="w-full flex justify-center">
-                <form autoComplete="off" className="flex w-3/5 flex-col items-center mt-3 bg-slate-200 shadow-lg px-5">
+                <form autoComplete="off" className="flex w-3/5 flex-col items-center mt-3 bg-primary shadow-lg px-5 rounded-lg">
                     <h2 className="text-2xl my-2 underline tracking-tight">
                         Add Horse
                     </h2>
@@ -71,6 +71,8 @@ const HorsesForm = () => {
                                 <label className="mb-1">Name</label>
                                 <input
                                     type="text"
+                                    placeholder="....."
+                                    className="rounded placeholder:pl-2"
                                     name="horse_name"
                                     id="name"
                                     value={inputs.horse_name}
@@ -81,6 +83,8 @@ const HorsesForm = () => {
                                 <label className="mb-1">Age</label>
                                 <input
                                     type="number"
+                                    placeholder="....."
+                                    className="rounded placeholder:pl-2"
                                     name="age"
                                     id="age"
                                     value={inputs.age}
@@ -93,6 +97,8 @@ const HorsesForm = () => {
                                 <label className="mb-1">Breed</label>
                                 <input
                                     type="text"
+                                    className="rounded placeholder:pl-2"
+                                    placeholder="....."
                                     name="breed"
                                     id="breed"
                                     value={inputs.breed}
@@ -104,7 +110,7 @@ const HorsesForm = () => {
                                 <select
                                     name="assignable"
                                     id="assignable"
-                                    className="py-[0.20rem]"
+                                    className="rounded"
                                     value={inputs.assignable as string}
                                     onChange={handleChange}
                                 >
@@ -118,19 +124,19 @@ const HorsesForm = () => {
                         {!edit ? (
                             <button
                                 type="submit"
-                                className="px-2 py-1 bg-slate-300 rounded-lg mt-2 mx-1"
+                                className="px-2 py-1 mt-2 mx-1 bg-[#00000038] border-[2px_solid_#38363654] cursor-pointer text-black hover:text-white rounded transition-[all_0.2s_cubic-bezier(0.79, 0.14, 0.15, 0.86)] hover:bg-[#887560] hover:transition-[all_0.1s_ease] focus:shadow-[0px_0px_0px_2px_#a7a7a7b5] focus:bg-[#00000061]"
                                 onClick={handleAdd}
                             >
                                 Add Horse
                             </button>
                         ) : (
-                            <button className="px-2 py-1 bg-slate-300 rounded-lg mt-2 mx-1" onClick={handleUpdate}>
+                            <button className="px-2 py-1 mt-2 mx-1 bg-[#00000038] border-[2px_solid_#38363654] cursor-pointer text-black hover:text-white rounded transition-[all_0.2s_cubic-bezier(0.79, 0.14, 0.15, 0.86)] hover:bg-[#887560] hover:transition-[all_0.1s_ease] focus:shadow-[0px_0px_0px_2px_#a7a7a7b5] focus:bg-[#00000061]" onClick={handleUpdate}>
                                 Update Horse
                             </button>
                         )}
                         <Link
                             to="/horses"
-                            className="px-2 py-1 bg-slate-300 rounded-lg mt-2 mx-1"
+                            className="px-2 py-1 mt-2 mx-1 bg-[#00000038] border-[2px_solid_#38363654] cursor-pointer text-black hover:text-white rounded transition-[all_0.2s_cubic-bezier(0.79, 0.14, 0.15, 0.86)] hover:bg-[#887560] hover:transition-[all_0.1s_ease] focus:shadow-[0px_0px_0px_2px_#a7a7a7b5] focus:bg-[#00000061]"
                         >
                             Return
                         </Link>

@@ -19,6 +19,7 @@ html {
     width: 100vw;
     font-family: "Nunito", sans-serif;
     overflow: hidden;
+    color: #4b4035;
 }
 
 @keyframes login {
@@ -55,6 +56,10 @@ select:-webkit-autofill:focus {
 .fc-header-toolbar {
     margin-top: 0.5rem;
     padding: 0 0.5rem;
+}
+
+.form-control {
+    border-radius: 0.25rem;
 }
 
 @media screen and (max-width: 860px) {

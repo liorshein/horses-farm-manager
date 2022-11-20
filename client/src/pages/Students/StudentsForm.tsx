@@ -65,7 +65,7 @@ const StudentsForm = () => {
             <div className="w-full flex justify-center">
                 <form
                     autoComplete="off"
-                    className="flex w-3/5 flex-col items-center mt-3 bg-slate-200 shadow-lg px-5">
+                    className="flex w-3/5 flex-col items-center mt-3 bg-primary shadow-lg px-5 rounded-lg">
                     <h2 className="text-2xl my-2 underline tracking-tight">
                         New Student
                     </h2>
@@ -82,6 +82,8 @@ const StudentsForm = () => {
                             <div className="mb-2 flex flex-col">
                                 <label className="mb-1">Name</label>
                                 <input
+                                    className="rounded pl-2"
+                                    placeholder="....."
                                     type="text"
                                     name="student_name"
                                     id="name"
@@ -92,6 +94,8 @@ const StudentsForm = () => {
                             <div className="mb-2 flex flex-col">
                                 <label className="mb-1">ID</label>
                                 <input
+                                    className="rounded pl-2"
+                                    placeholder="....."
                                     type="number"
                                     name="id"
                                     id="id"
@@ -102,6 +106,8 @@ const StudentsForm = () => {
                             <div className="mb-2 flex flex-col">
                                 <label className="mb-1">Date of birth</label>
                                 <input
+                                    className="rounded pl-2"
+                                    placeholder="....."
                                     type="text"
                                     name="date_of_birth"
                                     id="date_of_birth"
@@ -112,6 +118,8 @@ const StudentsForm = () => {
                             <div className="mb-2 flex flex-col">
                                 <label className="mb-1">Age</label>
                                 <input
+                                    className="rounded pl-2"
+                                    placeholder="....."
                                     type="number"
                                     name="age"
                                     id="age"
@@ -122,6 +130,8 @@ const StudentsForm = () => {
                             <div className="mb-2 flex flex-col">
                                 <label className="mb-1">Weight</label>
                                 <input
+                                    className="rounded pl-2"
+                                    placeholder="....."
                                     type="number"
                                     name="weight"
                                     id="weight"
@@ -134,6 +144,8 @@ const StudentsForm = () => {
                             <div className="mb-2 flex flex-col">
                                 <label className="mb-1">Height</label>
                                 <input
+                                    className="rounded pl-2"
+                                    placeholder="....."
                                     type="number"
                                     name="height"
                                     id="height"
@@ -144,6 +156,8 @@ const StudentsForm = () => {
                             <div className="mb-2 flex flex-col">
                                 <label className="mb-1">Address</label>
                                 <input
+                                    className="rounded pl-2"
+                                    placeholder="....."
                                     type="text"
                                     name="address"
                                     id="address"
@@ -156,6 +170,8 @@ const StudentsForm = () => {
                                     Educational framework
                                 </label>
                                 <input
+                                    className="rounded pl-2"
+                                    placeholder="....."
                                     type="text"
                                     name="framework"
                                     id="framework"
@@ -166,6 +182,8 @@ const StudentsForm = () => {
                             <div className="mb-2 flex flex-col">
                                 <label className="mb-1">Working on</label>
                                 <input
+                                    className="rounded pl-2"
+                                    placeholder="....."
                                     type="text"
                                     name="working_on"
                                     id="working_on"
@@ -179,7 +197,7 @@ const StudentsForm = () => {
                                     name="hmo"
                                     id="hmo"
                                     value={inputs.hmo}
-                                    className="py-[0.20rem]"
+                                    className="rounded"
                                     onChange={handleChange}>
                                     <option value="">Choose HMO</option>
                                     <option value="0">Macabi</option>
@@ -194,7 +212,7 @@ const StudentsForm = () => {
                             <select
                                 name="instructor_id"
                                 id="instructor_id"
-                                className="py-[0.20rem] my-2"
+                                className="rounded mt-3 mb-1"
                                 value={inputs.instructor_id}
                                 onChange={handleChange}>
                                 <option>Assign Instructor</option>
@@ -212,17 +230,17 @@ const StudentsForm = () => {
                     </div>
                     <div className="flex justify-around mb-4">
                         {!edit ? (
-                            <button className="px-2 py-1 bg-slate-300 rounded-lg mt-2 mx-1" onClick={handleAdd}>
+                            <button className="px-2 py-1 mt-2 mx-1 bg-[#00000038] border-[2px_solid_#38363654] cursor-pointer text-black hover:text-white rounded transition-[all_0.2s_cubic-bezier(0.79, 0.14, 0.15, 0.86)] hover:bg-[#887560] hover:transition-[all_0.1s_ease] focus:shadow-[0px_0px_0px_2px_#a7a7a7b5] focus:bg-[#00000061]" onClick={handleAdd}>
                                 Add Student
                             </button>
                         ) : (
-                            <button className="px-2 py-1 bg-slate-300 rounded-lg mt-2 mx-1" onClick={handleUpdate}>
+                            <button className="px-2 py-1 mt-2 mx-1 bg-[#00000038] border-[2px_solid_#38363654] cursor-pointer text-black hover:text-white rounded transition-[all_0.2s_cubic-bezier(0.79, 0.14, 0.15, 0.86)] hover:bg-[#887560] hover:transition-[all_0.1s_ease] focus:shadow-[0px_0px_0px_2px_#a7a7a7b5] focus:bg-[#00000061]" onClick={handleUpdate}>
                                 Update Student
                             </button>
                         )}
                         <Link
                             to="/students"
-                            className="px-2 py-1 bg-slate-300 rounded-lg mt-2 mx-1"
+                            className="px-2 py-1 mt-2 mx-1 bg-[#00000038] border-[2px_solid_#38363654] cursor-pointer text-black hover:text-white rounded transition-[all_0.2s_cubic-bezier(0.79, 0.14, 0.15, 0.86)] hover:bg-[#887560] hover:transition-[all_0.1s_ease] focus:shadow-[0px_0px_0px_2px_#a7a7a7b5] focus:bg-[#00000061]"
                         >
                             Return
                         </Link>

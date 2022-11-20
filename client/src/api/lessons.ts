@@ -34,7 +34,8 @@ export const getLessons = async (start: any, end: any, instructor: any) => {
 export const addLesson = async (lesson: Lesson) => {
     try {
         let results = await lessonsApi.post("/admin/add-lesson", lesson);
-        return results.data.rows[0];
+        alert(results.data.message);
+        return results.data.result.rows[0];
     } catch (error) {
         if (error instanceof AxiosError) {
             alert(error.response?.data.message);

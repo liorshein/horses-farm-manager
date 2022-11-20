@@ -4,19 +4,13 @@ import {
     RouterProvider,
     Outlet,
 } from "react-router-dom";
-import Dashboard, {
-    loader as dashboardLoader,
-} from "./pages/Dashboard/Dashboard";
+import Dashboard, { loader as dashboardLoader } from "./pages/Dashboard/Dashboard";
 import Login from "./pages/Login/Login";
 import AuthProvider from "./components/AuthProvider";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./components/Layout";
-import Horses, {
-    loader as horsesLoader,
-} from "./pages/Horses/Horses";
-import Students, {
-    loader as studentsLoader,
-} from "./pages/Students/Students";
+import Horses, { loader as horsesLoader } from "./pages/Horses/Horses";
+import Students, { loader as studentsLoader } from "./pages/Students/Students";
 import PersistLogin from "./components/PersistLogin";
 import NoMatch from "./pages/NoMatch/NoMatch";
 import Lessons, { loader as lessonsLoader } from "./pages/Lessons/Lessons";

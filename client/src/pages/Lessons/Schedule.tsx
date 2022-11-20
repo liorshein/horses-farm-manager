@@ -37,7 +37,7 @@ const Schedule = () => {
         const getData = async () => {
             if (roles.includes("Admin")) {
                 try {
-                    if (instructor !== "") {
+                    if (instructor !== "") {                        
                         let params = new URLSearchParams({
                             instructor_id: instructor as string,
                         });
@@ -200,7 +200,7 @@ const Schedule = () => {
 function renderEventContent(eventInfo: any) {
     return (
         <>
-            <div className="bg-blue-400 w-full h-full rounded-md text-black overflow-hidden">
+            <div className="bg-primary w-full h-full rounded-md pl-2 text-black overflow-hidden">
                 {eventInfo.event.extendedProps.student_name}
             </div>
         </>

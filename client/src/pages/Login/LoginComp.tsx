@@ -12,7 +12,7 @@ const Login = (props: Props) => {
     return (
         <div className="h-screen w-screen flex content-center items-center justify-center bg-loginImage bg-cover bg-no-repeat">
             <div
-                className="relative bg-[#686d6f7a] py-9 px-10 rounded z-[1] overflow-hidden shadow-2xl animate-[login_0.88s_ease]
+                className="relative bg-primary py-9 px-10 rounded z-[1] overflow-hidden shadow-2xl animate-[login_0.88s_ease]
             after:absolute after:top-0 after:left-0 after:h-full after:bg-loginImage after:w-full after:-z-[1] after:bg-[length:182vh] after:bg-[position:28%,_83%] after:blur-xl after:bg-no-repeat after:opacity-80">
                 <h1 className="text-4xl font-normal text-center mb-4 text-white tracking-tight">
                     Login to your account

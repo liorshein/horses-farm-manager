@@ -33,7 +33,7 @@ const PopUp = ({
 
     return (
         <div className="w-full h-full flex justify-center">
-            <div className="relative flex flex-col items-start bg-slate-200 shadow-lg px-5">
+            <div className="relative flex flex-col items-start bg-primary shadow-lg px-5 rounded-xl">
                 <button
                     className="absolute right-2 top-2 text-2xl"
                     onClick={() => setPopupDisplay(false)}>
@@ -68,7 +68,7 @@ const PopUp = ({
                 </div>
                 {roles.includes("Admin") ? (
                     <button
-                        className="px-2 py-1 bg-slate-300 rounded-lg my-2 mx-1 self-center text-xl"
+                        className="px-2 py-1 mb-4 mx-1 self-center bg-[#00000038] border-[2px_solid_#38363654] cursor-pointer text-black hover:text-white rounded transition-[all_0.2s_cubic-bezier(0.79, 0.14, 0.15, 0.86)] hover:bg-[#887560] hover:transition-[all_0.1s_ease] focus:shadow-[0px_0px_0px_2px_#a7a7a7b5] focus:bg-[#00000061]"
                         type="submit"
                         onClick={handleClick}>
                         Delete

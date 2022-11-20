@@ -57,10 +57,10 @@ export const addLesson: RequestHandler = async (req, res) => {
         req.body.instructor_id,
         req.body.student_id,
       ])
-    res.send(result)
+    res.status(200).json({message: "Lesson added successfully", result: result})
 
   } catch (error) {
-    res.status(409).send({ message: 'Error occurred, please contact farm management.' })
+    res.status(409).json({ message: 'Error occurred, please contact farm management.' })
   }
 }
 
@@ -173,7 +173,6 @@ export const deleteStudent: RequestHandler = async (req: any, res) => {
   }
 }
 
-//TODO - Adding error handling for horses editing, removing and adding
 export const addHorse: RequestHandler = async (req: any, res) => {
   try {
     await client.query(

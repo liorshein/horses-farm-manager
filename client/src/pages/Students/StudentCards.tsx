@@ -115,7 +115,7 @@ const StudentCards = ({ studentsData, roles, searchTerm }: Props) => {
                             {roles.includes("User") ? null : (
                                 <div className="flex">
                                     <button
-                                        className="my-3 mr-3 px-3 rounded-lg py-1 bg-slate-400"
+                                        className="my-3 mr-3 px-3 py-1 bg-primary border-[2px_solid_#38363654] cursor-pointer text-black hover:text-white rounded transition-[all_0.2s_cubic-bezier(0.79, 0.14, 0.15, 0.86)] hover:bg-[#887560] hover:transition-[all_0.1s_ease] focus:shadow-[0px_0px_0px_2px_#a7a7a7b5] focus:bg-[#00000061]"
                                         onClick={(e) =>
                                             handleDelete(student.student_id)
                                         }>
@@ -123,7 +123,7 @@ const StudentCards = ({ studentsData, roles, searchTerm }: Props) => {
                                     </button>
                                     <Link
                                         to={`/students/${student.student_id}`}
-                                        className="my-3 mr-3 px-3 rounded-lg py-1 bg-slate-400"
+                                        className="my-3 mr-3 px-3 py-1 bg-primary border-[2px_solid_#38363654] cursor-pointer text-black hover:text-white rounded transition-[all_0.2s_cubic-bezier(0.79, 0.14, 0.15, 0.86)] hover:bg-[#887560] hover:transition-[all_0.1s_ease] focus:shadow-[0px_0px_0px_2px_#a7a7a7b5] focus:bg-[#00000061]"
                                         state={student}>
                                         Edit
                                     </Link>
