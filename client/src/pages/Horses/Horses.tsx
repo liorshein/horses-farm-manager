@@ -23,7 +23,7 @@ export const action: ActionFunction = async ({ request }) => {
     switch (request.method) {
         case "POST": {
             const formData = await request.formData();
-            const horse = Object.fromEntries(formData);            
+            const horse = Object.fromEntries(formData);
             await addHorse(horse);
             break;
         }
@@ -90,16 +90,7 @@ const Horses = () => {
                     errorElement={<p>Error loading horses!</p>}>
                     {(loadedHorses) => (
                         <>
-                            {showForm ? (
-                                <HorsesForm
-                                    inputs={inputs}
-                                    edit={edit}
-                                    hidden={showForm}
-                                    setInputs={setInputs}
-                                    setEdit={setEdit}
-                                    setHidden={setShowForm}
-                                />
-                            ) : (
+                            {
                                 <HorsesCards
                                     horsesData={loadedHorses}
                                     roles={roles}
@@ -108,7 +99,7 @@ const Horses = () => {
                                     setEdit={setEdit}
                                     setInputs={setInputs}
                                 />
-                            )}
+                            }
                         </>
                     )}
                 </Await>

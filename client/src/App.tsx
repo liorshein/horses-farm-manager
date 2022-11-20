@@ -24,6 +24,7 @@ import NoMatch from "./pages/NoMatch/NoMatch";
 import Lessons, { loader as lessonsLoader } from "./pages/Lessons/Lessons";
 import Schedule from "./pages/Lessons/Schedule";
 import StudentsForm from "./pages/Students/StudentsForm";
+import HorsesForm from "./pages/Horses/HorsesForm";
 
 const AuthProviderLayout = () => (
     <AuthProvider>
@@ -99,6 +100,24 @@ const router = createBrowserRouter([
                                 ),
                                 loader: horsesLoader,
                                 action: horsesAction,
+                            },
+                            {
+                                path: "/horses/new",
+                                element: (
+                                    <ProtectedRoute
+                                        allowedRoles={["User", "Admin"]}>
+                                        <HorsesForm />
+                                    </ProtectedRoute>
+                                )
+                            },
+                            {
+                                path: "/horses/:horse",
+                                element: (
+                                    <ProtectedRoute
+                                        allowedRoles={["User", "Admin"]}>
+                                        <HorsesForm />
+                                    </ProtectedRoute>
+                                )
                             },
                             {
                                 path: "/lessons",

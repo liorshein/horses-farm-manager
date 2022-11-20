@@ -109,8 +109,6 @@ export const deleteLesson: RequestHandler = async (req: any, res) => {
   }
 }
 
-//TODO - Adding error handling for students editing, removing and adding
-
 export const addStudent: RequestHandler = async (req: any, res) => {
   try {
     await client.query(

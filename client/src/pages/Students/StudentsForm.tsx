@@ -54,7 +54,7 @@ const StudentsForm = () => {
         e.preventDefault();
         const response = await editStudent(inputs)
         console.log(response);
-        
+
         if (response === 200) {
             navigate("/students")
         }
@@ -222,7 +222,8 @@ const StudentsForm = () => {
                         )}
                         <Link
                             to="/students"
-                            className="px-2 py-1 bg-slate-300 rounded-lg mt-2 mx-1">
+                            className="px-2 py-1 bg-slate-300 rounded-lg mt-2 mx-1"
+                        >
                             Return
                         </Link>
                     </div>

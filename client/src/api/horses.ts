@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import { Horse } from "../util/types";
 
 let baseURL;
@@ -21,11 +21,33 @@ export const getHorses = async () => {
 }
 
 export const addHorse = async (horse: any) => {
-    await horsesApi.post("/admin/add-horse", horse)
+    if (!Object.values(horse).includes("")) {
+        try {
+            const response = await horsesApi.post("/admin/add-horse", horse)
+            alert(response.data.message)
+            return response.status
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                alert(error.response?.data.message)
+            }
+        }
+    } else {
+        alert("Please provide valid information!")
+    }
 }
 
 export const editHorse = async (horse: any) => {
-    await horsesApi.put("/admin/edit-horse", horse)
+    if (!Object.values(horse).includes("")) {
+        try {
+            const response = await horsesApi.put("/admin/edit-horse", horse)
+            alert(response.data.message)
+            return response.status
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                alert(error.response?.data.message)
+            }
+        }
+    }
 }
 
 export const deleteHorse = async (horseId: string) => {
