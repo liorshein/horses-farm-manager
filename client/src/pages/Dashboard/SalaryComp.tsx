@@ -61,7 +61,7 @@ const SalaryComp = ({ salaryArr }: Props) => {
                     )}
                 </select>
             </div>
-            <div className="self-center mt-10 text-6xl">
+            <div className="self-center mt-10 mb-3 text-6xl">
                 <>{salaryFormat(salary)}&#8362;</>
             </div>
         </div>

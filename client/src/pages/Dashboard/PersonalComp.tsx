@@ -17,7 +17,7 @@ const PersonalComp = ({ data }: Props) => {
         <div className="text-xl ml-5 mt-3 font-medium">
           Address: {data.address}
         </div>
-        <div className="text-xl sm:whitespace-nowrap ml-5 mt-3 font-medium">
+        <div className="text-xl sm:whitespace-nowrap ml-5 my-3 font-medium">
           Phone number: {data.phone_number}
         </div>
       </div>

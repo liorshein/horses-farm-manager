@@ -25,7 +25,7 @@ const Students = () => {
         <section className="flex-grow w-full sm:ml-64 h-screen flex flex-col items-center overflow-auto">
             <div className="flex w-full justify-between pb-4">
                 <input
-                    className="mt-5 sm:ml-10 ml-14 py-1 px-4 placeholder:text-black"
+                    className="mt-5 sm:ml-10 ml-12 mr-2 py-1 px-4 placeholder:text-black"
                     type="text"
                     name="search"
                     placeholder="Search student..."

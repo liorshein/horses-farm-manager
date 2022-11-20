@@ -67,7 +67,7 @@ const StudentsForm = () => {
                     autoComplete="off"
                     className="flex w-3/5 flex-col items-center mt-3 bg-primary shadow-lg px-5 rounded-lg">
                     <h2 className="text-2xl my-2 underline tracking-tight">
-                        New Student
+                        Student Form
                     </h2>
                     <input
                         className="hidden"
@@ -82,7 +82,7 @@ const StudentsForm = () => {
                             <div className="mb-2 flex flex-col">
                                 <label className="mb-1">Name</label>
                                 <input
-                                    className="rounded pl-2"
+                                    className="rounded pl-1"
                                     placeholder="....."
                                     type="text"
                                     name="student_name"
@@ -94,7 +94,7 @@ const StudentsForm = () => {
                             <div className="mb-2 flex flex-col">
                                 <label className="mb-1">ID</label>
                                 <input
-                                    className="rounded pl-2"
+                                    className="rounded pl-1"
                                     placeholder="....."
                                     type="number"
                                     name="id"
@@ -106,7 +106,7 @@ const StudentsForm = () => {
                             <div className="mb-2 flex flex-col">
                                 <label className="mb-1">Date of birth</label>
                                 <input
-                                    className="rounded pl-2"
+                                    className="rounded pl-1"
                                     placeholder="....."
                                     type="text"
                                     name="date_of_birth"
@@ -118,7 +118,7 @@ const StudentsForm = () => {
                             <div className="mb-2 flex flex-col">
                                 <label className="mb-1">Age</label>
                                 <input
-                                    className="rounded pl-2"
+                                    className="rounded pl-1"
                                     placeholder="....."
                                     type="number"
                                     name="age"
@@ -130,7 +130,7 @@ const StudentsForm = () => {
                             <div className="mb-2 flex flex-col">
                                 <label className="mb-1">Weight</label>
                                 <input
-                                    className="rounded pl-2"
+                                    className="rounded pl-1"
                                     placeholder="....."
                                     type="number"
                                     name="weight"
@@ -144,7 +144,7 @@ const StudentsForm = () => {
                             <div className="mb-2 flex flex-col">
                                 <label className="mb-1">Height</label>
                                 <input
-                                    className="rounded pl-2"
+                                    className="rounded pl-1"
                                     placeholder="....."
                                     type="number"
                                     name="height"
@@ -156,7 +156,7 @@ const StudentsForm = () => {
                             <div className="mb-2 flex flex-col">
                                 <label className="mb-1">Address</label>
                                 <input
-                                    className="rounded pl-2"
+                                    className="rounded pl-1"
                                     placeholder="....."
                                     type="text"
                                     name="address"
@@ -170,7 +170,7 @@ const StudentsForm = () => {
                                     Educational framework
                                 </label>
                                 <input
-                                    className="rounded pl-2"
+                                    className="rounded pl-1"
                                     placeholder="....."
                                     type="text"
                                     name="framework"
@@ -182,7 +182,7 @@ const StudentsForm = () => {
                             <div className="mb-2 flex flex-col">
                                 <label className="mb-1">Working on</label>
                                 <input
-                                    className="rounded pl-2"
+                                    className="rounded pl-1"
                                     placeholder="....."
                                     type="text"
                                     name="working_on"
@@ -231,11 +231,11 @@ const StudentsForm = () => {
                     <div className="flex justify-around mb-4">
                         {!edit ? (
                             <button className="px-2 py-1 mt-2 mx-1 bg-[#00000038] border-[2px_solid_#38363654] cursor-pointer text-black hover:text-white rounded transition-[all_0.2s_cubic-bezier(0.79, 0.14, 0.15, 0.86)] hover:bg-[#887560] hover:transition-[all_0.1s_ease] focus:shadow-[0px_0px_0px_2px_#a7a7a7b5] focus:bg-[#00000061]" onClick={handleAdd}>
-                                Add Student
+                                Add
                             </button>
                         ) : (
                             <button className="px-2 py-1 mt-2 mx-1 bg-[#00000038] border-[2px_solid_#38363654] cursor-pointer text-black hover:text-white rounded transition-[all_0.2s_cubic-bezier(0.79, 0.14, 0.15, 0.86)] hover:bg-[#887560] hover:transition-[all_0.1s_ease] focus:shadow-[0px_0px_0px_2px_#a7a7a7b5] focus:bg-[#00000061]" onClick={handleUpdate}>
-                                Update Student
+                                Update
                             </button>
                         )}
                         <Link

@@ -12,7 +12,7 @@ const FavHorseComp = ({ data }: Props) => {
                 <GiHorseshoe />
                 <h2 className='tracking-tight ml-1 pt-[0.375rem]'>Favorite Horse</h2>
             </div>
-            <h3 className='self-center mt-10 text-6xl'>{data?.horse_name}</h3>
+            <h3 className='self-center mt-10 mb-3 text-6xl'>{data?.horse_name}</h3>
         </div>
     )
 }

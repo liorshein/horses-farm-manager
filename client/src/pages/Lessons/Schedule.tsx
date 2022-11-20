@@ -37,7 +37,7 @@ const Schedule = () => {
         const getData = async () => {
             if (roles.includes("Admin")) {
                 try {
-                    if (instructor !== "") {                        
+                    if (instructor !== "") {
                         let params = new URLSearchParams({
                             instructor_id: instructor as string,
                         });
@@ -133,6 +133,9 @@ const Schedule = () => {
                     center: "title",
                     right: "dayGridMonth,timeGridWeek,timeGridDay",
                 }}
+                slotMinTime="07:00:00"
+                slotMaxTime="22:00:00"
+                allDaySlot={false}
                 initialView="dayGridMonth"
                 initialEvents={getEvents}
                 editable={roles.includes("Admin") ? true : false}

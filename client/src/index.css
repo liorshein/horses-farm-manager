@@ -88,11 +88,15 @@ select:-webkit-autofill:focus {
         white-space: nowrap;
         font-size: 1.5rem !important;
     }
+
+    .fc-col-header {
+        font-size: 0.80rem !important;
+    }
 }
 
 @media screen and (max-width: 370px) {
     .fc-col-header {
-        font-size: 0.75rem !important;
+        font-size: 0.60rem !important;
     }
 
     .fc-header-toolbar {
@@ -102,6 +106,15 @@ select:-webkit-autofill:focus {
     .fc-toolbar-chunk {
         margin-bottom: 5px;
     }
+}
+
+.fc-event-main {
+    background: #b99f83;
+}
+
+.fc-timegrid-event {
+    background: #b99f83;
+    border-color: #7a6956;
 }
 
 .active {
