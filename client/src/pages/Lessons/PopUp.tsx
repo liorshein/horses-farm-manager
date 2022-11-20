@@ -1,7 +1,7 @@
-import { Lesson } from "./Schedule";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { deleteLesson } from "../../api/lessons";
 import useAuth from "../../hooks/useAuth";
+import { Lesson } from "../../util/types";
 
 type Props = {
     selectedEvent: Lesson | undefined;
@@ -21,14 +21,14 @@ const PopUp = ({
     const handleClick = async (e: { preventDefault: () => void }) => {
         e.preventDefault();
         const LessonId = selectedEvent?.lesson_id;
-        const response = await deleteLesson(LessonId!.toString()!);
-        if (response.status === 200) {
+        try {
+            await deleteLesson(LessonId!.toString()!);
             const eventFiltered = events.filter(
                 (lesson: Lesson) => lesson.lesson_id !== LessonId
             );
             setEvents(eventFiltered);
             setPopupDisplay(false);
-        }
+        } catch (error) {}
     };
 
     return (

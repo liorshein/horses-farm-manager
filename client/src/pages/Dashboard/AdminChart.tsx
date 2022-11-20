@@ -26,7 +26,11 @@ const AdminChart = ({ salaryData }: Props) => {
 
     useEffect(() => {
         const getMonth = () => {
-            setSelectedMonth(salaryData[0].mydate);
+            try {
+                setSelectedMonth(salaryData[0].mydate);
+            } catch (error) {
+                setSelectedMonth(undefined);
+            }
             const uniqData: string[] = [];
             salaryData.filter((element: Salary) => {
                 const isDuplicate = uniqData.includes(element.mydate);
@@ -34,11 +38,12 @@ const AdminChart = ({ salaryData }: Props) => {
                     uniqData.push(element.mydate);
                     return true;
                 }
+                return false;
             });
             setMonths(uniqData);
         };
         getMonth();
-    }, []);
+    }, [salaryData]);
 
     useEffect(() => {
         const filterData = () => {
@@ -48,7 +53,7 @@ const AdminChart = ({ salaryData }: Props) => {
             setFilteredData(filtered);
         };
         filterData();
-    }, [selectedMonth]);
+    }, [salaryData, selectedMonth]);
 
     const primaryxAxis: AxisModel = { valueType: "Category" };
     const primaryyAxis: AxisModel = { minimum: 0, maximum: 80, interval: 10 };
@@ -70,15 +75,19 @@ const AdminChart = ({ salaryData }: Props) => {
                     id="months"
                     value={selectedMonth}
                     onChange={(e) => setSelectedMonth(e.target.value)}>
-                    {months?.map((month: string) => {
-                        return (
-                            <option
-                                key={month}
-                                value={month}>
-                                {month}
-                            </option>
-                        );
-                    })}
+                    {months && months.length > 0 ? (
+                        months?.map((month: string) => {
+                            return (
+                                <option
+                                    key={month}
+                                    value={month}>
+                                    {month}
+                                </option>
+                            );
+                        })
+                    ) : (
+                        <option>Select month</option>
+                    )}
                 </select>
             </div>
             <div className="flex-1 w-full h-fit">

@@ -1,15 +1,14 @@
 import { Link } from "react-router-dom"
-import styles from "./nomatch.module.scss"
 
 const NoMatch = () => {
   return (
-    <section className={styles.page_404}>
-      <div className={styles.gif}></div>
-      <h1 className={styles.header}>404</h1>
-      <h3 className={styles.text}>Hold your horses</h3>
-      <h3 className={styles.text}>the page you wanted does not exist!</h3>
-      <Link className={styles.link} to={"/login"}>Return to home</Link>
-      <div className={styles.gif}></div>
+    <section className="w-screen h-screen flex flex-col items-center">
+      <div className='w-full h-1/3 bg-horse bg-center bg-no-repeat'></div>
+      <h1 className='text-9xl font-bold'>404</h1>
+      <h3 className='text-3xl'>Hold your horses</h3>
+      <h3 className='text-3xl font-bold'>page error!</h3>
+      <Link className='mt-4 text-xl hover:underline' to={"/login"}>Return home</Link>
+      <div className='w-full h-1/3 bg-horse bg-center bg-no-repeat'></div>
     </section >
   )
 }

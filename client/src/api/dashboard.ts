@@ -41,16 +41,3 @@ export const getData = async () => {
         return { salaryData, personalData, horsesData }
     }
 }
-
-export const addStudent = async (horse: any) => {
-    await dashboardApi.post("/admin/add-student", horse)
-}
-
-export const editStudent = async (horse: any) => {
-    await dashboardApi.put("/admin/edit-student", horse)
-}
-
-export const deleteStudent = async (studentId: string) => {
-    let params = new URLSearchParams({ student_id: studentId })
-    await dashboardApi.delete(`/admin/delete-student?${params}`)
-}

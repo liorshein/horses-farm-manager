@@ -1,10 +1,9 @@
 import DateTime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
 import { useState } from "react";
-import { Horse, Student } from "../../util/types";
+import { Horse, Lesson, Student } from "../../util/types";
 import { addLesson } from "../../api/lessons";
 import moment from "moment";
-import { Lesson } from "./Schedule";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
 type Props = {
@@ -46,9 +45,8 @@ const LessonForm = ({
         };
 
         if (!Object.values(lesson).includes(0)) {
-            let response = await addLesson(lesson);
-
-            if (response.status !== 409) {
+            const response = await addLesson(lesson);            
+            if (response) {
                 const studentName = studentInfo.find(
                     (student: Student) =>
                         student.student_id === Number(selectedStudent)
@@ -67,8 +65,6 @@ const LessonForm = ({
 
                 setEvents([...events, lesson]);
                 setFormDisplay(false);
-            } else {
-                alert(response.data.message);
             }
         } else {
             alert("Please select valid info!");
@@ -91,7 +87,7 @@ const LessonForm = ({
                     <select
                         value={selectedStudent}
                         onChange={(e) => setSelectedStudent(e.target.value)}>
-                        <option>Pick Student</option>
+                        <option value={0}>Pick Student</option>
                         {studentInfo.map((student: Student) => {
                             return (
                                 <option
@@ -110,7 +106,7 @@ const LessonForm = ({
                         onChange={(e) => {
                             setSelectedHorse(e.target.value);
                         }}>
-                        <option>Pick Horse</option>
+                        <option value={0}>Pick Horse</option>
                         {horseInfo.map((horse: Horse) => {
                             return (
                                 <option

@@ -4,12 +4,15 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      colors: {
+        primary: "#ADD8E6"
+      },
       transitionProperty: {
         'width': 'width'
       },
       backgroundImage: {
         'horse': "url('/src/assets/gifs/horse.gif')",
-        'loginImage': "url('/src/assets/images/horseDrawing2.jpg')"
+        'loginImage': "url('/src/assets/images/horses_hay.jpg')"
       }
     },
   },

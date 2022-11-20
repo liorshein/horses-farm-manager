@@ -27,7 +27,7 @@ const UserChart = ({ salaryData }: Props) => {
     const tooltip: TooltipSettingsModel = { enable: true };
 
     return (
-        <div className="flex flex-col h-full w-full shadow-xl border min-w-[240px] min-h-[80vh] xl:min-h-0">
+        <div className="flex flex-col h-full w-full shadow-xl border min-w-[259.88px] min-h-[80vh] xl:min-h-0">
             <div className="flex-0 flex items-center text-2xl ml-6 my-3 font-bold">
                 <RiNumbersLine />
                 <h2 className="tracking-tight ml-1 pt-[0.375rem]">Lessons</h2>

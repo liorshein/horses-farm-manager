@@ -23,7 +23,7 @@ export const action: ActionFunction = async ({ request }) => {
     switch (request.method) {
         case "POST": {
             const formData = await request.formData();
-            const horse = Object.fromEntries(formData);
+            const horse = Object.fromEntries(formData);            
             await addHorse(horse);
             break;
         }

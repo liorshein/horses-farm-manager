@@ -1,9 +1,9 @@
-import { Router } from 'express';
-import { checkCookies, signIn } from '../controllers/authController';
+import { Router } from 'express'
+import { checkCookies, signIn } from '../controllers/authController'
 
-const authRouter = Router();
+const authRouter = Router()
 
 authRouter.post('/', signIn)
 authRouter.get('/re-login', checkCookies)
 
-export default authRouter;
+export default authRouter

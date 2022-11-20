@@ -1,5 +1,7 @@
-import axios from "axios";
-import { Lesson } from "../pages/Lessons/Schedule";
+import { EventResizeDoneArg } from "@fullcalendar/interaction";
+import { EventDropArg } from "@fullcalendar/react";
+import axios, { AxiosError } from "axios";
+import { Lesson } from "../util/types";
 let baseURL;
 
 if (process.env.NODE_ENV === "production") {
@@ -14,7 +16,7 @@ const lessonsApi = axios.create({
     withCredentials: true,
 });
 
-export const getInstructors= async () => {
+export const getInstructors = async () => {
     const instructors = await (await lessonsApi.get("/admin/instructors")).data.result
     return instructors
 }
@@ -31,24 +33,36 @@ export const getLessons = async (start: any, end: any, instructor: any) => {
 
 export const addLesson = async (lesson: Lesson) => {
     try {
-        let results = await lessonsApi.post("/admin/addLesson", lesson);
+        let results = await lessonsApi.post("/admin/add-lesson", lesson);
         return results.data.rows[0];
-    } catch (error: any) {
-        return error.response
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            alert(error.response?.data.message);
+        }
     }
 };
 
-export const editLesson = async (lesson_id: number, start: any, end: any) => {
+export const editLesson = async (lesson_id: number, start: Date, end: Date, horse_id: number, arg: EventResizeDoneArg | EventDropArg) => {
     try {
-        const data = { lesson_id: lesson_id, start: start, end: end };
-        await lessonsApi.put("/admin/edit-lesson", data);
-    } catch (error: any) {        
-        return error.response;
+        const data = {
+            lesson_id: lesson_id,
+            start_time: start,
+            end_time: end,
+            horse_id: horse_id
+        };
+
+        const response = await lessonsApi.put("/admin/edit-lesson", data);        
+        alert(response.data.message)
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            alert(error.response?.data.message);
+            arg.revert()
+        }
     }
 };
 
 export const deleteLesson = async (lessonId: string) => {
     let params = new URLSearchParams({ lesson_id: lessonId });
     const response = await lessonsApi.delete(`/admin/delete-lesson?${params}`);
-    return response;
+    alert(response.data.message)
 };

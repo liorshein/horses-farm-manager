@@ -17,8 +17,34 @@ body,
 html {
     height: 100vh;
     width: 100vw;
-    font-family: "Josefin Sans", sans-serif;
+    font-family: "Nunito", sans-serif;
     overflow: hidden;
+}
+
+@keyframes login {
+    0% {
+        transform: translateY(-10%) scale(0.8);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    border: none;
+    -webkit-text-fill-color: white;
+    -webkit-box-shadow: 0 0 0px 1000px #927e68 inset;
+    transition: background-color 5000s ease-in-out 0s;
 }
 
 .fc {
@@ -77,25 +103,16 @@ html {
     font-weight: bold;
 }
 
-.react-datepicker__input-container > input {
-    text-align: center;
-    background-color: #c8b8ab;
-}
-
-react-datepicker__input-container > input:hover {
-    cursor: pointer;
-}
-
 @layer utilities {
     @variants responsive {
-      /* Chrome, Safari and Opera */
-      .no-scrollbar::-webkit-scrollbar {
-        display: none;
-      }
-  
-      .no-scrollbar {
-        -ms-overflow-style: none;  /* IE and Edge */
-        scrollbar-width: none;  /* Firefox */
-      }
+        /* Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
     }
-  }
+}

@@ -1,119 +1,130 @@
-import React, { useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom';
-import axios from '../api/axios'
+import { AxiosError } from "axios";
+import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "../api/axios";
 
 type Props = {
-    children: any
-}
+    children: any;
+};
 
 interface ContextInterface {
     onLoginTest: (e: any, number: number) => void;
     onLogin: (e: any) => void;
     onLogout: () => void;
     loginValues: {
-        email: string
-        password: string
-    }
+        email: string;
+        password: string;
+    };
     onChange: (event: {
         target: {
             name: string;
             value: string;
         };
-    }) => void
-    roles: string[]
-    setRoles: React.Dispatch<React.SetStateAction<string[]>>
-    name: string
-    setName: React.Dispatch<React.SetStateAction<string>>
-    userId: number
+    }) => void;
+    roles: string[];
+    setRoles: React.Dispatch<React.SetStateAction<string[]>>;
+    name: string;
+    setName: React.Dispatch<React.SetStateAction<string>>;
+    userId: number;
 }
 
 interface stateType {
-    from: { pathname: string }
+    from: { pathname: string };
 }
 
-export const AuthContext = React.createContext<ContextInterface | null>(null)
+export const AuthContext = React.createContext<ContextInterface | null>(null);
 
 const AutoProvider = (props: Props) => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const location = useLocation().state as stateType;
     const [loginInputs, setLoginInputs] = useState({
         email: "",
         password: "",
-    })
-    const [roles, setRoles] = useState<string[]>([])
-    const [name, setName] = useState('')
-    const [userId, setUserId] = useState(0)
+    });
+    const [roles, setRoles] = useState<string[]>([]);
+    const [name, setName] = useState("");
+    const [userId, setUserId] = useState(0);
 
-    const handleChange = (event: { target: { name: string; value: string } }) => {
-        setLoginInputs({ ...loginInputs, [event.target.name]: event.target.value })
-    }
+    const handleChange = (event: {
+        target: { name: string; value: string };
+    }) => {
+        setLoginInputs({
+            ...loginInputs,
+            [event.target.name]: event.target.value,
+        });
+    };
 
     const handleLogin = async (e: any) => {
-        e.preventDefault()
-        if (loginInputs.email !== '' && loginInputs.password !== '') {
-            const response = (await axios.post("/auth", {
-                email: loginInputs.email,
-                password: loginInputs.password
-            },
+        e.preventDefault();
+        try {
+            const response = await axios.post(
+                "/auth",
                 {
-                    headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true
-                }))
+                    email: loginInputs.email,
+                    password: loginInputs.password,
+                },
+                {
+                    headers: { "Content-Type": "application/json" },
+                    withCredentials: true,
+                }
+            );
 
-            if (response.status === 200) {        
-                setUserId(response.data.userId)
-                setRoles(response.data.roles)
-                setName(response.data.userName)
-                const origin = location?.from?.pathname || '/dashboard';
-                navigate(origin);
-            } else {
-                alert("Wrong password / email")
+            setUserId(response.data.userId);
+            setRoles(response.data.roles);
+            setName(response.data.userName);
+            const origin = location?.from?.pathname || "/dashboard";
+            navigate(origin);
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                alert(error.response?.data.message);
             }
-        } else {
-            alert("Enter valid password and email")
         }
     };
 
     const handleLoginTest = async (e: any, number: number) => {
-        e.preventDefault()
-
-        let response;        
+        e.preventDefault();
+        let response;
 
         if (number === 1) {
-            response = (await axios.post("/auth", {
-                email: "admin@gmail.com",
-                password: "admin123"
-            },
+            response = await axios.post(
+                "/auth",
                 {
-                    headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true
-                }))
+                    email: "admin@gmail.com",
+                    password: "admin123",
+                },
+                {
+                    headers: { "Content-Type": "application/json" },
+                    withCredentials: true,
+                }
+            );
         } else {
-            response = (await axios.post("/auth", {
-                email: "lior@gmail.com",
-                password: "lior123"
-            },
+            response = await axios.post(
+                "/auth",
                 {
-                    headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true
-                }))
+                    email: "lior@gmail.com",
+                    password: "lior123",
+                },
+                {
+                    headers: { "Content-Type": "application/json" },
+                    withCredentials: true,
+                }
+            );
         }
 
         if (response.status === 200) {
-            setUserId(response.data.userId)
-            setRoles(response.data.roles)
-            setName(response.data.userName)
-            const origin = location?.from?.pathname || '/dashboard';
+            setUserId(response.data.userId);
+            setRoles(response.data.roles);
+            setName(response.data.userName);
+            const origin = location?.from?.pathname || "/dashboard";
             navigate(origin);
         } else {
-            alert("Wrong password / email")
+            alert("Something went wrong, please try again");
         }
-
     };
 
     const handleLogout = async () => {
-        await axios.get("/logout", { withCredentials: true })
-        navigate('/login');
+        await axios.get("/logout", { withCredentials: true });
+        navigate("/login");
     };
 
     const value = {
@@ -134,6 +145,6 @@ const AutoProvider = (props: Props) => {
             {props.children}
         </AuthContext.Provider>
     );
-}
+};
 
-export default AutoProvider
+export default AutoProvider;

@@ -36,9 +36,9 @@ const Lessons = () => {
                                               <Link
                                                   key={instructor.instructor_id}
                                                   to={`${instructor.instructor_id}`}
-                                                  className="ml-5 bg-white w-56 h-40 flex flex-col items-center justify-between border mt-5 shadow-lg">
+                                                  className="ml-5 bg-white w-56 h-40 flex flex-col items-center justify-around border mt-5 shadow-lg">
                                                   <BsPersonCircle className="text-4xl ml-2 my-2" />
-                                                  <p className="text-2xl mb-12">
+                                                  <p className="text-2xl mb-4">
                                                       {
                                                           instructor.instructor_name
                                                       }

@@ -3,22 +3,21 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-const DATABASE_URL = process.env.DATABASE_URL
+//TODO: Remember to change DB url in new deployment!
+const { DATABASE_URL } = process.env
 
 export const client = new Client({
-
-    connectionString: DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
-});
+  connectionString: DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+})
 
 export const initDb = async () => {
+  await client.connect()
 
-    await client.connect();
-
-    await client.query(
-        `CREATE TABLE IF NOT EXISTS instructors(
+  await client.query(
+    `CREATE TABLE IF NOT EXISTS instructors(
             instructor_id SERIAL PRIMARY KEY,
             instructor_name TEXT NOT NULL,
             email TEXT NOT NULL UNIQUE,
@@ -28,10 +27,10 @@ export const initDb = async () => {
             roles TEXT[] NOT NULL,
             UNIQUE (email, password, instructor_name)
         );`
-    );
+  )
 
-    await client.query(
-        `CREATE TABLE IF NOT EXISTS horses(
+  await client.query(
+    `CREATE TABLE IF NOT EXISTS horses(
             horse_id SERIAL PRIMARY KEY,
             horse_name TEXT NOT NULL,
             age INTEGER NOT NULL,
@@ -39,10 +38,10 @@ export const initDb = async () => {
             assignable TEXT NOT NULL,
             UNIQUE (horse_name, age)
         );`
-    );
+  )
 
-    await client.query(
-        `CREATE TABLE IF NOT EXISTS students(
+  await client.query(
+    `CREATE TABLE IF NOT EXISTS students(
             student_id SERIAL PRIMARY KEY,
             student_name TEXT NOT NULL,
             id TEXT NOT NULL,
@@ -60,32 +59,10 @@ export const initDb = async () => {
             ON DELETE SET NULL,
             UNIQUE (student_name, date_of_birth, id)
         );`
-    );
+  )
 
-    await client.query(
-        `CREATE TABLE IF NOT EXISTS lessons(
-            lesson_id SERIAL PRIMARY KEY,
-            horse_id INTEGER NOT NULL,
-            CONSTRAINT fk_horse FOREIGN KEY(horse_id)
-            REFERENCES horses(horse_id)
-            ON DELETE CASCADE,
-            date TEXT NOT NULL,
-            lesson_time TEXT NOT NULL,
-            arrived TEXT,
-            instructor_id INTEGER NOT NULL,
-            FOREIGN KEY(instructor_id)
-            REFERENCES instructors(instructor_id)
-            ON DELETE CASCADE,
-            student_id INTEGER NOT NULL,
-            FOREIGN KEY(student_id)
-            REFERENCES students(student_id)
-            ON DELETE CASCADE,
-            UNIQUE (horse_id, date, lesson_time)
-        );`
-    );
-
-    await client.query(
-        `CREATE TABLE IF NOT EXISTS lessons2(
+  await client.query(
+    `CREATE TABLE IF NOT EXISTS lessons(
             lesson_id SERIAL PRIMARY KEY,
             horse_id INTEGER NOT NULL,
             CONSTRAINT fk_horse FOREIGN KEY(horse_id)
@@ -93,7 +70,6 @@ export const initDb = async () => {
             ON DELETE CASCADE,
             start_time TIMESTAMPTZ NOT NULL,
             end_time TIMESTAMPTZ NOT NULL,
-            arrived TEXT,
             instructor_id INTEGER NOT NULL,
             FOREIGN KEY(instructor_id)
             REFERENCES instructors(instructor_id)
@@ -104,7 +80,7 @@ export const initDb = async () => {
             ON DELETE CASCADE,
             UNIQUE (horse_id, start_time, end_time)
         );`
-    );
+  )
 
-    console.log("create");
+  console.log('create')
 }

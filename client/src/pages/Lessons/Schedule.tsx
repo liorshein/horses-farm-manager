@@ -14,30 +14,9 @@ import { editLesson, getLessons } from "../../api/lessons";
 import { Link, useParams } from "react-router-dom";
 import { BsArrowLeftCircleFill } from "react-icons/bs";
 import { axiosPrivate } from "../../api/axios";
-import { Horse, Student } from "../../util/types";
+import { Horse, Lesson, Student } from "../../util/types";
 import PopUp from "./PopUp";
 import useAuth from "../../hooks/useAuth";
-
-let baseURL: string;
-
-export type Lesson = {
-    lesson_id?: number;
-    start_time?: Date;
-    start?: Date;
-    end_time?: Date;
-    end?: Date;
-    student_id?: number;
-    horse_id?: number;
-    horse_name?: string;
-    instructor_id?: number;
-    student_name?: string;
-};
-
-if (process.env.NODE_ENV === "production") {
-    baseURL = "/api";
-} else {
-    baseURL = "http://localhost:3500/api";
-}
 
 const Schedule = () => {
     const { roles } = useAuth()!;
@@ -84,7 +63,7 @@ const Schedule = () => {
             isMounted = false;
             controller.abort();
         };
-    }, []);
+    }, [instructor, roles]);
 
     const getEvents = async (dateInfo: { start: Date; end: Date }) => {
         const results = await getLessons(
@@ -97,6 +76,7 @@ const Schedule = () => {
             lesson_id: eventEl.lesson_id,
             student_name: eventEl.student_name,
             horse_name: eventEl.horse_name,
+            horse_id: eventEl.horse_id,
             start: eventEl.start_time,
             end: eventEl.end_time,
         }));
@@ -125,29 +105,17 @@ const Schedule = () => {
     };
 
     const handleEventDrop = async (arg: EventDropArg) => {
-        const response = await editLesson(
-            arg.event.extendedProps.lesson_id,
-            arg.event.start,
-            arg.event.end
-        );
+        const { start, end, extendedProps } = arg.event;
+        const { horse_id, lesson_id } = extendedProps;
 
-        if (response.status === 409) {
-            arg.revert();
-            alert(response.data.message);
-        }
+        await editLesson(lesson_id, start as Date, end as Date, horse_id, arg);
     };
 
     const handleEventResize = async (arg: EventResizeDoneArg) => {
-        const response = await editLesson(
-            arg.event.extendedProps.lesson_id,
-            arg.event.start,
-            arg.event.end
-        );
+        const { start, end, extendedProps } = arg.event;
+        const { horse_id, lesson_id } = extendedProps;
 
-        if (response.status === 409) {
-            arg.revert();
-            alert(response.data.message);
-        }
+        await editLesson(lesson_id, start as Date, end as Date, horse_id, arg);
     };
 
     const handleClick = () => {

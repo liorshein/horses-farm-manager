@@ -1,8 +1,8 @@
-import { Router } from 'express';
-import { signUp } from '../controllers/registerController';
+import { Router } from 'express'
+import { signUp } from '../controllers/registerController'
 
-const registerRouter = Router();
+const registerRouter = Router()
 
 registerRouter.post('/', signUp)
 
-export default registerRouter;
+export default registerRouter

@@ -17,14 +17,13 @@ import Horses, {
 } from "./pages/Horses/Horses";
 import Students, {
     loader as studentsLoader,
-    action as studentsAction,
+    // action as studentsAction,
 } from "./pages/Students/Students";
 import PersistLogin from "./components/PersistLogin";
 import NoMatch from "./pages/NoMatch/NoMatch";
-import Lessons, {
-    loader as lessonsLoader,
-} from "./pages/Lessons/Lessons";
+import Lessons, { loader as lessonsLoader } from "./pages/Lessons/Lessons";
 import Schedule from "./pages/Lessons/Schedule";
+import StudentsForm from "./pages/Students/StudentsForm";
 
 const AuthProviderLayout = () => (
     <AuthProvider>
@@ -71,7 +70,24 @@ const router = createBrowserRouter([
                                     </ProtectedRoute>
                                 ),
                                 loader: studentsLoader,
-                                action: studentsAction,
+                            },
+                            {
+                                path: "/students/new",
+                                element: (
+                                    <ProtectedRoute
+                                        allowedRoles={["User", "Admin"]}>
+                                        <StudentsForm />
+                                    </ProtectedRoute>
+                                )
+                            },
+                            {
+                                path: "/students/:student",
+                                element: (
+                                    <ProtectedRoute
+                                        allowedRoles={["User", "Admin"]}>
+                                        <StudentsForm />
+                                    </ProtectedRoute>
+                                )
                             },
                             {
                                 path: "/horses",
@@ -92,11 +108,16 @@ const router = createBrowserRouter([
                                         <Lessons />
                                     </ProtectedRoute>
                                 ),
-                                loader: lessonsLoader
+                                loader: lessonsLoader,
                             },
                             {
                                 path: "/lessons/:instructor",
-                                element: <Schedule />,
+                                element: (
+                                    <ProtectedRoute
+                                        allowedRoles={["User", "Admin"]}>
+                                        <Schedule />
+                                    </ProtectedRoute>
+                                )
                             },
                         ],
                     },

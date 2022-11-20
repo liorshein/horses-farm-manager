@@ -14,7 +14,7 @@
     "tsBuildInfoFile": "./dist/cache/tsc.json",
     "skipLibCheck": true,
     "strict": true,
-    "esModuleInterop": true,
+    "esModuleInterop": true
   },
   "include": ["server/**/*"]
 }
