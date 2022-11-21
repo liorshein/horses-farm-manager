@@ -15,6 +15,8 @@ import adminRouter from './routes/api/admin'
 
 const app: Express = express()
 
+const root = path.join(__dirname, "build")
+
 // Connecting to DB
 initDb()
 
@@ -43,10 +45,10 @@ app.use('/api/admin', adminRouter)
 // Serve static files
 if (process.env.NODE_ENV == "production") {
 
-  app.use(express.static("build"));
+  app.use(express.static(root));
 
   app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "build", "index.html"));
+    res.sendFile("index.html", { root });
   });
 }
 
