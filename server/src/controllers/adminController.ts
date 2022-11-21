@@ -174,7 +174,6 @@ export const deleteStudent: RequestHandler = async (req: any, res) => {
 }
 
 export const addHorse: RequestHandler = async (req: any, res) => {
-  console.log(req.body);
   
   try {
     await client.query(
@@ -183,9 +182,7 @@ export const addHorse: RequestHandler = async (req: any, res) => {
     )
 
     res.status(200).json({ message: "Horse added successfully" })
-  } catch (error) {
-    console.log(error);
-    
+  } catch (error) {    
     res.status(409).json({ message: "Error occurred, please try again or contact the farm management" })
   }
 }

@@ -18,9 +18,7 @@ type Props = {
     salaryData: Salary[];
 };
 
-const UserChart = ({ salaryData }: Props) => {
-    console.log(salaryData);
-    
+const UserChart = ({ salaryData }: Props) => {    
     const primaryxAxis: AxisModel = { valueType: "Category" };
     const primaryyAxis: AxisModel = { minimum: 0, maximum: 80, interval: 10 };
     const legendSettings = { visible: false };

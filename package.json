@@ -1,49 +1,27 @@
 {
   "name": "horses-farm-manager",
   "version": "1.0.0",
-  "description": "",
+  "description": "An application for managing a therapeutic horse farm.",
   "main": "index.js",
   "scripts": {
-    "start": "node ./server/server.ts",
-    "server": "nodemon ./server/server.ts",
-    "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "deploy": "gulp deploy",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "i-server": "cd ./server && npm ci",
+    "i-client": "cd ./client && npm ci",
+    "init-p": "npm run i-server && npm run i-client",
+    "server": "cd ./server && npm run start",
+    "client": "cd ./client && npm run start",
+    "test-server": "cd ./server && npm run test",
+    "test-client": " cd ./client && npm run test",
+    "deploy": "cd ./server && npm run deploy",
+    "prod": "cd ./server/deploy && node server.js"
   },
-  "author": "liorshein <liorshein@cyber4s.dev>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liorshein/horses-farm-manager.git"
+  },
+  "author": "",
   "license": "ISC",
-  "dependencies": {
-    "axios": "^0.27.2",
-    "bcrypt": "^5.0.1",
-    "chart.js": "^3.9.1",
-    "concurrently": "^7.3.0",
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.1",
-    "express": "^4.18.1",
-    "gulp": "^4.0.2",
-    "gulp-clean": "^0.4.0",
-    "gulp-rename": "^2.0.0",
-    "gulp-sass": "^5.1.0",
-    "jsonwebtoken": "^8.5.1",
-    "nodemon": "^2.0.19",
-    "path": "^0.12.7",
-    "pg": "^8.8.0",
-    "react-chartjs-2": "^4.3.1",
-    "react-query": "^3.39.2",
-    "react-validation": "^3.0.7",
-    "sass": "^1.54.7",
-    "typed-scss-modules": "^6.5.0",
-    "validator": "^13.7.0"
+  "bugs": {
+    "url": "https://github.com/liorshein/horses-farm-manager/issues"
   },
-  "devDependencies": {
-    "@types/bcrypt": "^5.0.0",
-    "@types/body-parser": "^1.19.2",
-    "@types/cookie-parser": "^1.4.3",
-    "@types/cors": "^2.8.12",
-    "@types/express": "^4.17.13",
-    "@types/jsonwebtoken": "^8.5.9",
-    "@types/pg": "^8.6.5"
-  }
+  "homepage": "https://github.com/liorshein/horses-farm-manager#readme"
 }

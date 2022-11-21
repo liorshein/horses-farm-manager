@@ -53,7 +53,6 @@ const StudentsForm = () => {
     const handleUpdate = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         const response = await editStudent(inputs)
-        console.log(response);
 
         if (response === 200) {
             navigate("/students")

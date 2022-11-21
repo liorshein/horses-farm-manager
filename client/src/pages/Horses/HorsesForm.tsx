@@ -43,7 +43,6 @@ const HorsesForm = () => {
     const handleUpdate = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         const response = await editHorse(inputs)
-        console.log(response);
 
         if (response === 200) {
             navigate("/horses")
