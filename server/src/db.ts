@@ -1,22 +1,31 @@
-import { Client } from 'pg'
+import { Pool } from 'pg'
 import dotenv from 'dotenv'
 
 dotenv.config()
 
-//TODO: Remember to change DB url in new deployment!
 const { DATABASE_URL } = process.env
 
-export const client = new Client({
+export const pool = new Pool({
   connectionString: DATABASE_URL,
   ssl: {
     rejectUnauthorized: false,
   },
 })
 
-export const initDb = async () => {
-  await client.connect()
+export const connectToDB = async () => {
+  try {
+    await pool.connect()
+    console.log("Connected to database");
+  } catch (error) {
+    console.log("Unable to connect to database");
+    console.log(error)
+  }
+}
 
-  await client.query(
+export const initDb = async () => {
+  connectToDB()
+
+  await pool.query(
     `CREATE TABLE IF NOT EXISTS instructors(
             instructor_id SERIAL PRIMARY KEY,
             instructor_name TEXT NOT NULL,
@@ -29,7 +38,7 @@ export const initDb = async () => {
         );`
   )
 
-  await client.query(
+  await pool.query(
     `CREATE TABLE IF NOT EXISTS horses(
             horse_id SERIAL PRIMARY KEY,
             horse_name TEXT NOT NULL,
@@ -40,7 +49,7 @@ export const initDb = async () => {
         );`
   )
 
-  await client.query(
+  await pool.query(
     `CREATE TABLE IF NOT EXISTS students(
             student_id SERIAL PRIMARY KEY,
             student_name TEXT NOT NULL,
@@ -61,7 +70,7 @@ export const initDb = async () => {
         );`
   )
 
-  await client.query(
+  await pool.query(
     `CREATE TABLE IF NOT EXISTS lessons(
             lesson_id SERIAL PRIMARY KEY,
             horse_id INTEGER NOT NULL,

@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express'
-import { client } from '../db'
+import { pool } from '../db'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
@@ -13,7 +13,7 @@ export const signIn: RequestHandler = async (req, res) => {
     return res.status(400).json({ message: 'Username and password are required.' })
   }
 
-  const foundUser = await client.query(`SELECT * FROM instructors WHERE email = $1`, [email])
+  const foundUser = await pool.query(`SELECT * FROM instructors WHERE email = $1`, [email])
 
   if (foundUser.rowCount === 0) {
     return res.status(400).json({ message: 'User does not exist' })
@@ -58,7 +58,7 @@ export const checkCookies: RequestHandler = (req, res) => {
       jwtCookie,
       process.env.TOKEN_SECRET!,
       async (_err: any, decoded: any) => {
-        const foundUser = await client.query(
+        const foundUser = await pool.query(
           `SELECT * FROM instructors WHERE instructor_id = $1`,
           [decoded.id]
         )

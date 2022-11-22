@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express'
-import { client } from '../db'
+import { pool } from '../db'
 
 //* ------------------------------------------------------------- Admin related controllers ----------------------------------------------------------------------------------------
 
@@ -9,7 +9,7 @@ export const addLesson: RequestHandler = async (req, res) => {
   // Check if there are conflict with other lessons (same instructor)  
   try {
     const instructorLessons = (
-      await client.query(
+      await pool.query(
         `SELECT *
         FROM lessons
         WHERE (lessons.start_time <= $1 
@@ -28,7 +28,7 @@ export const addLesson: RequestHandler = async (req, res) => {
 
     // Check if there are conflict with other lessons (using the same horse, different instructors)
     const othersLessons = (
-      await client.query(
+      await pool.query(
         `SELECT *
         FROM lessons
         WHERE (lessons.start_time <= $1 
@@ -46,7 +46,7 @@ export const addLesson: RequestHandler = async (req, res) => {
     }
 
     // Otherwise, adding lesson
-    const result = await client.query(
+    const result = await pool.query(
       `INSERT INTO lessons(horse_id, start_time, end_time, instructor_id, student_id)
         VALUES ($1, $2, $3, $4, $5)
         RETURNING lesson_id`,
@@ -68,7 +68,7 @@ export const editLesson: RequestHandler = async (req, res) => {
   try {
     // Check if there are conflict with other lessons (using the same horse, different instructors)
     const othersLessons = (
-      await client.query(
+      await pool.query(
         `SELECT *
         FROM lessons
         WHERE (lessons.start_time <= $1 
@@ -86,7 +86,7 @@ export const editLesson: RequestHandler = async (req, res) => {
     }
 
     // Otherwise, updates lesson
-    await client.query(
+    await pool.query(
       `UPDATE lessons
       SET start_time=$1, end_time=$2
       WHERE lesson_id=$3`,
@@ -102,7 +102,7 @@ export const editLesson: RequestHandler = async (req, res) => {
 export const deleteLesson: RequestHandler = async (req: any, res) => {
   try {
     const lessonId = req.query.lesson_id
-    const result = await client.query(`DELETE FROM lessons WHERE lesson_id=$1`, [lessonId])
+    const result = await pool.query(`DELETE FROM lessons WHERE lesson_id=$1`, [lessonId])
     res.status(200).json({ result: result, message: 'Lesson deleted successfully' })
   } catch (error) {
     res.status(409).json({ message: "Could not delete lesson, please try again or contact farm management." })
@@ -111,7 +111,7 @@ export const deleteLesson: RequestHandler = async (req: any, res) => {
 
 export const addStudent: RequestHandler = async (req: any, res) => {
   try {
-    await client.query(
+    await pool.query(
       `INSERT INTO students(student_name, id, date_of_birth, age, weight, height, hmo, address, framework, working_on, instructor_id)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
       [
@@ -137,7 +137,7 @@ export const addStudent: RequestHandler = async (req: any, res) => {
 
 export const editStudent: RequestHandler = async (req, res) => {
   try {
-    await client.query(
+    await pool.query(
       `UPDATE students
       SET student_name=$1, id=$2, date_of_birth=$3, age=$4, weight=$5, height=$6, address=$7, framework=$8, working_on=$9, hmo=$10, instructor_id=$11
       WHERE student_id=$12`,
@@ -166,7 +166,7 @@ export const editStudent: RequestHandler = async (req, res) => {
 export const deleteStudent: RequestHandler = async (req: any, res) => {
   const studentId = req.query.student_id
   try {
-    await client.query(`DELETE FROM students WHERE student_id=$1`, [studentId])
+    await pool.query(`DELETE FROM students WHERE student_id=$1`, [studentId])
     res.status(200).json({ message: "Student deleted successfully" })
   } catch (error) {
     res.status(409).json({ message: "Error occurred, please try again or contact the farm management" })
@@ -176,7 +176,7 @@ export const deleteStudent: RequestHandler = async (req: any, res) => {
 export const addHorse: RequestHandler = async (req: any, res) => {
   
   try {
-    await client.query(
+    await pool.query(
       `INSERT INTO horses(horse_name, age, breed, assignable)
       VALUES ($1, $2, $3, $4)`, [req.body.horse_name, req.body.age, req.body.breed, req.body.assignable]
     )
@@ -189,7 +189,7 @@ export const addHorse: RequestHandler = async (req: any, res) => {
 
 export const editHorse: RequestHandler = async (req, res) => {
   try {
-    await client.query(
+    await pool.query(
       `UPDATE horses
       SET horse_name=$1, age=$2, breed=$3, assignable=$4
       WHERE horse_id=$5`,
@@ -211,7 +211,7 @@ export const editHorse: RequestHandler = async (req, res) => {
 export const deleteHorse: RequestHandler = async (req: any, res) => {
   const horseId = req.query.horse_id
   try {
-    await client.query(`DELETE FROM horses WHERE horse_id=$1`, [horseId])
+    await pool.query(`DELETE FROM horses WHERE horse_id=$1`, [horseId])
     res.status(200).json({ message: "Horse deleted successfully" })
   } catch (error) {
     res.status(409).json({ message: "Error occurred, please try again or contact the farm management" })
@@ -224,7 +224,7 @@ export const deleteHorse: RequestHandler = async (req: any, res) => {
 export const getStudentsData: RequestHandler = async (req: any, res) => {
   const InstructorId = req.query.instructor_id
   const result = (
-    await client.query('SELECT * FROM students WHERE instructor_id = $1', [Number(InstructorId)])
+    await pool.query('SELECT * FROM students WHERE instructor_id = $1', [Number(InstructorId)])
   ).rows
   res.send({ result })
 }
@@ -232,7 +232,7 @@ export const getStudentsData: RequestHandler = async (req: any, res) => {
 // Fetches all students data
 export const getAllStudentsData: RequestHandler = async (_req, res) => {
   const result = (
-    await client.query(
+    await pool.query(
       `SELECT students.*, instructors.instructor_name
         FROM students
         LEFT JOIN instructors ON students.instructor_id = instructors.instructor_id`
@@ -243,7 +243,7 @@ export const getAllStudentsData: RequestHandler = async (_req, res) => {
 
 // Fetches lessons data in format of {count, month + year}
 export const getLessonsPerMonth: RequestHandler = async (_req, res) => {
-  const result = await client.query(
+  const result = await pool.query(
     `SELECT COUNT (lessons.*),trim(TO_CHAR(end_time, 'Month')) || ', ' || trim(TO_CHAR(end_time, 'yyyy')) as mydate, instructors.instructor_name
     FROM lessons
     JOIN instructors ON lessons.instructor_id = instructors.instructor_id
@@ -255,7 +255,7 @@ export const getLessonsPerMonth: RequestHandler = async (_req, res) => {
 // Fetches instructors data except admin
 export const getAllInstructorsData: RequestHandler = async (_req, res) => {
   const result = (
-    await client.query(`SELECT * FROM instructors WHERE instructor_id > 1`)
+    await pool.query(`SELECT * FROM instructors WHERE instructor_id > 1`)
   ).rows
   res.send({ result })
 }
@@ -263,7 +263,7 @@ export const getAllInstructorsData: RequestHandler = async (_req, res) => {
 // Fetches data of horses that are assignable
 export const getAvailableHorses: RequestHandler = async (_req, res) => {
   const result = (
-    await client.query("SELECT * FROM horses WHERE assignable='True'")
+    await pool.query("SELECT * FROM horses WHERE assignable='True'")
   ).rows
   res.send({ result })
 }

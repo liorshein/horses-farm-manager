@@ -1,12 +1,12 @@
 import { RequestHandler } from 'express'
-import { client } from '../db'
+import { pool } from '../db'
 import bcrypt from 'bcrypt'
 
 export const signUp: RequestHandler = async (req, res) => {
   const { email, password, phone_number, address, name } = req.body
 
   // Check for duplicates in DB
-  const foundUser = await client.query(
+  const foundUser = await pool.query(
     `SELECT * FROM instructors WHERE email = $1`,
     [email]
   )
@@ -18,7 +18,7 @@ export const signUp: RequestHandler = async (req, res) => {
   try {
     bcrypt.genSalt().then(async (salt) => {
       const hash = await bcrypt.hash(password, salt)
-      client.query(
+      pool.query(
         `INSERT INTO instructors(instructor_name, email, password, phone_number, address, roles)
                 VALUES ($1, $2, $3, $4, $5, $6)`,
         [name, email, hash, phone_number, address, ['User']]
