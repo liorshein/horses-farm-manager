@@ -7,6 +7,9 @@ const { DATABASE_URL } = process.env
 
 export const pool = new Pool({
   connectionString: DATABASE_URL,
+  keepAlive: true,
+  idleTimeoutMillis: 0,
+  connectionTimeoutMillis: 0,
   ssl: {
     rejectUnauthorized: false,
   },
