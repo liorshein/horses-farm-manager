@@ -18,7 +18,7 @@ const HorsesCards = ({ horsesData, roles, searchTerm }: Props) => {
     };
 
     return (
-        <div className='w-full overflow-scroll justify-around flex flex-col lg:flex-row items-center no-scrollbar'>
+        <div className='w-full overflow-scroll flex flex-col lg:flex-row items-center content-start gap-0 no-scrollbar lg:flex-wrap lg:justify-center lg:flex-grow'>
             {horsesData.filter((horse: Horse) => {
                 if (searchTerm === "") {
                     return horse
@@ -28,7 +28,7 @@ const HorsesCards = ({ horsesData, roles, searchTerm }: Props) => {
                     return false
                 }
             }).map((horse: Horse) => {
-                return <div key={horse.horse_id} className='bg-white my-4 shadow-lg flex flex-col items-center relative mx-5 w-3/4 min-w-fit'>
+                return <div key={horse.horse_id} className='bg-white my-4 shadow-lg flex flex-col items-center relative mx-5 w-3/4 lg:w-1/4 min-w-fit lg:flex-1'>
                     <div className='text-2xl mt-2 font-bold'>{horse.horse_name}</div>
                     <div className='flex flex-col items-center w-full px-4'>
                         <div className='mx-5 mt-3 text-lg'>

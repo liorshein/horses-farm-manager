@@ -1,6 +1,7 @@
 import { EventResizeDoneArg } from "@fullcalendar/interaction";
 import { EventDropArg } from "@fullcalendar/react";
 import axios, { AxiosError } from "axios";
+import { notifyError, notifySuccess } from "../util/toastFunc";
 import { Lesson } from "../util/types";
 let baseURL;
 
@@ -34,11 +35,11 @@ export const getLessons = async (start: any, end: any, instructor: any) => {
 export const addLesson = async (lesson: Lesson) => {
     try {
         let results = await lessonsApi.post("/admin/add-lesson", lesson);
-        alert(results.data.message);
+        notifySuccess(results.data.message)
         return results.data.result.rows[0];
     } catch (error) {
         if (error instanceof AxiosError) {
-            alert(error.response?.data.message);
+            notifyError(error.response?.data.message)
         }
     }
 };
@@ -52,11 +53,11 @@ export const editLesson = async (lesson_id: number, start: Date, end: Date, hors
             horse_id: horse_id
         };
 
-        const response = await lessonsApi.put("/admin/edit-lesson", data);        
-        alert(response.data.message)
+        const response = await lessonsApi.put("/admin/edit-lesson", data);
+        notifySuccess(response.data.message)
     } catch (error) {
         if (error instanceof AxiosError) {
-            alert(error.response?.data.message);
+            notifyError(error.response?.data.message)
             arg.revert()
         }
     }
@@ -65,5 +66,5 @@ export const editLesson = async (lesson_id: number, start: Date, end: Date, hors
 export const deleteLesson = async (lessonId: string) => {
     let params = new URLSearchParams({ lesson_id: lessonId });
     const response = await lessonsApi.delete(`/admin/delete-lesson?${params}`);
-    alert(response.data.message)
+    notifySuccess(response.data.message)
 };

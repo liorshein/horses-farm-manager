@@ -19,7 +19,7 @@ import PopUp from "./PopUp";
 import useAuth from "../../hooks/useAuth";
 
 const Schedule = () => {
-    const { roles } = useAuth()!;
+    const { roles } = useAuth()!;    
     const { instructor } = useParams();
     const [events, setEvents] = useState<Lesson[]>([]);
     const [selectedEvent, setSelectedEvent] = useState<Lesson>();

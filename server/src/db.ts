@@ -15,6 +15,10 @@ export const pool = new Pool({
   },
 })
 
+pool.on('error', (err: any) => {
+  console.log(err);
+})
+
 export const connectToDB = async () => {
   try {
     await pool.connect()

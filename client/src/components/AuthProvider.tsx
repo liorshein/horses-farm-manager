@@ -2,6 +2,9 @@ import { AxiosError } from "axios";
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { notifyError } from "../util/toastFunc";
 
 type Props = {
     children: any;
@@ -76,7 +79,7 @@ const AutoProvider = (props: Props) => {
             navigate(origin);
         } catch (error) {
             if (error instanceof AxiosError) {
-                alert(error.response?.data.message);
+                notifyError(error.response?.data.message)
             }
         }
     };
@@ -143,6 +146,7 @@ const AutoProvider = (props: Props) => {
     return (
         <AuthContext.Provider value={value}>
             {props.children}
+            <ToastContainer />
         </AuthContext.Provider>
     );
 };

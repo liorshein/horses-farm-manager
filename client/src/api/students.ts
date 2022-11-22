@@ -1,4 +1,5 @@
 import axios, { AxiosError } from "axios"
+import { notifyError, notifySuccess } from "../util/toastFunc";
 import { Student } from "../util/types";
 import { axiosPrivate } from "./axios";
 
@@ -48,11 +49,11 @@ export const addStudent = async (student: any) => {
     if (!Object.values(student).includes("")) {
         try {
             const response = await studentsApi.post("/admin/add-student", student)
-            alert(response.data.message)
+            notifySuccess(response.data.message)
             return response.status
         } catch (error) {
             if (error instanceof AxiosError) {
-                alert(error.response?.data.message)
+                notifyError(error.response?.data.message)
             }
         }
     } else {
@@ -64,11 +65,11 @@ export const editStudent = async (student: any) => {
     if (!Object.values(student).includes("")) {
         try {
             const response = await studentsApi.put("/admin/edit-student", student)
-            alert(response.data.message)
+            notifySuccess(response.data.message)
             return response.status
         } catch (error) {
             if (error instanceof AxiosError) {
-                alert(error.response?.data.message)
+                notifyError(error.response?.data.message)
             }
         }
     } else {
@@ -80,11 +81,11 @@ export const deleteStudent = async (studentId: string) => {
     let params = new URLSearchParams({ student_id: studentId })
     try {
         const response = await studentsApi.delete(`/admin/delete-student?${params}`)
-        alert(response.data.message)
+        notifySuccess(response.data.message)
         return response.status
     } catch (error) {
         if (error instanceof AxiosError) {
-            alert(error.response?.data.message)
+            notifyError(error.response?.data.message)
         }
     }
 }

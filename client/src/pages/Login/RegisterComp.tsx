@@ -10,6 +10,8 @@ import {
 } from "react-icons/ai";
 import { BiLockAlt } from "react-icons/bi";
 import { AxiosError } from "axios";
+import { toast } from "react-toastify";
+import { notifyError, notifySuccess } from "../../util/toastFunc";
 const horseDrawing = require("../../assets/images/horseDrawing2.png");
 
 const phoneRegExp =
@@ -68,11 +70,11 @@ const Register = (props: Props) => {
                 phone_number: data.mobile,
                 address: data.address,
             });
-            alert(response.data.message)
+            notifySuccess(response.data.message)
             props.switchPage("Login");
         } catch (error) {
             if (error instanceof AxiosError) {
-                alert(error.response?.data.message);
+                notifyError(error.response?.data.message)
             }
         }
     };
