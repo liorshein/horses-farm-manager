@@ -1,25 +1,22 @@
-import { Pool, QueryArrayConfig } from 'pg'
+import { Client } from 'pg'
 import dotenv from 'dotenv'
 
 dotenv.config()
 
+//TODO: Remember to change DB url in new deployment!
 const { DATABASE_URL } = process.env
 
-const pool = new Pool({
+export const client = new Client({
   connectionString: DATABASE_URL,
   ssl: {
     rejectUnauthorized: false,
   },
 })
 
-module.exports = {
-  query: (text: QueryArrayConfig<any>, params: any) => pool.query(text, params)
-}
-
 export const initDb = async () => {
-  await pool.connect()
+  await client.connect()
 
-  await pool.query(
+  await client.query(
     `CREATE TABLE IF NOT EXISTS instructors(
             instructor_id SERIAL PRIMARY KEY,
             instructor_name TEXT NOT NULL,
@@ -32,7 +29,7 @@ export const initDb = async () => {
         );`
   )
 
-  await pool.query(
+  await client.query(
     `CREATE TABLE IF NOT EXISTS horses(
             horse_id SERIAL PRIMARY KEY,
             horse_name TEXT NOT NULL,
@@ -43,7 +40,7 @@ export const initDb = async () => {
         );`
   )
 
-  await pool.query(
+  await client.query(
     `CREATE TABLE IF NOT EXISTS students(
             student_id SERIAL PRIMARY KEY,
             student_name TEXT NOT NULL,
@@ -64,7 +61,7 @@ export const initDb = async () => {
         );`
   )
 
-  await pool.query(
+  await client.query(
     `CREATE TABLE IF NOT EXISTS lessons(
             lesson_id SERIAL PRIMARY KEY,
             horse_id INTEGER NOT NULL,

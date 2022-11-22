@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
-const db = require('../db')
+import { client } from '../db'
 dotenv.config()
 
 export const verifyJWT = (req: any, res: any, next: () => void) => {
@@ -14,7 +14,7 @@ export const verifyJWT = (req: any, res: any, next: () => void) => {
           .status(403)
           .json({ message: 'Invalid user, please login again' }) //invalid token
       req.user = decoded.id
-      const foundUser = await db.query(
+      const foundUser = await client.query(
         `SELECT * FROM instructors WHERE instructor_id = $1`,
         [decoded.id]
       )
