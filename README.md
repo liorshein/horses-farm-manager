@@ -46,13 +46,6 @@
 [Live app](https://www.horse-farm-manager.tk)
 
 <ul>
-  <li>For Admin experience click on Test 1</li>
-  <li>For User experience click on Test 2</li>
+  <li>For Admin experience click on Admin</li>
+  <li>For User experience click on User</li>
 </ul>
-
-<!-- Roadmap -->
-## Roadmap
-
-- [ ] Add info on admin dashboard
-- [ ] Refactor css to be responsive
-- [ ] Refactor lessons to be dynamic
