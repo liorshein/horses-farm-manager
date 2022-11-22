@@ -73,7 +73,7 @@ const Login = (props: Props) => {
                         className="absolute bottom-0 right-1 hover:underline text-white opacity-80"
                         type="button"
                         onClick={() => props.switchPage("Register")}>
-                        Not a member? Sign In!
+                        Not a member? Sign Up!
                     </button>
                 </form>
             </div>
