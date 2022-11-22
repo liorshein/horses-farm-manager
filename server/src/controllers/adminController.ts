@@ -45,6 +45,11 @@ export const addLesson: RequestHandler = async (req, res) => {
       return res.status(409).json({ message: 'Horse is not available, contact farm management' })
     }
 
+    // Check if start_time is greater than end_time
+    if (new Date(req.body.start_time) > new Date(req.body.end_time)) {
+      return res.status(409).json({ message: 'Cannot add lesson, select valid start and end times!' })
+    }
+
     // Otherwise, adding lesson
     const result = await pool.query(
       `INSERT INTO lessons(horse_id, start_time, end_time, instructor_id, student_id)
@@ -57,7 +62,7 @@ export const addLesson: RequestHandler = async (req, res) => {
         req.body.instructor_id,
         req.body.student_id,
       ])
-    res.status(200).json({message: "Lesson added successfully", result: result})
+    res.status(200).json({ message: "Lesson added successfully", result: result })
 
   } catch (error) {
     res.status(409).json({ message: 'Error occurred, please contact farm management.' })
@@ -130,7 +135,7 @@ export const addStudent: RequestHandler = async (req: any, res) => {
     )
 
     res.status(200).json({ message: "Student added successfully" })
-  } catch (error) {
+  } catch (error) {    
     res.status(409).json({ message: "Error occurred, please try again or contact the farm management" })
   }
 }
@@ -174,7 +179,7 @@ export const deleteStudent: RequestHandler = async (req: any, res) => {
 }
 
 export const addHorse: RequestHandler = async (req: any, res) => {
-  
+
   try {
     await pool.query(
       `INSERT INTO horses(horse_name, age, breed, assignable)
@@ -182,7 +187,7 @@ export const addHorse: RequestHandler = async (req: any, res) => {
     )
 
     res.status(200).json({ message: "Horse added successfully" })
-  } catch (error) {    
+  } catch (error) {
     res.status(409).json({ message: "Error occurred, please try again or contact the farm management" })
   }
 }
