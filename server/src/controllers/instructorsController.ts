@@ -1,12 +1,12 @@
 import { RequestHandler } from 'express'
-import { client } from '../db'
+const db = require('../db')
 
 // Sends to client basic user info
 export const getUserInfo: RequestHandler = async (req: any, res) => {
   const InstructorId = req.user
 
   const result = (
-    await client.query(
+    await db.query(
       `
     SELECT instructor_name, email, phone_number, address
     FROM instructors 
@@ -20,7 +20,7 @@ export const getUserInfo: RequestHandler = async (req: any, res) => {
 // Sends to client the lessons of the instructor per month
 export const getLessonsPerMonth: RequestHandler = async (req: any, res) => {
   const InstructorId = req.user
-  const result = await client.query(
+  const result = await db.query(
     `SELECT COUNT (*),trim(TO_CHAR(end_time, 'Month')) || ', ' || trim(TO_CHAR(end_time, 'yyyy')) as mydate
     FROM lessons 
     WHERE instructor_id=$1 
@@ -35,7 +35,7 @@ export const getLessonsPerMonth: RequestHandler = async (req: any, res) => {
 // Sends to client all the horses he uses and how much
 export const getFavoriteHorse: RequestHandler = async (req: any, res) => {
   const InstructorId = req.user
-  const result = await client.query(
+  const result = await db.query(
     `SELECT COUNT(lessons.horse_id), horses.horse_name
         FROM lessons
         JOIN horses ON horses.horse_id = lessons.horse_id
@@ -52,7 +52,7 @@ export const getFavoriteHorse: RequestHandler = async (req: any, res) => {
 export const getStudentsData: RequestHandler = async (req: any, res) => {
   const InstructorId = req.user
   const result = (
-    await client.query('SELECT * FROM students WHERE instructor_id = $1', [
+    await db.query('SELECT * FROM students WHERE instructor_id = $1', [
       InstructorId,
     ])
   ).rows
@@ -62,7 +62,7 @@ export const getStudentsData: RequestHandler = async (req: any, res) => {
 export const updateArrived: RequestHandler = async (req, _res) => {
   const lessonId = req.query.lesson_id
   let booleanStr = req.query.arrived
-  await client.query(`UPDATE lessons SET arrived=$1 WHERE lesson_id=$2`, [
+  await db.query(`UPDATE lessons SET arrived=$1 WHERE lesson_id=$2`, [
     booleanStr,
     lessonId,
   ])
@@ -76,7 +76,7 @@ export const getLessons: RequestHandler = async (req, res) => {
   const end = req.query.end
 
   const result = (
-    await client.query(
+    await db.query(
       `SELECT lessons.*, students.student_name, horses.horse_name
             FROM lessons
             JOIN students ON lessons.student_id = students.student_id
@@ -92,6 +92,6 @@ export const getLessons: RequestHandler = async (req, res) => {
 //! Horses related requests
 
 export const getHorsesData: RequestHandler = async (_req, res) => {
-  const result = (await client.query('SELECT * FROM horses')).rows
+  const result = (await db.query('SELECT * FROM horses')).rows
   res.send({ result })
 }

@@ -17,6 +17,7 @@
   <ul>
     <li><a href="https://www.typescriptlang.org/">Typescript</a></li>
     <li><a href="https://reactjs.org/">React.js</a></li>
+    <li><a href="https://reactrouter.com/en/main">React Router</a></li>
     <li><a href="https://react-hook-form.com/">React hook form</a></li>
     <li><a href="https://github.com/jquense/yup">Yup</a></li>
   </ul>
@@ -42,7 +43,7 @@
 <!-- Deployment -->
 ## Deployment
 
-[Live app](https://horse-farm-manager.herokuapp.com)
+[Live app](https://www.horse-farm-manager.tk)
 
 <ul>
   <li>For Admin experience click on Test 1</li>
