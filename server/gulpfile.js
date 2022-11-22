@@ -67,7 +67,7 @@ gulp.task("copy-dist-to-deploy", () => {
 
 gulp.task("copy-node-to-deploy", () => {
   return gulp
-    .src(["./package.json", "./package-lock.json", "./.gitignore", "./.env"])
+    .src(["./package.json", "./package-lock.json", "./.gitignore"])
     .pipe(gulp.dest("./deploy"));
 });
 
