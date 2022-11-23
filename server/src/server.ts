@@ -1,7 +1,3 @@
-if (process.env.NODE_ENV != "production") {
-  require("dotenv").config();
-}
-
 import express, { Express, json } from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
@@ -12,6 +8,8 @@ import authRouter from './routes/auth'
 import { logOut } from './controllers/logoutController'
 import instructorRouter from './routes/api/instructors'
 import adminRouter from './routes/api/admin'
+
+require("dotenv").config();
 
 const app: Express = express()
 
