@@ -49,3 +49,8 @@
   <li>For Admin experience click on Admin</li>
   <li>For User experience click on User</li>
 </ul>
+
+<!-- TODO -->
+## TODO List
+
+[] Add videos and images

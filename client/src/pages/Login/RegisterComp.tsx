@@ -10,9 +10,7 @@ import {
 } from "react-icons/ai";
 import { BiLockAlt } from "react-icons/bi";
 import { AxiosError } from "axios";
-import { toast } from "react-toastify";
 import { notifyError, notifySuccess } from "../../util/toastFunc";
-const horseDrawing = require("../../assets/images/horseDrawing2.png");
 
 const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
