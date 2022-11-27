@@ -53,4 +53,4 @@
 <!-- TODO -->
 ## TODO List
 
-[ ] Add videos and images
+- [ ] Add videos and images
